@@ -1,4 +1,4 @@
-package com.capstone3.notechigima;
+package com.capstone.notechigima;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
