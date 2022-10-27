@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @JsonPropertyOrder({"status", "success", "message", "result"})
-public class ResponseEntity<T> {
+public class BaseResponse<T> {
 
     private final int status;
 
@@ -17,13 +17,13 @@ public class ResponseEntity<T> {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private T result;
 
-    public ResponseEntity(BaseResponseStatus status) {
+    public BaseResponse(BaseResponseStatus status) {
         this.status = status.getStatus();
         this.success = status.isSuccess();
         this.message = status.getMessage();
     }
 
-    public ResponseEntity(BaseResponseStatus responseStatus, T result) {
+    public BaseResponse(BaseResponseStatus responseStatus, T result) {
         this.status = responseStatus.getStatus();
         this.success = responseStatus.isSuccess();
         this.message = responseStatus.getMessage();

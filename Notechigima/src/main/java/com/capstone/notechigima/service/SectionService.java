@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface SectionService {
 
-    public List<SectionResponseDTO> getSectionList(int subjectId);
+    List<SectionResponseDTO> getSectionList(int subjectId);
+
+    int requestAnalysis(int sectionId);
 
 }

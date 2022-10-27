@@ -1,7 +1,7 @@
 package com.capstone.notechigima.controller;
 
 import com.capstone.notechigima.config.BaseException;
-import com.capstone.notechigima.config.ResponseEntity;
+import com.capstone.notechigima.config.BaseResponse;
 import com.capstone.notechigima.config.BaseResponseStatus;
 import com.capstone.notechigima.model.dto.note.GetNoteSummarizedDTO;
 import com.capstone.notechigima.model.dto.note.PostNoteRequestDTO;
@@ -21,19 +21,19 @@ public class NoteController {
 
     @ResponseBody
     @GetMapping("/section/{sectionId}")
-    public ResponseEntity<List<GetNoteSummarizedDTO>> getNoteList(@PathVariable("sectionId") int sectionId) throws BaseException {
-        return new ResponseEntity(BaseResponseStatus.SUCCESS_READ, noteService.getNoteList(sectionId));
+    public BaseResponse<List<GetNoteSummarizedDTO>> getNoteList(@PathVariable("sectionId") int sectionId) throws BaseException {
+        return new BaseResponse(BaseResponseStatus.SUCCESS_READ, noteService.getNoteList(sectionId));
     }
 
     @ResponseBody
     @GetMapping(value="/{noteId}")
-    public ResponseEntity<List<SentenceResponseDTO>> getNote(@PathVariable("noteId") int noteId) throws BaseException {
-        return new ResponseEntity(BaseResponseStatus.SUCCESS_READ, noteService.getNote(noteId));
+    public BaseResponse<List<SentenceResponseDTO>> getNote(@PathVariable("noteId") int noteId) throws BaseException {
+        return new BaseResponse(BaseResponseStatus.SUCCESS_READ, noteService.getNote(noteId));
     }
 
     @PostMapping
-    public ResponseEntity postNote(@RequestBody PostNoteRequestDTO body) throws BaseException {
+    public BaseResponse postNote(@RequestBody PostNoteRequestDTO body) throws BaseException {
         noteService.postNote(body);
-        return new ResponseEntity(BaseResponseStatus.SUCCESS_EDIT);
+        return new BaseResponse(BaseResponseStatus.SUCCESS_EDIT);
     }
 }

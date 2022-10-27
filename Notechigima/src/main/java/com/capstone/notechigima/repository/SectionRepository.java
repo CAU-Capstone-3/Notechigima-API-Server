@@ -10,6 +10,6 @@ import java.util.List;
 @Mapper
 public interface SectionRepository {
 
-    public List<SectionEntity> getSectionList(int subjectId);
+    List<SectionEntity> getSectionList(int subjectId);
 
 }
