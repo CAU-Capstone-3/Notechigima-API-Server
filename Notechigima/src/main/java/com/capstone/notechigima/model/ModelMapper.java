@@ -1,8 +1,10 @@
 package com.capstone.notechigima.model;
 
 import com.capstone.notechigima.model.dao.note.NoteOwnerEntity;
+import com.capstone.notechigima.model.dao.section.SectionEntity;
 import com.capstone.notechigima.model.dao.sentence.SentenceEntity;
 import com.capstone.notechigima.model.dto.note.GetNoteSummarizedDTO;
+import com.capstone.notechigima.model.dto.section.SectionResponseDTO;
 import com.capstone.notechigima.model.dto.sentence.SentenceResponseDTO;
 
 public class ModelMapper {
@@ -13,5 +15,9 @@ public class ModelMapper {
 
     public GetNoteSummarizedDTO map(NoteOwnerEntity entity) {
         return new GetNoteSummarizedDTO(entity.getNoteId(), entity.getOwnerId(), entity.getOwnerName(), entity.getUpdatedAt());
+    }
+
+    public SectionResponseDTO map(SectionEntity entity) {
+        return new SectionResponseDTO(entity.getSectionId(), entity.getTitle(), entity.getUpdatedAt(), entity.isAnalyzed());
     }
 }

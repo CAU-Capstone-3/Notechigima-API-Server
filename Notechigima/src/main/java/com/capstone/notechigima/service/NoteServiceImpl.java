@@ -33,9 +33,9 @@ public class NoteServiceImpl implements NoteService {
 
     @Override
     public List<GetNoteSummarizedDTO> getNoteList(int sectionId) throws BaseException {
-        return noteRepository.getNoteList(sectionId).stream().map(
-                entity -> modelMapper.map(entity)
-        ).collect(Collectors.toList());
+        return noteRepository.getNoteList(sectionId).stream()
+                .map(entity -> modelMapper.map(entity)
+               ).collect(Collectors.toList());
     }
 
     @Override
