@@ -7,7 +7,7 @@
 
     <select id="getNoteDetail" resultType="com.capstone.notechigima.model.dao.note.NoteDetailEntity">
         SELECT n.note_id noteId, n.owner_id ownerId, n.section_id sectionId, n.status status,
-               n.analyzed analyzed, n.created_at createdAt, n.updated_at updatedAt,
+               n.created_at createdAt, n.updated_at updatedAt,
                u.nickname ownerName,
                sc.title sectionName, sc.subject_id subjectId, sj.name subjectName
         FROM note n

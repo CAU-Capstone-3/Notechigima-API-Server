@@ -47,18 +47,7 @@ public class NoteServiceImpl implements NoteService {
                     .collect(Collectors.toList());
 
         NoteDetailEntity note = noteRepository.getNoteDetail(noteId);
-
-        GetNoteResponseDTO result = new GetNoteResponseDTO(
-                note.getSubjectId(),
-                note.getSubjectName(),
-                note.getSectionId(),
-                note.getSectionName(),
-                note.getNoteId(),
-                note.getOwnerId(),
-                note.getOwnerName(),
-                sentenceResult,
-                note.getUpdatedAt()
-        );
+        GetNoteResponseDTO result = modelMapper.map(note, sentenceResult);
         return result;
     }
 

@@ -14,7 +14,6 @@ public class NoteDetailEntity {
     private int ownerId;
     private int sectionId;
     private char status;
-    private boolean analyzed;
     private Date createdAt;
     private Date updatedAt;
     private String ownerName;
