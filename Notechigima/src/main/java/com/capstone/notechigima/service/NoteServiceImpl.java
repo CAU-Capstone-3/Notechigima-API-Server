@@ -2,11 +2,11 @@ package com.capstone.notechigima.service;
 
 import com.capstone.notechigima.config.BaseException;
 import com.capstone.notechigima.model.ModelMapper;
-import com.capstone.notechigima.model.dao.note.NoteEntity;
+import com.capstone.notechigima.model.dao.note.NoteDetailEntity;
 import com.capstone.notechigima.model.dao.sentence.SentenceEntity;
 import com.capstone.notechigima.model.dao.note.NoteInsertEntity;
-import com.capstone.notechigima.model.dto.advice.AdviceResponseDTO;
 import com.capstone.notechigima.model.dto.note.GetNoteResponseDTO;
+import com.capstone.notechigima.model.dto.note.GetNoteSummarizedDTO;
 import com.capstone.notechigima.model.dto.note.PostNoteRequestDTO;
 import com.capstone.notechigima.model.dto.sentence.SentenceResponseDTO;
 import com.capstone.notechigima.repository.NoteRepository;
@@ -32,6 +32,13 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
+    public List<GetNoteSummarizedDTO> getNoteList(int sectionId) throws BaseException {
+        return noteRepository.getNoteList(sectionId).stream().map(
+                entity -> modelMapper.map(entity)
+        ).collect(Collectors.toList());
+    }
+
+    @Override
     public GetNoteResponseDTO getNote(int noteId) throws BaseException {
         List<SentenceEntity> sentenceList = sentenceRepository.getSentenceList(noteId);
         List<SentenceResponseDTO> sentenceResult =
@@ -39,7 +46,7 @@ public class NoteServiceImpl implements NoteService {
                     .map(entity -> modelMapper.map(entity))
                     .collect(Collectors.toList());
 
-        NoteEntity note = noteRepository.getNoteDetail(noteId);
+        NoteDetailEntity note = noteRepository.getNoteDetail(noteId);
 
         GetNoteResponseDTO result = new GetNoteResponseDTO(
                 note.getSubjectId(),
@@ -50,7 +57,6 @@ public class NoteServiceImpl implements NoteService {
                 note.getOwnerId(),
                 note.getOwnerName(),
                 sentenceResult,
-                new ArrayList< AdviceResponseDTO >(),
                 note.getUpdatedAt()
         );
         return result;
@@ -72,11 +78,7 @@ public class NoteServiceImpl implements NoteService {
             sentenceEntities.add(new SentenceEntity(body.getSectionId(), noteId, sentencesFiltered.get(i), 'N', i + 1));
         }
 
-        System.out.println(sentencesFiltered);
-
         Map<String, Object> sentenceMap = new HashMap<>();
-        sentenceMap.put("sectionId", body.getSectionId());
-
         sentenceMap.put("list", sentenceEntities);
         sentenceRepository.insertAll(sentenceMap);
 

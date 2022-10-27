@@ -9,7 +9,7 @@ import java.util.Date;
 @Getter
 @Setter
 @AllArgsConstructor
-public class NoteEntity {
+public class NoteDetailEntity {
     private int noteId;
     private int ownerId;
     private int sectionId;

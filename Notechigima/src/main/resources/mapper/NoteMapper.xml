@@ -5,7 +5,7 @@
 
 <mapper namespace="com.capstone.notechigima.repository.NoteRepository">
 
-    <select id="getNoteDetail" resultType="com.capstone.notechigima.model.dao.note.NoteEntity">
+    <select id="getNoteDetail" resultType="com.capstone.notechigima.model.dao.note.NoteDetailEntity">
         SELECT n.note_id noteId, n.owner_id ownerId, n.section_id sectionId, n.status status,
                n.analyzed analyzed, n.created_at createdAt, n.updated_at updatedAt,
                u.nickname ownerName,
@@ -21,5 +21,12 @@
         INSERT INTO note (owner_id, section_id)
         VALUES(#{ownerId}, #{sectionId})
     </insert>
+
+    <select id="getNoteList" resultType="com.capstone.notechigima.model.dao.note.NoteOwnerEntity">
+        SELECT n.note_id, n.owner_id, u.nickname, n.updated_at
+        FROM note n
+        LEFT JOIN user u ON n.owner_id = u.user_id
+        WHERE n.section_id = #{sectionId};
+    </select>
 
 </mapper>

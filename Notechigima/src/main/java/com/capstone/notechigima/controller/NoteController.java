@@ -3,6 +3,7 @@ package com.capstone.notechigima.controller;
 import com.capstone.notechigima.config.BaseException;
 import com.capstone.notechigima.config.ResponseEntity;
 import com.capstone.notechigima.config.BaseResponseStatus;
+import com.capstone.notechigima.model.dto.note.GetNoteSummarizedDTO;
 import com.capstone.notechigima.model.dto.note.PostNoteRequestDTO;
 import com.capstone.notechigima.model.dto.sentence.SentenceResponseDTO;
 import com.capstone.notechigima.service.NoteService;
@@ -17,6 +18,12 @@ public class NoteController {
 
     @Autowired
     private NoteService noteService;
+
+    @ResponseBody
+    @GetMapping("/section/{sectionId}")
+    public ResponseEntity<List<GetNoteSummarizedDTO>> getNoteList(@PathVariable("sectionId") int sectionId) throws BaseException {
+        return new ResponseEntity(BaseResponseStatus.SUCCESS_READ, noteService.getNoteList(sectionId));
+    }
 
     @ResponseBody
     @GetMapping(value="/{noteId}")
