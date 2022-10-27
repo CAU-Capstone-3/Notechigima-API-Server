@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.capstone.notechigima.repository.NoteRepository">
+
+    <select id="getNoteDetail" resultType="com.capstone.notechigima.model.dao.NoteEntity">
+        SELECT n.note_id noteId, n.owner_id ownerId, n.section_id sectionId, n.status status,
+               n.analyzed analyzed, n.created_at createdAt, n.updated_at updatedAt,
+               u.nickname ownerName,
+               sc.title sectionName, sc.subject_id subjectId, sj.name subjectName
+        FROM note n
+        LEFT JOIN user u ON n.owner_id = u.user_id
+        LEFT JOIN section sc ON n.section_id = sc.section_id
+        LEFT JOIN subject sj ON sc.subject_id = sj.subject_id
+        WHERE #{noteId} = n.note_id
+    </select>
+
+</mapper>

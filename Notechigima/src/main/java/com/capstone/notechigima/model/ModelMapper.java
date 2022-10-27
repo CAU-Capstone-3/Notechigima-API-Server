@@ -1,6 +1,6 @@
 package com.capstone.notechigima.model;
 
-import com.capstone.notechigima.model.dao.sentence.SentenceEntity;
+import com.capstone.notechigima.model.dao.SentenceEntity;
 import com.capstone.notechigima.model.dto.sentence.SentenceResponseDTO;
 
 public class ModelMapper {

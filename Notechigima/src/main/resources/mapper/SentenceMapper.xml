@@ -5,7 +5,7 @@
 
 <mapper namespace="com.capstone.notechigima.repository.SentenceRepository">
 
-    <select id="getSentenceList" resultType="com.capstone.notechigima.model.dao.sentence.SentenceEntity">
+    <select id="getSentenceList" resultType="com.capstone.notechigima.model.dao.SentenceEntity">
         SELECT *
         FROM sentence_unit s
         WHERE #{noteId} = s.note_id
