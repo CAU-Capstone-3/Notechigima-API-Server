@@ -1,4 +1,4 @@
-package com.capstone.notechigima.model.dao;
+package com.capstone.notechigima.model.dao.sentence;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,6 +11,6 @@ public class SentenceEntity {
     private int sentenceId;
     private int noteId;
     private String content;
-    private char type;
+    private char sentenceType;
     private int sequenceNum;
 }

@@ -5,7 +5,7 @@
 
 <mapper namespace="com.capstone.notechigima.repository.NoteRepository">
 
-    <select id="getNoteDetail" resultType="com.capstone.notechigima.model.dao.NoteEntity">
+    <select id="getNoteDetail" resultType="com.capstone.notechigima.model.dao.note.NoteEntity">
         SELECT n.note_id noteId, n.owner_id ownerId, n.section_id sectionId, n.status status,
                n.analyzed analyzed, n.created_at createdAt, n.updated_at updatedAt,
                u.nickname ownerName,
@@ -14,12 +14,12 @@
         LEFT JOIN user u ON n.owner_id = u.user_id
         LEFT JOIN section sc ON n.section_id = sc.section_id
         LEFT JOIN subject sj ON sc.subject_id = sj.subject_id
-        WHERE #{noteId} = n.note_id
+        WHERE #{noteId} = n.note_id;
     </select>
 
-    <insert id="insertNote">
+    <insert id="insertNote" parameterType="com.capstone.notechigima.model.dao.note.NoteInsertEntity" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO note (owner_id, section_id)
-        VALUES(#{writerId}, #{sectionId})
+        VALUES(#{ownerId}, #{sectionId})
     </insert>
 
 </mapper>

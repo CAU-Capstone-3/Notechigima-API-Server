@@ -2,8 +2,9 @@ package com.capstone.notechigima.service;
 
 import com.capstone.notechigima.config.BaseException;
 import com.capstone.notechigima.model.ModelMapper;
-import com.capstone.notechigima.model.dao.NoteEntity;
-import com.capstone.notechigima.model.dao.SentenceEntity;
+import com.capstone.notechigima.model.dao.note.NoteEntity;
+import com.capstone.notechigima.model.dao.sentence.SentenceEntity;
+import com.capstone.notechigima.model.dao.note.NoteInsertEntity;
 import com.capstone.notechigima.model.dto.advice.AdviceResponseDTO;
 import com.capstone.notechigima.model.dto.note.GetNoteResponseDTO;
 import com.capstone.notechigima.model.dto.note.PostNoteRequestDTO;
@@ -12,8 +13,7 @@ import com.capstone.notechigima.repository.NoteRepository;
 import com.capstone.notechigima.repository.SentenceRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -58,7 +58,29 @@ public class NoteServiceImpl implements NoteService {
 
     @Override
     public int postNote(PostNoteRequestDTO body) throws BaseException {
-        return noteRepository.insertNote(body);
+
+        NoteInsertEntity entity = new NoteInsertEntity(0, body.getWriterId(), body.getSectionId());
+        int result = noteRepository.insertNote(entity);
+        int noteId = entity.getId();
+
+        List<String> sentences = Arrays.stream(body.getContent().split("\n")).toList();
+        sentences.stream().forEach(str -> str = str.replaceAll("\n", ""));
+        List<String> sentencesFiltered = sentences.stream().filter(str -> str != null && !str.isEmpty()).toList();
+
+        ArrayList<SentenceEntity> sentenceEntities = new ArrayList<>();
+        for (int i = 0; i < sentencesFiltered.size(); i++) {
+            sentenceEntities.add(new SentenceEntity(body.getSectionId(), noteId, sentencesFiltered.get(i), 'N', i + 1));
+        }
+
+        System.out.println(sentencesFiltered);
+
+        Map<String, Object> sentenceMap = new HashMap<>();
+        sentenceMap.put("sectionId", body.getSectionId());
+
+        sentenceMap.put("list", sentenceEntities);
+        sentenceRepository.insertAll(sentenceMap);
+
+        return result;
     }
 
 }
