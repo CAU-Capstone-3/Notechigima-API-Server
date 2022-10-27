@@ -31,9 +31,9 @@ public class NoteController {
         return new BaseResponse(BaseResponseStatus.SUCCESS_READ, noteService.getNote(noteId));
     }
 
-    @PostMapping
-    public BaseResponse postNote(@RequestBody PostNoteRequestDTO body) throws BaseException {
-        noteService.postNote(body);
+    @PostMapping("/{sectionId}")
+    public BaseResponse postNote(@PathVariable("sectionId") int sectionId, @RequestBody PostNoteRequestDTO body) throws BaseException {
+        noteService.postNote(sectionId, body);
         return new BaseResponse(BaseResponseStatus.SUCCESS_EDIT);
     }
 }

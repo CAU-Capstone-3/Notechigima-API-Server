@@ -7,6 +7,5 @@ import lombok.Getter;
 @AllArgsConstructor
 public class PostNoteRequestDTO {
     private int writerId;
-    private int sectionId;
     private String content;
 }
