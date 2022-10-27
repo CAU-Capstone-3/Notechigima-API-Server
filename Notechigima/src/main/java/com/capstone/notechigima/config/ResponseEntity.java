@@ -1,5 +1,6 @@
 package com.capstone.notechigima.config;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 
@@ -13,7 +14,14 @@ public class ResponseEntity<T> {
 
     private final String message;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private T result;
+
+    public ResponseEntity(BaseResponseStatus status) {
+        this.status = status.getStatus();
+        this.success = status.isSuccess();
+        this.message = status.getMessage();
+    }
 
     public ResponseEntity(BaseResponseStatus responseStatus, T result) {
         this.status = responseStatus.getStatus();

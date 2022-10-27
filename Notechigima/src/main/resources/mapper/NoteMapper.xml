@@ -17,4 +17,9 @@
         WHERE #{noteId} = n.note_id
     </select>
 
+    <insert id="insertNote">
+        INSERT INTO note (owner_id, section_id)
+        VALUES(#{writerId}, #{sectionId})
+    </insert>
+
 </mapper>

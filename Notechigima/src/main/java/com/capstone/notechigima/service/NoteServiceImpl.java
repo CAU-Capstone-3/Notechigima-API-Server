@@ -6,6 +6,7 @@ import com.capstone.notechigima.model.dao.NoteEntity;
 import com.capstone.notechigima.model.dao.SentenceEntity;
 import com.capstone.notechigima.model.dto.advice.AdviceResponseDTO;
 import com.capstone.notechigima.model.dto.note.GetNoteResponseDTO;
+import com.capstone.notechigima.model.dto.note.PostNoteRequestDTO;
 import com.capstone.notechigima.model.dto.sentence.SentenceResponseDTO;
 import com.capstone.notechigima.repository.NoteRepository;
 import com.capstone.notechigima.repository.SentenceRepository;
@@ -53,6 +54,11 @@ public class NoteServiceImpl implements NoteService {
                 note.getUpdatedAt()
         );
         return result;
+    }
+
+    @Override
+    public int postNote(PostNoteRequestDTO body) throws BaseException {
+        return noteRepository.insertNote(body);
     }
 
 }
