@@ -9,9 +9,9 @@ import java.util.List;
 
 public interface NoteService {
 
-    public List<GetNoteSummarizedDTO> getNoteList(int sectionId) throws BaseException;
+    List<GetNoteSummarizedDTO> getNoteList(int sectionId) throws BaseException;
 
-    public GetNoteResponseDTO getNote(int noteId) throws BaseException;
+    GetNoteResponseDTO getNote(int noteId) throws BaseException;
 
-    public int postNote(int sectionId, PostNoteRequestDTO body) throws BaseException;
+    int postNote(int sectionId, PostNoteRequestDTO body) throws BaseException;
 }

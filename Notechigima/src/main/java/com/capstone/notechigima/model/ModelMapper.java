@@ -1,9 +1,11 @@
 package com.capstone.notechigima.model;
 
+import com.capstone.notechigima.model.dao.advice.AdviceDetailEntity;
 import com.capstone.notechigima.model.dao.note.NoteDetailEntity;
 import com.capstone.notechigima.model.dao.note.NoteOwnerEntity;
 import com.capstone.notechigima.model.dao.section.SectionEntity;
 import com.capstone.notechigima.model.dao.sentence.SentenceEntity;
+import com.capstone.notechigima.model.dto.advice.AdviceResponseDTO;
 import com.capstone.notechigima.model.dto.note.GetNoteResponseDTO;
 import com.capstone.notechigima.model.dto.note.GetNoteSummarizedDTO;
 import com.capstone.notechigima.model.dto.section.SectionResponseDTO;
@@ -37,5 +39,9 @@ public class ModelMapper {
                 sentenceResult,
                 entity.getUpdatedAt()
         );
+    }
+
+    public AdviceResponseDTO map(AdviceDetailEntity entity) {
+        return new AdviceResponseDTO(entity.getAdviceId(), entity.getAdviceType() == 'D' ? "유일하게 적어주신 내용이예요." : "", entity.getSentenceId(), entity.getSentence(), entity.getWriterId(), entity.getWriterName());
     }
 }
