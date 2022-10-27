@@ -1,7 +1,7 @@
-package com.capstone.notechigima.model.note;
+package com.capstone.notechigima.dao.note;
 
-import com.capstone.notechigima.model.advice.AdviceResponseModel;
-import com.capstone.notechigima.model.sentence.SentenceResponseModel;
+import com.capstone.notechigima.dao.advice.AdviceResponseDAO;
+import com.capstone.notechigima.dao.sentence.SentenceResponseDAO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -10,7 +10,7 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
-public class GetNoteResponseModel {
+public class GetNoteResponseDAO {
     private int subjectId;
     private String subjectName;
     private int sectionId;
@@ -18,7 +18,7 @@ public class GetNoteResponseModel {
     private int noteId;
     private int writerId;
     private String writerName;
-    private List<SentenceResponseModel> sentenceList;
-    private List<AdviceResponseModel> adviceList;
+    private List<SentenceResponseDAO> sentenceList;
+    private List<AdviceResponseDAO> adviceList;
     private Date lastUpdate;
 }

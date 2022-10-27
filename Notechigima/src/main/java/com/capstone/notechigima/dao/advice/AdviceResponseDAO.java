@@ -1,11 +1,11 @@
-package com.capstone.notechigima.model.advice;
+package com.capstone.notechigima.dao.advice;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class AdviceResponseModel {
+public class AdviceResponseDAO {
     private int sequenceNum;
     private String content;
     private String comparisonSentence;
