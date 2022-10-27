@@ -15,7 +15,6 @@ public class BaseResponse<T> {
 
     private final String message;
 
-    @JsonInclude(Include.NON_NULL)
     private T result;
 
     public BaseResponse(BaseResponseStatus responseStatus, T result) {
