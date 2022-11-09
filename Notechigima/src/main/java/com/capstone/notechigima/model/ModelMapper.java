@@ -42,6 +42,6 @@ public class ModelMapper {
     }
 
     public AdviceResponseDTO map(AdviceDetailEntity entity) {
-        return new AdviceResponseDTO(entity.getAdviceId(), entity.getAdviceType() == 'D' ? "유일하게 적어주신 내용이예요." : "", entity.getSentenceId(), entity.getSentence(), entity.getWriterId(), entity.getWriterName());
+        return new AdviceResponseDTO(entity.getAdviceId(), entity.getAdviceType() == 'D' ? "함께 다시 확인해야할 문장이예요." : "", entity.getSentenceId(), entity.getSentence(), entity.getWriterId(), entity.getWriterName());
     }
 }

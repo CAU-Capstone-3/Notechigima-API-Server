@@ -42,6 +42,9 @@ dependencies {
     //jdbc
     runtimeOnly 'com.oracle.database.jdbc:ojdbc8'
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+
+    // log4j2
+    implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
 }
 
 tasks.named('test') {

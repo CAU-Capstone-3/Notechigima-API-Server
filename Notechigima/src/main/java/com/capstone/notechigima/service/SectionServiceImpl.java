@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 @Service
 public class SectionServiceImpl implements SectionService {
 
-    private static final String NLI_ULI = "http://783b-34-124-171-60.ngrok.io";
+    private static final String NLI_ULI = "http://9fee-34-126-182-175.ngrok.io/";
 
     @Autowired
     private final AdviceRepository adviceRepository;
