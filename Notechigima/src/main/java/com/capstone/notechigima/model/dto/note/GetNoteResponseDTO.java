@@ -12,8 +12,8 @@ import java.util.List;
 public class GetNoteResponseDTO {
     private int subjectId;
     private String subjectName;
-    private int sectionId;
-    private String sectionName;
+    private int topicId;
+    private String topicName;
     private int noteId;
     private int writerId;
     private String writerName;

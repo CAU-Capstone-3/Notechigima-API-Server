@@ -12,12 +12,12 @@ import java.util.Date;
 public class NoteDetailEntity {
     private int noteId;
     private int ownerId;
-    private int sectionId;
+    private int topicId;
     private char status;
     private Date createdAt;
     private Date updatedAt;
     private String ownerName;
-    private String sectionName;
+    private String topicName;
     private int subjectId;
     private String subjectName;
 }

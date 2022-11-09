@@ -1,6 +1,6 @@
 package com.capstone.notechigima.repository;
 
-import com.capstone.notechigima.model.dao.section.SectionEntity;
+import com.capstone.notechigima.model.dao.topic.TopicEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -8,8 +8,8 @@ import java.util.List;
 
 @Repository
 @Mapper
-public interface SectionRepository {
+public interface TopicRepository {
 
-    List<SectionEntity> getSectionList(int subjectId);
+    List<TopicEntity> getSectionList(int subjectId);
 
 }
