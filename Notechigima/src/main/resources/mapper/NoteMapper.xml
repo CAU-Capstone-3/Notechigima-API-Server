@@ -6,10 +6,10 @@
 <mapper namespace="com.capstone.notechigima.repository.NoteRepository">
 
     <select id="getNoteDetail" resultType="com.capstone.notechigima.model.dao.note.NoteDetailEntity">
-        SELECT n.note_id noteId, n.owner_id ownerId, n.section_id sectionId, n.status status,
+        SELECT n.note_id noteId, n.owner_id ownerId, n.section_id topicId, n.status status,
                n.created_at createdAt, n.updated_at updatedAt,
                u.nickname ownerName,
-               sc.title sectionName, sc.subject_id subjectId, sj.name subjectName
+               sc.title topicName, sc.subject_id subjectId, sj.name subjectName
         FROM note n
         LEFT JOIN user u ON n.owner_id = u.user_id
         LEFT JOIN section sc ON n.section_id = sc.section_id

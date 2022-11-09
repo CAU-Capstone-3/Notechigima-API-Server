@@ -3,12 +3,12 @@ package com.capstone.notechigima.model;
 import com.capstone.notechigima.model.dao.advice.AdviceDetailEntity;
 import com.capstone.notechigima.model.dao.note.NoteDetailEntity;
 import com.capstone.notechigima.model.dao.note.NoteOwnerEntity;
-import com.capstone.notechigima.model.dao.section.SectionEntity;
+import com.capstone.notechigima.model.dao.topic.TopicEntity;
 import com.capstone.notechigima.model.dao.sentence.SentenceEntity;
 import com.capstone.notechigima.model.dto.advice.AdviceResponseDTO;
 import com.capstone.notechigima.model.dto.note.GetNoteResponseDTO;
 import com.capstone.notechigima.model.dto.note.GetNoteSummarizedDTO;
-import com.capstone.notechigima.model.dto.section.SectionResponseDTO;
+import com.capstone.notechigima.model.dto.topic.TopicResponseDTO;
 import com.capstone.notechigima.model.dto.sentence.SentenceResponseDTO;
 
 import java.util.List;
@@ -23,16 +23,16 @@ public class ModelMapper {
         return new GetNoteSummarizedDTO(entity.getNoteId(), entity.getOwnerId(), entity.getOwnerName(), entity.getUpdatedAt());
     }
 
-    public SectionResponseDTO map(SectionEntity entity) {
-        return new SectionResponseDTO(entity.getSectionId(), entity.getTitle(), entity.getUpdatedAt(), entity.isAnalyzed());
+    public TopicResponseDTO map(TopicEntity entity) {
+        return new TopicResponseDTO(entity.getTopicId(), entity.getTitle(), entity.getUpdatedAt(), entity.isAnalyzed());
     }
 
     public GetNoteResponseDTO map(NoteDetailEntity entity, List<SentenceResponseDTO> sentenceResult) {
         return new GetNoteResponseDTO(
                 entity.getSubjectId(),
                 entity.getSubjectName(),
-                entity.getSectionId(),
-                entity.getSectionName(),
+                entity.getTopicId(),
+                entity.getTopicName(),
                 entity.getNoteId(),
                 entity.getOwnerId(),
                 entity.getOwnerName(),

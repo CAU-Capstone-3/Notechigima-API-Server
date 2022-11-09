@@ -5,11 +5,10 @@ import com.capstone.notechigima.model.dao.advice.AdviceEntity;
 import com.capstone.notechigima.model.dao.note.NoteOwnerEntity;
 import com.capstone.notechigima.model.dao.sentence.SentenceEntity;
 import com.capstone.notechigima.model.dto.advice.AdviceInferenceRequestDTO;
-import com.capstone.notechigima.model.dto.advice.AdviceInferenceResponseDTO;
-import com.capstone.notechigima.model.dto.section.SectionResponseDTO;
+import com.capstone.notechigima.model.dto.topic.TopicResponseDTO;
 import com.capstone.notechigima.repository.AdviceRepository;
 import com.capstone.notechigima.repository.NoteRepository;
-import com.capstone.notechigima.repository.SectionRepository;
+import com.capstone.notechigima.repository.TopicRepository;
 import com.capstone.notechigima.repository.SentenceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONException;
@@ -23,7 +22,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class SectionServiceImpl implements SectionService {
+public class TopicServiceImpl implements TopicService {
 
     private static final String NLI_ULI = "http://9fee-34-126-182-175.ngrok.io/";
 
@@ -37,22 +36,22 @@ public class SectionServiceImpl implements SectionService {
     private final NoteRepository noteRepository;
 
     @Autowired
-    private final SectionRepository sectionRepository;
+    private final TopicRepository topicRepository;
 
     @Autowired
     private final ModelMapper modelMapper;
 
-    public SectionServiceImpl(AdviceRepository adviceRepository, SentenceRepository sentenceRepository, NoteRepository noteRepository, SectionRepository sectionRepository, ModelMapper modelMapper) {
+    public TopicServiceImpl(AdviceRepository adviceRepository, SentenceRepository sentenceRepository, NoteRepository noteRepository, TopicRepository topicRepository, ModelMapper modelMapper) {
         this.adviceRepository = adviceRepository;
         this.sentenceRepository = sentenceRepository;
         this.noteRepository = noteRepository;
-        this.sectionRepository = sectionRepository;
+        this.topicRepository = topicRepository;
         this.modelMapper = modelMapper;
     }
 
     @Override
-    public List<SectionResponseDTO> getSectionList(int subjectId) {
-        return sectionRepository.getSectionList(subjectId).stream()
+    public List<TopicResponseDTO> getSectionList(int subjectId) {
+        return topicRepository.getSectionList(subjectId).stream()
                 .map(entity -> modelMapper.map(entity)
                 ).collect(Collectors.toList());
     }

@@ -1,4 +1,4 @@
-package com.capstone.notechigima.model.dto.section;
+package com.capstone.notechigima.model.dao.topic;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,8 +9,9 @@ import java.util.Date;
 @Getter
 @Setter
 @AllArgsConstructor
-public class SectionResponseDTO {
-    private int sectionId;
+public class TopicEntity {
+    private int topicId;
+    private int topicName;
     private String title;
     private Date updatedAt;
     private boolean analyzed;
