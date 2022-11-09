@@ -4,10 +4,6 @@ plugins {
     id 'java'
 }
 
-jar {
-    enabled = false
-}
-
 group = 'com.capstone'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
@@ -52,4 +48,8 @@ dependencies {
 tasks.named('test') {
     exclude { '/**/*' }
     useJUnitPlatform()
+}
+
+tasks.named("jar") {
+    enabled = false
 }
