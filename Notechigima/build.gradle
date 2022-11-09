@@ -2,7 +2,6 @@ plugins {
     id 'org.springframework.boot' version '2.7.5'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
     id 'java'
-    id 'war'
 }
 
 group = 'com.capstone'
@@ -23,7 +22,6 @@ dependencies {
     //spring boot
     implementation 'org.springframework.boot:spring-boot-starter-web'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     //lombok
@@ -48,5 +46,6 @@ dependencies {
 }
 
 tasks.named('test') {
+    exclude { '/**/*' }
     useJUnitPlatform()
 }
