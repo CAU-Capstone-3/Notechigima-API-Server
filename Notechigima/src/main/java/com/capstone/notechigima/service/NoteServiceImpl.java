@@ -32,8 +32,8 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public List<GetNoteSummarizedDTO> getNoteList(int sectionId) throws BaseException {
-        return noteRepository.getNoteList(sectionId).stream()
+    public List<GetNoteSummarizedDTO> getNoteList(int topicId) throws BaseException {
+        return noteRepository.getNoteList(topicId).stream()
                 .map(entity -> modelMapper.map(entity)
                ).collect(Collectors.toList());
     }
@@ -52,9 +52,9 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public int postNote(int sectionId, PostNoteRequestDTO body) throws BaseException {
+    public int postNote(int topicId, PostNoteRequestDTO body) throws BaseException {
 
-        NoteInsertEntity entity = new NoteInsertEntity(0, body.getWriterId(), sectionId);
+        NoteInsertEntity entity = new NoteInsertEntity(0, body.getWriterId(), topicId);
         int result = noteRepository.insertNote(entity);
         int noteId = entity.getId();
 
@@ -64,7 +64,7 @@ public class NoteServiceImpl implements NoteService {
 
         ArrayList<SentenceEntity> sentenceEntities = new ArrayList<>();
         for (int i = 0; i < sentencesFiltered.size(); i++) {
-            sentenceEntities.add(new SentenceEntity(sectionId, noteId, sentencesFiltered.get(i), 'N', i + 1));
+            sentenceEntities.add(new SentenceEntity(topicId, noteId, sentencesFiltered.get(i), 'N', i + 1));
         }
 
         Map<String, Object> sentenceMap = new HashMap<>();

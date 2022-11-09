@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface NoteService {
 
-    List<GetNoteSummarizedDTO> getNoteList(int sectionId) throws BaseException;
+    List<GetNoteSummarizedDTO> getNoteList(int topicId) throws BaseException;
 
     GetNoteResponseDTO getNote(int noteId) throws BaseException;
 

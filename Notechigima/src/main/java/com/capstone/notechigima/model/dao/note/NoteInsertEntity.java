@@ -10,5 +10,5 @@ import lombok.Setter;
 public class NoteInsertEntity {
     private int id;
     private int ownerId;
-    private int sectionId;
+    private int topicId;
 }

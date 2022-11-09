@@ -5,9 +5,9 @@
 
 <mapper namespace="com.capstone.notechigima.repository.TopicRepository">
 
-    <select id="getSectionList" resultType="com.capstone.notechigima.model.dao.topic.TopicEntity">
-        SELECT section_id topicId, subject_id subjectId, title, updated_at updatedAt, analyzed
-        FROM section s
+    <select id="getTopicList" resultType="com.capstone.notechigima.model.dao.topic.TopicEntity">
+        SELECT topic_id topicId, subject_id subjectId, title, updated_at updatedAt, analyzed
+        FROM topic s
         WHERE #{subjectId} = s.subject_id
     </select>
 

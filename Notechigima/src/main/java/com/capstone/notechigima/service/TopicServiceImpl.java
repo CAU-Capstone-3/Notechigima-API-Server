@@ -51,17 +51,17 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public List<TopicResponseDTO> getSectionList(int subjectId) {
-        return topicRepository.getSectionList(subjectId).stream()
+        return topicRepository.getTopicList(subjectId).stream()
                 .map(entity -> modelMapper.map(entity)
                 ).collect(Collectors.toList());
     }
 
     @Override
-    public int requestAnalysis(int sectionId) {
+    public int requestAnalysis(int topicId) {
 
         ArrayList<AdviceEntity> advices = new ArrayList<>();
 
-        List<NoteOwnerEntity> noteList = noteRepository.getNoteList(sectionId);
+        List<NoteOwnerEntity> noteList = noteRepository.getNoteList(topicId);
         Map<Integer, List<SentenceEntity>> noteSentList = new HashMap<>();
 
         RestTemplate restTemplate = new RestTemplate();

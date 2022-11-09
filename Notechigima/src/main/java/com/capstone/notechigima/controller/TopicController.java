@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/section")
+@RequestMapping("/api/topic")
 public class TopicController {
 
     @Autowired
@@ -23,9 +23,9 @@ public class TopicController {
     }
 
     @ResponseBody
-    @PostMapping("/advice/{sectionId}")
-    public BaseResponse requestAnalysis(@PathVariable("sectionId") int sectionId) {
-        topicService.requestAnalysis(sectionId);
+    @PostMapping("/advice/{topicId}")
+    public BaseResponse requestAnalysis(@PathVariable("topicId") int topicId) {
+        topicService.requestAnalysis(topicId);
         return new BaseResponse(BaseResponseStatus.SUCCESS_EDIT);
     }
 

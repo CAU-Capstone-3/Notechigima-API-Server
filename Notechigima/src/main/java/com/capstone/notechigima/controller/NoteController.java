@@ -20,9 +20,9 @@ public class NoteController {
     private NoteService noteService;
 
     @ResponseBody
-    @GetMapping("/section/{sectionId}")
-    public BaseResponse<List<GetNoteSummarizedDTO>> getNoteList(@PathVariable("sectionId") int sectionId) throws BaseException {
-        return new BaseResponse(BaseResponseStatus.SUCCESS_READ, noteService.getNoteList(sectionId));
+    @GetMapping("/section/{topicId}")
+    public BaseResponse<List<GetNoteSummarizedDTO>> getNoteList(@PathVariable("topicId") int topicId) throws BaseException {
+        return new BaseResponse(BaseResponseStatus.SUCCESS_READ, noteService.getNoteList(topicId));
     }
 
     @ResponseBody
@@ -31,9 +31,9 @@ public class NoteController {
         return new BaseResponse(BaseResponseStatus.SUCCESS_READ, noteService.getNote(noteId));
     }
 
-    @PostMapping("/{sectionId}")
-    public BaseResponse postNote(@PathVariable("sectionId") int sectionId, @RequestBody PostNoteRequestDTO body) throws BaseException {
-        noteService.postNote(sectionId, body);
+    @PostMapping("/{topicId}")
+    public BaseResponse postNote(@PathVariable("topicId") int topicId, @RequestBody PostNoteRequestDTO body) throws BaseException {
+        noteService.postNote(topicId, body);
         return new BaseResponse(BaseResponseStatus.SUCCESS_EDIT);
     }
 }

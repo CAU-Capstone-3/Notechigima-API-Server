@@ -8,6 +8,6 @@ public interface TopicService {
 
     List<TopicResponseDTO> getSectionList(int subjectId);
 
-    int requestAnalysis(int sectionId);
+    int requestAnalysis(int topicId);
 
 }

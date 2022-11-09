@@ -19,6 +19,6 @@
         LEFT JOIN sentence_unit s ON a.sentence_id = s.sentence_id
         LEFT JOIN note n ON s.note_id = n.note_id
         LEFT JOIN user u ON n.owner_id = u.user_id
-        WHERE n.section_id = #{sectionId}
+        WHERE n.topic_id = #{topicId}
     </select>
 </mapper>
