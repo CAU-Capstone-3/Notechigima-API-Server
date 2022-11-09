@@ -26,19 +26,10 @@ public class TopicServiceImpl implements TopicService {
 
     private static final String NLI_ULI = "http://9fee-34-126-182-175.ngrok.io/";
 
-    @Autowired
     private final AdviceRepository adviceRepository;
-
-    @Autowired
     private final SentenceRepository sentenceRepository;
-
-    @Autowired
     private final NoteRepository noteRepository;
-
-    @Autowired
     private final TopicRepository topicRepository;
-
-    @Autowired
     private final ModelMapper modelMapper;
 
     public TopicServiceImpl(AdviceRepository adviceRepository, SentenceRepository sentenceRepository, NoteRepository noteRepository, TopicRepository topicRepository, ModelMapper modelMapper) {
