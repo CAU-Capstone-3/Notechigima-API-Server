@@ -7,11 +7,13 @@ import com.capstone.notechigima.model.dto.note.GetNoteSummarizedDTO;
 import com.capstone.notechigima.model.dto.note.PostNoteRequestDTO;
 import com.capstone.notechigima.model.dto.sentence.SentenceResponseDTO;
 import com.capstone.notechigima.service.NoteService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "note", description = "노트 API")
 @RestController
 @RequestMapping("/api/note")
 public class NoteController {
