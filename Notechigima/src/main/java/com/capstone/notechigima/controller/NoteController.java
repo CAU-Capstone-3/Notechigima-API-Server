@@ -20,7 +20,7 @@ public class NoteController {
     private NoteService noteService;
 
     @ResponseBody
-    @GetMapping("/section/{topicId}")
+    @GetMapping("/topic/{topicId}")
     public BaseResponse<List<GetNoteSummarizedDTO>> getNoteList(@PathVariable("topicId") int topicId) throws BaseException {
         return new BaseResponse(BaseResponseStatus.SUCCESS_READ, noteService.getNoteList(topicId));
     }

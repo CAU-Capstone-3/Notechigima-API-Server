@@ -22,9 +22,9 @@ public class AdviceController {
     }
 
     @ResponseBody
-    @GetMapping("/{sectionId}")
-    public BaseResponse<List<AdviceResponseDTO>> getAdviceList(@PathVariable("sectionId") int sectionId) {
-        return new BaseResponse(BaseResponseStatus.SUCCESS_READ, adviceService.getAdviceList(sectionId));
+    @GetMapping("/{topicId}")
+    public BaseResponse<List<AdviceResponseDTO>> getAdviceList(@PathVariable("topicId") int topicId) {
+        return new BaseResponse(BaseResponseStatus.SUCCESS_READ, adviceService.getAdviceList(topicId));
     }
 
 }
