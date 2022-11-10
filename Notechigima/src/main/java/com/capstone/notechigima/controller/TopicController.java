@@ -4,11 +4,13 @@ import com.capstone.notechigima.config.BaseResponseStatus;
 import com.capstone.notechigima.config.BaseResponse;
 import com.capstone.notechigima.model.dto.topic.TopicResponseDTO;
 import com.capstone.notechigima.service.TopicService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "topic", description = "주차별 조회 API")
 @RestController
 @RequestMapping("/api/topic")
 public class TopicController {
