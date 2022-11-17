@@ -13,12 +13,37 @@
         </foreach>
     </insert>
     
-    <select id="getAdviceList" resultType="com.capstone.notechigima.model.dao.advice.AdviceDetailEntity">
-        SELECT a.advice_id adviceId, a.advice_type adviceType, s.sentence_id sentenceId, s.content, u.user_id writerId, u.nickname writerName
-        FROM sentence_advice a
-        LEFT JOIN sentence_unit s ON a.sentence_id = s.sentence_id
-        LEFT JOIN note n ON s.note_id = n.note_id
-        LEFT JOIN user u ON n.owner_id = u.user_id
-        WHERE n.topic_id = #{topicId}
+    <resultMap id="adviceList" type="com.capstone.notechigima.model.dao.advice.AdviceDetailEntity">
+        <result property="adviceId" column="adviceId"/>
+        <result property="adviceType" column="adviceType"/>
+        <result property="sentenceId" column="sentenceId"/>
+        <result property="sentence" column="sentence"/>
+        <result property="writerId" column="writerId"/>
+        <result property="writerName" column="writerName"/>
+        <collection column="adviceId" property="comments" javaType="java.util.ArrayList" ofType="com.capstone.notechigima.model.dao.comment.CommentEntity" select="getCommentListById"/>
+    </resultMap>
+
+    <select id="getCommentListById" parameterType="java.util.Map" resultType="com.capstone.notechigima.model.dao.comment.CommentEntity">
+        SELECT c.comment_id commentId, c.user_id userId,
+               u.nickname userName, c.content content,
+               c.created_at createdAt, c.updated_at updatedAt
+        FROM advice_comment c
+        LEFT JOIN user u ON c.user_id = u.user_id
+        WHERE c.advice_id = #{adviceId}
     </select>
+    
+    <select id="getAdviceList" resultMap="adviceList">
+        SELECT a.advice_id   adviceId,
+               a.advice_type adviceType,
+               s.sentence_id sentenceId,
+               s.content content,
+               u.user_id     writerId,
+               u.nickname    writerName
+        FROM sentence_advice a
+         LEFT JOIN sentence_unit s ON a.sentence_id = s.sentence_id
+         LEFT JOIN note n ON s.note_id = n.note_id
+         LEFT JOIN user u ON n.owner_id = u.user_id
+        WHERE n.topic_id = #{topicId};
+    </select>
+
 </mapper>
