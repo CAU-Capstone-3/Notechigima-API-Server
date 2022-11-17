@@ -27,7 +27,7 @@ public class ModelMapper {
     }
 
     public TopicResponseDTO map(TopicEntity entity) {
-        return new TopicResponseDTO(entity.getTopicId(), entity.getTitle(), entity.getUpdatedAt(), entity.isAnalyzed());
+        return new TopicResponseDTO(entity.getTopicId(), entity.getTitle(), entity.getUpdatedAt(), entity.getAnalyzed());
     }
 
     public GetNoteResponseDTO map(NoteDetailEntity entity, List<SentenceResponseDTO> sentenceResult) {
@@ -47,19 +47,19 @@ public class ModelMapper {
     public AdviceResponseDTO map(AdviceDetailEntity entity) {
         return new AdviceResponseDTO(
                 entity.getAdviceId(),
-                entity.getAdviceType() == 'D' ? "함께 다시 확인해야할 문장이예요." : "",
-                map(entity.getSentence1()),
-                map(entity.getSentence2()),
+                entity.getAdviceType() == 'C' ? "상반되는 문장이 있어요." : "",
+                map(entity.getSentenceId1(), entity.getSentence1(), entity.getWriterId1(), entity.getWriterName1()),
+                map(entity.getSentenceId2(), entity.getSentence2(), entity.getWriterId2(), entity.getWriterName2()),
                 entity.getComments()
         );
     }
 
-    public SentenceVO map(SentenceWithWriterEntity entity) {
+    public SentenceVO map(int sentenceId, String content, int writerId, String writerName) {
         return new SentenceVO(
-                entity.getSentenceId(),
-                entity.getContent(),
-                entity.getWriterId(),
-                entity.getWriterName()
+                sentenceId,
+                content,
+                writerId,
+                writerName
         );
     }
 }

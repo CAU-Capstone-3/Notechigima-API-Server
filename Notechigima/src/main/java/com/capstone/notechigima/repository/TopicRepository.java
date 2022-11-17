@@ -10,6 +10,10 @@ import java.util.List;
 @Mapper
 public interface TopicRepository {
 
+    TopicEntity getTopic(int topicId);
+
     List<TopicEntity> getTopicList(int subjectId);
+
+    int setTopicAnalyzed(int topicId, char analyzed);
 
 }

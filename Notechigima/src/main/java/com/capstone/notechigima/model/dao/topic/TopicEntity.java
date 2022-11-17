@@ -14,5 +14,5 @@ public class TopicEntity {
     private int topicName;
     private String title;
     private Date updatedAt;
-    private boolean analyzed;
+    private char analyzed;
 }
