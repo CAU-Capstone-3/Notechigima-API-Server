@@ -40,7 +40,7 @@ public class NoteServiceImpl implements NoteService {
 
     @Override
     public GetNoteResponseDTO getNote(int noteId) throws BaseException {
-        List<SentenceEntity> sentenceList = sentenceRepository.getSentenceList(noteId);
+        List<SentenceEntity> sentenceList = sentenceRepository.getSentenceListByNoteId(noteId);
         List<SentenceResponseDTO> sentenceResult =
                 sentenceList.stream()
                     .map(entity -> modelMapper.map(entity))

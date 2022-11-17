@@ -2,7 +2,7 @@ package com.capstone.notechigima.service;
 
 import com.capstone.notechigima.model.ModelMapper;
 import com.capstone.notechigima.model.dao.advice.AdviceEntity;
-import com.capstone.notechigima.model.dao.note.NoteOwnerEntity;
+import com.capstone.notechigima.model.dao.advice.AdviceType;
 import com.capstone.notechigima.model.dao.sentence.SentenceEntity;
 import com.capstone.notechigima.model.dto.advice.AdviceInferenceRequestVO;
 import com.capstone.notechigima.model.dto.topic.TopicResponseDTO;
@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @Service
 public class TopicServiceImpl implements TopicService {
 
-    private static final String NLI_ULI = "http://9fee-34-126-182-175.ngrok.io/";
+    private static final String NLI_ULI = "http://18.189.150.89:5000/nli";
 
     private final AdviceRepository adviceRepository;
     private final SentenceRepository sentenceRepository;
@@ -50,51 +50,60 @@ public class TopicServiceImpl implements TopicService {
     public int requestAnalysis(int topicId) {
 
         ArrayList<AdviceEntity> advices = new ArrayList<>();
+        List<SentenceEntity> sentences = sentenceRepository.getSentenceListByTopicId(topicId);
+        List<SentenceEntity[]> sentComb = getComb(sentences);
 
-        List<NoteOwnerEntity> noteList = noteRepository.getNoteList(topicId);
-        Map<Integer, List<SentenceEntity>> noteSentList = new HashMap<>();
-
-        RestTemplate restTemplate = new RestTemplate();
-        URI uri = UriComponentsBuilder
-                .fromUriString(NLI_ULI)
-                .path("/nli")
-                .encode()
-                .build()
-                .toUri();
-
-        for (NoteOwnerEntity noteEntity : noteList) {
-            List<SentenceEntity> sentenceList = sentenceRepository.getSentenceList(noteEntity.getNoteId());
-            noteSentList.put(noteEntity.getNoteId(), sentenceList);
-        }
-
-        for (Map.Entry<Integer, List<SentenceEntity>> elem : noteSentList.entrySet()) {
-            ArrayList<String> doc = new ArrayList<>();
-            for (Map.Entry<Integer, List<SentenceEntity>> docElem : noteSentList.entrySet())
-                if (docElem.getKey() != elem.getKey()) {
-                    List<String> contentList = docElem.getValue().stream().map(entity -> entity.getContent()).collect(Collectors.toList());
-                    doc.addAll(contentList);
-                }
-
-            for (SentenceEntity sentEntity : elem.getValue()) {
-                AdviceInferenceRequestVO request = new AdviceInferenceRequestVO(
-                        doc, sentEntity.getContent()
-                );
-                String response = restTemplate.postForObject(uri, request, String.class);
-                try {
-                    JSONObject jsonObject = new JSONObject(response);
-                    double result = Double.parseDouble(jsonObject.getString("result"));
-
-                    if (result < 1)
-                        advices.add(new AdviceEntity(0, sentEntity.getSentenceId(), 'D'));
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+        for (SentenceEntity[] comb : sentComb) {
+            if (isContradiction(comb[0].getContent(), comb[1].getContent())) {
+                advices.add(new AdviceEntity(
+                        0,
+                        comb[0].getSentenceId(),
+                        comb[1].getSentenceId(),
+                        AdviceType.CONTRADICTION.getType()
+                ));
             }
         }
 
-        Map<String, Object> adviceMap = new HashMap<>();
-        adviceMap.put("list", advices);
-        return adviceRepository.insertAll(adviceMap);
+        return adviceRepository.insertAll(toMap(advices));
+    }
+
+    private List<SentenceEntity[]> getComb(List<SentenceEntity> sentences) {
+        ArrayList<SentenceEntity[]> comb = new ArrayList<>();
+        for (int i = 0; i < sentences.size(); i++) {
+            for (int j = i + 1; j < sentences.size(); j++) {
+                comb.add(new SentenceEntity[] { sentences.get(i), sentences.get(j) });
+            }
+        }
+        return comb;
+    }
+
+    private boolean isContradiction(String sent1, String sent2) {
+        RestTemplate restTemplate = new RestTemplate();
+        URI uri = UriComponentsBuilder
+                .fromUriString(NLI_ULI)
+                .encode()
+                .build()
+                .toUri();
+        AdviceInferenceRequestVO request = new AdviceInferenceRequestVO(
+                sent1, sent2
+        );
+        String response = restTemplate.postForObject(uri, request, String.class);
+
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            String result = jsonObject.getString("result");
+            if (result.equals("contradiction"))
+                return true;
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    private static Map toMap(Object obj) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("list", obj);
+        return map;
     }
 }

@@ -11,7 +11,8 @@ import java.util.Map;
 @Mapper
 public interface SentenceRepository {
 
-    List<SentenceEntity> getSentenceList(int noteId);
+    List<SentenceEntity> getSentenceListByNoteId(int noteId);
+    List<SentenceEntity> getSentenceListByTopicId(int topicId);
 
     int insertAll(Map<String, Object> map);
 }

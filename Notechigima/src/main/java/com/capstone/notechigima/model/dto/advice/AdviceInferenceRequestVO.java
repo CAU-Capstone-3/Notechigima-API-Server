@@ -10,6 +10,6 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 public class AdviceInferenceRequestVO {
-    private List<String> docs;
-    private String sentence;
+    private String sent1;
+    private String sent2;
 }

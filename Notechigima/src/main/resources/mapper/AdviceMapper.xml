@@ -6,10 +6,10 @@
 <mapper namespace="com.capstone.notechigima.repository.AdviceRepository">
 
     <insert id="insertAll" parameterType="java.util.Map">
-        INSERT INTO sentence_advice(sentence_id, advice_type)
+        INSERT INTO sentence_advice(sentence1_id, sentence2_id, advice_type)
         VALUES
         <foreach collection="list" item="item" separator=" , ">
-            (#{item.sentenceId}, #{item.adviceType})
+            (#{item.sentence1Id}, #{item.sentence2Id}, #{item.adviceType})
         </foreach>
     </insert>
     

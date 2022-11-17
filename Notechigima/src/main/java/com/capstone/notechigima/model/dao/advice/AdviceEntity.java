@@ -9,6 +9,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class AdviceEntity {
     private int adviceId;
-    private int sentenceId;
+    private int sentence1Id;
+    private int sentence2Id;
     private char adviceType;
 }
