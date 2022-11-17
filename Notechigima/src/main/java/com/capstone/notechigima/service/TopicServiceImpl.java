@@ -11,6 +11,7 @@ import com.capstone.notechigima.repository.AdviceRepository;
 import com.capstone.notechigima.repository.NoteRepository;
 import com.capstone.notechigima.repository.TopicRepository;
 import com.capstone.notechigima.repository.SentenceRepository;
+import io.swagger.v3.oas.annotations.Operation;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.scheduling.annotation.Async;
@@ -42,6 +43,11 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
+    public TopicResponseDTO getTopic(int topicId) {
+        return modelMapper.map(topicRepository.getTopic(topicId));
+    }
+
+    @Override
     public List<TopicResponseDTO> getTopicList(int subjectId) {
         return topicRepository.getTopicList(subjectId).stream()
                 .map(entity -> modelMapper.map(entity)
@@ -51,6 +57,7 @@ public class TopicServiceImpl implements TopicService {
     @Async("threadPoolTaskExecutor")
     @Override
     public void requestAnalysis(int topicId) {
+        topicRepository.setTopicAnalyzed(topicId, 'R');
 
         ArrayList<AdviceEntity> advices = new ArrayList<>();
         List<SentenceWithWriterEntity> sentences = sentenceRepository.getSentenceListByTopicId(topicId);
@@ -69,6 +76,7 @@ public class TopicServiceImpl implements TopicService {
 
         if (!advices.isEmpty())
             adviceRepository.insertAll(toMap(advices));
+        topicRepository.setTopicAnalyzed(topicId, 'F');
     }
 
     private List<SentenceWithWriterEntity[]> getComb(List<SentenceWithWriterEntity> sentences) {

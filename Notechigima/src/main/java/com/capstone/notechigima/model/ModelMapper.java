@@ -27,7 +27,7 @@ public class ModelMapper {
     }
 
     public TopicResponseDTO map(TopicEntity entity) {
-        return new TopicResponseDTO(entity.getTopicId(), entity.getTitle(), entity.getUpdatedAt(), entity.isAnalyzed());
+        return new TopicResponseDTO(entity.getTopicId(), entity.getTitle(), entity.getUpdatedAt(), entity.getAnalyzed());
     }
 
     public GetNoteResponseDTO map(NoteDetailEntity entity, List<SentenceResponseDTO> sentenceResult) {

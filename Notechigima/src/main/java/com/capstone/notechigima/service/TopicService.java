@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface TopicService {
 
+    TopicResponseDTO getTopic(int topicId);
+
     List<TopicResponseDTO> getTopicList(int subjectId);
 
     @Async("threadPoolTaskExecutor")

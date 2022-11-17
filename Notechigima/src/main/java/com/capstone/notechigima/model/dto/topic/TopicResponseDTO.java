@@ -18,5 +18,5 @@ public class TopicResponseDTO {
     @Schema(description = "최종 업데이트 시간")
     private Date updatedAt;
     @Schema(description = "분석 완료 여부", defaultValue = "false")
-    private boolean analyzed;
+    private char analyzed;
 }
