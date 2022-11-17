@@ -16,10 +16,14 @@
     <resultMap id="adviceList" type="com.capstone.notechigima.model.dao.advice.AdviceDetailEntity">
         <result property="adviceId" column="adviceId"/>
         <result property="adviceType" column="adviceType"/>
-        <result property="sentenceId" column="sentenceId"/>
-        <result property="sentence" column="sentence"/>
-        <result property="writerId" column="writerId"/>
-        <result property="writerName" column="writerName"/>
+        <result property="sentenceId1" column="sentenceId1"/>
+        <result property="sentence1" column="sentence1"/>
+        <result property="writerId1" column="writerId1"/>
+        <result property="writerName1" column="writerName1"/>
+        <result property="sentenceId2" column="sentenceId2"/>
+        <result property="sentence2" column="sentence2"/>
+        <result property="writerId2" column="writerId2"/>
+        <result property="writerName2" column="writerName2"/>
         <collection column="adviceId" property="comments" javaType="java.util.ArrayList" ofType="com.capstone.notechigima.model.dao.comment.CommentEntity" select="getCommentListById"/>
     </resultMap>
 
@@ -35,15 +39,22 @@
     <select id="getAdviceList" resultMap="adviceList">
         SELECT a.advice_id   adviceId,
                a.advice_type adviceType,
-               s.sentence_id sentenceId,
-               s.content content,
-               u.user_id     writerId,
-               u.nickname    writerName
+               s1.sentence_id sentenceId1,
+               s1.content sentence1,
+               u1.user_id writerId1,
+               u1.nickname writerName1,
+               s2.sentence_id sentenceId2,
+               s2.content sentence2,
+               u2.user_id writerId2,
+               u2.nickname writerName2
         FROM sentence_advice a
-         LEFT JOIN sentence_unit s ON a.sentence_id = s.sentence_id
-         LEFT JOIN note n ON s.note_id = n.note_id
-         LEFT JOIN user u ON n.owner_id = u.user_id
-        WHERE n.topic_id = #{topicId};
+         LEFT JOIN sentence_unit s1 ON a.sentence1_id = s1.sentence_id
+         LEFT JOIN note n1 ON s1.note_id = n1.note_id
+         LEFT JOIN user u1 ON n1.owner_id = u1.user_id
+         LEFT JOIN sentence_unit s2 ON a.sentence2_id = s2.sentence_id
+         LEFT JOIN note n2 ON s2.note_id = n2.note_id
+         LEFT JOIN user u2 ON n2.owner_id = u2.user_id
+        WHERE n1.topic_id = #{topicId} AND n2.topic_id = #{topicId};
     </select>
 
 </mapper>
