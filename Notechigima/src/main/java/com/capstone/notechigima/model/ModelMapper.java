@@ -4,11 +4,13 @@ import com.capstone.notechigima.model.dao.advice.AdviceDetailEntity;
 import com.capstone.notechigima.model.dao.comment.CommentEntity;
 import com.capstone.notechigima.model.dao.note.NoteDetailEntity;
 import com.capstone.notechigima.model.dao.note.NoteOwnerEntity;
+import com.capstone.notechigima.model.dao.sentence.SentenceWithWriterEntity;
 import com.capstone.notechigima.model.dao.topic.TopicEntity;
 import com.capstone.notechigima.model.dao.sentence.SentenceEntity;
 import com.capstone.notechigima.model.dto.advice.AdviceResponseDTO;
 import com.capstone.notechigima.model.dto.note.GetNoteResponseDTO;
 import com.capstone.notechigima.model.dto.note.GetNoteSummarizedDTO;
+import com.capstone.notechigima.model.dto.sentence.SentenceVO;
 import com.capstone.notechigima.model.dto.topic.TopicResponseDTO;
 import com.capstone.notechigima.model.dto.sentence.SentenceResponseDTO;
 
@@ -46,11 +48,18 @@ public class ModelMapper {
         return new AdviceResponseDTO(
                 entity.getAdviceId(),
                 entity.getAdviceType() == 'D' ? "함께 다시 확인해야할 문장이예요." : "",
-                entity.getSentenceId(),
-                entity.getSentence(),
-                entity.getWriterId(),
-                entity.getWriterName(),
+                map(entity.getSentence1()),
+                map(entity.getSentence2()),
                 entity.getComments()
+        );
+    }
+
+    public SentenceVO map(SentenceWithWriterEntity entity) {
+        return new SentenceVO(
+                entity.getSentenceId(),
+                entity.getContent(),
+                entity.getWriterId(),
+                entity.getWriterName()
         );
     }
 }

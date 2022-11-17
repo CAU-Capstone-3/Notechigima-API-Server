@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-public class AdviceInferenceRequestDTO {
+public class AdviceInferenceRequestVO {
     private List<String> docs;
     private String sentence;
 }

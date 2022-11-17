@@ -7,6 +7,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class AdviceInferenceResponseDTO {
+public class AdviceInferenceResponseVO {
     private String result;
 }

@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface TopicService {
 
-    List<TopicResponseDTO> getSectionList(int subjectId);
+    List<TopicResponseDTO> getTopicList(int subjectId);
 
     int requestAnalysis(int topicId);
 

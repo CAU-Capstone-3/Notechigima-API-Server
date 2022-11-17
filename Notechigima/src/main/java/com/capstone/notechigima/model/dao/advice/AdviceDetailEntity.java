@@ -1,21 +1,19 @@
 package com.capstone.notechigima.model.dao.advice;
 
 import com.capstone.notechigima.model.dao.comment.CommentEntity;
+import com.capstone.notechigima.model.dao.sentence.SentenceWithWriterEntity;
 import lombok.*;
 
 import java.util.List;
 
 @Getter
 @Setter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class AdviceDetailEntity {
     private int adviceId;
     private char adviceType;
-    private int sentenceId;
-    private String sentence;
-    private int writerId;
-    private String writerName;
+    SentenceWithWriterEntity sentence1;
+    SentenceWithWriterEntity sentence2;
     private List<CommentEntity> comments;
 }
