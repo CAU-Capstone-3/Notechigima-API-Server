@@ -1,6 +1,7 @@
 package com.capstone.notechigima.model;
 
 import com.capstone.notechigima.model.dao.advice.AdviceDetailEntity;
+import com.capstone.notechigima.model.dao.comment.CommentEntity;
 import com.capstone.notechigima.model.dao.note.NoteDetailEntity;
 import com.capstone.notechigima.model.dao.note.NoteOwnerEntity;
 import com.capstone.notechigima.model.dao.topic.TopicEntity;
@@ -42,6 +43,14 @@ public class ModelMapper {
     }
 
     public AdviceResponseDTO map(AdviceDetailEntity entity) {
-        return new AdviceResponseDTO(entity.getAdviceId(), entity.getAdviceType() == 'D' ? "함께 다시 확인해야할 문장이예요." : "", entity.getSentenceId(), entity.getSentence(), entity.getWriterId(), entity.getWriterName());
+        return new AdviceResponseDTO(
+                entity.getAdviceId(),
+                entity.getAdviceType() == 'D' ? "함께 다시 확인해야할 문장이예요." : "",
+                entity.getSentenceId(),
+                entity.getSentence(),
+                entity.getWriterId(),
+                entity.getWriterName(),
+                entity.getComments()
+        );
     }
 }
