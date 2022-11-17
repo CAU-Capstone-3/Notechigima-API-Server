@@ -4,7 +4,7 @@ import com.capstone.notechigima.model.ModelMapper;
 import com.capstone.notechigima.model.dao.advice.AdviceEntity;
 import com.capstone.notechigima.model.dao.note.NoteOwnerEntity;
 import com.capstone.notechigima.model.dao.sentence.SentenceEntity;
-import com.capstone.notechigima.model.dto.advice.AdviceInferenceRequestDTO;
+import com.capstone.notechigima.model.dto.advice.AdviceInferenceRequestVO;
 import com.capstone.notechigima.model.dto.topic.TopicResponseDTO;
 import com.capstone.notechigima.repository.AdviceRepository;
 import com.capstone.notechigima.repository.NoteRepository;
@@ -40,7 +40,7 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public List<TopicResponseDTO> getSectionList(int subjectId) {
+    public List<TopicResponseDTO> getTopicList(int subjectId) {
         return topicRepository.getTopicList(subjectId).stream()
                 .map(entity -> modelMapper.map(entity)
                 ).collect(Collectors.toList());
@@ -76,7 +76,7 @@ public class TopicServiceImpl implements TopicService {
                 }
 
             for (SentenceEntity sentEntity : elem.getValue()) {
-                AdviceInferenceRequestDTO request = new AdviceInferenceRequestDTO(
+                AdviceInferenceRequestVO request = new AdviceInferenceRequestVO(
                         doc, sentEntity.getContent()
                 );
                 String response = restTemplate.postForObject(uri, request, String.class);
