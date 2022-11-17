@@ -1,6 +1,7 @@
 package com.capstone.notechigima.repository;
 
 import com.capstone.notechigima.model.dao.sentence.SentenceEntity;
+import com.capstone.notechigima.model.dao.sentence.SentenceWithWriterEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -12,7 +13,7 @@ import java.util.Map;
 public interface SentenceRepository {
 
     List<SentenceEntity> getSentenceListByNoteId(int noteId);
-    List<SentenceEntity> getSentenceListByTopicId(int topicId);
+    List<SentenceWithWriterEntity> getSentenceListByTopicId(int topicId);
 
     int insertAll(Map<String, Object> map);
 }

@@ -4,6 +4,7 @@ import com.capstone.notechigima.model.ModelMapper;
 import com.capstone.notechigima.model.dao.advice.AdviceEntity;
 import com.capstone.notechigima.model.dao.advice.AdviceType;
 import com.capstone.notechigima.model.dao.sentence.SentenceEntity;
+import com.capstone.notechigima.model.dao.sentence.SentenceWithWriterEntity;
 import com.capstone.notechigima.model.dto.advice.AdviceInferenceRequestVO;
 import com.capstone.notechigima.model.dto.topic.TopicResponseDTO;
 import com.capstone.notechigima.repository.AdviceRepository;
@@ -12,6 +13,7 @@ import com.capstone.notechigima.repository.TopicRepository;
 import com.capstone.notechigima.repository.SentenceRepository;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -46,14 +48,15 @@ public class TopicServiceImpl implements TopicService {
                 ).collect(Collectors.toList());
     }
 
+    @Async("threadPoolTaskExecutor")
     @Override
-    public int requestAnalysis(int topicId) {
+    public void requestAnalysis(int topicId) {
 
         ArrayList<AdviceEntity> advices = new ArrayList<>();
-        List<SentenceEntity> sentences = sentenceRepository.getSentenceListByTopicId(topicId);
-        List<SentenceEntity[]> sentComb = getComb(sentences);
+        List<SentenceWithWriterEntity> sentences = sentenceRepository.getSentenceListByTopicId(topicId);
+        List<SentenceWithWriterEntity[]> sentComb = getComb(sentences);
 
-        for (SentenceEntity[] comb : sentComb) {
+        for (SentenceWithWriterEntity[] comb : sentComb) {
             if (isContradiction(comb[0].getContent(), comb[1].getContent())) {
                 advices.add(new AdviceEntity(
                         0,
@@ -64,14 +67,18 @@ public class TopicServiceImpl implements TopicService {
             }
         }
 
-        return adviceRepository.insertAll(toMap(advices));
+        if (!advices.isEmpty())
+            adviceRepository.insertAll(toMap(advices));
     }
 
-    private List<SentenceEntity[]> getComb(List<SentenceEntity> sentences) {
-        ArrayList<SentenceEntity[]> comb = new ArrayList<>();
+    private List<SentenceWithWriterEntity[]> getComb(List<SentenceWithWriterEntity> sentences) {
+        ArrayList<SentenceWithWriterEntity[]> comb = new ArrayList<>();
         for (int i = 0; i < sentences.size(); i++) {
             for (int j = i + 1; j < sentences.size(); j++) {
-                comb.add(new SentenceEntity[] { sentences.get(i), sentences.get(j) });
+                SentenceWithWriterEntity sent1 = sentences.get(i);
+                SentenceWithWriterEntity sent2 = sentences.get(j);
+                if (sent1.getWriterId() != sent2.getWriterId())
+                    comb.add(new SentenceWithWriterEntity[] { sent1, sent2 });
             }
         }
         return comb;

@@ -47,7 +47,7 @@ public class ModelMapper {
     public AdviceResponseDTO map(AdviceDetailEntity entity) {
         return new AdviceResponseDTO(
                 entity.getAdviceId(),
-                entity.getAdviceType() == 'D' ? "함께 다시 확인해야할 문장이예요." : "",
+                entity.getAdviceType() == 'C' ? "상반되는 문장이 있어요." : "",
                 map(entity.getSentenceId1(), entity.getSentence1(), entity.getWriterId1(), entity.getWriterName1()),
                 map(entity.getSentenceId2(), entity.getSentence2(), entity.getWriterId2(), entity.getWriterName2()),
                 entity.getComments()

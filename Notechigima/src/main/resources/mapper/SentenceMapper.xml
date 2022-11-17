@@ -11,10 +11,12 @@
         WHERE #{noteId} = s.note_id
     </select>
 
-    <select id="getSentenceListByTopicId" resultType="com.capstone.notechigima.model.dao.sentence.SentenceEntity">
-        SELECT *
+    <select id="getSentenceListByTopicId" resultType="com.capstone.notechigima.model.dao.sentence.SentenceWithWriterEntity">
+        SELECT s.sentence_id sentenceId, s.content content,
+               u.user_id writerId, u.nickname writerName
         FROM sentence_unit s
         LEFT JOIN note n ON s.note_id = n.note_id
+        LEFT JOIN user u ON n.owner_id = u.user_id
         WHERE #{topicId} = n.topic_id
     </select>
 
