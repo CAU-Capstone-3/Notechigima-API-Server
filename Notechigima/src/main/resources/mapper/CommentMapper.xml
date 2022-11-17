@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.capstone.notechigima.repository.CommentRepository">
+
+    <select id="getComments" resultType="com.capstone.notechigima.model.dao.comment.CommentEntity">
+        SELECT c.comment_id commentId, c.user_id userId, u.nickname userName,
+               c.content content, c.created_at createdAt, c.updated_at updatedAt
+        FROM advice_comment c
+        LEFT JOIN user u ON c.user_id = u.user_id
+        WHERE #{adviceId} = c.advice_id;
+    </select>
+
+
+</mapper>

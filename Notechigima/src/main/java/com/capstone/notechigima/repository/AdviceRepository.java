@@ -13,5 +13,5 @@ public interface AdviceRepository {
 
     int insertAll(Map<String, Object> map);
 
-    List<AdviceDetailEntity> getAdviceList(int sectionId);
+    List<AdviceDetailEntity> getAdviceList(int topicId);
 }
