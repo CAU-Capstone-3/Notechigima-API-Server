@@ -14,6 +14,7 @@ import java.util.List;
 @Tag(name = "advice", description = "분석 결과 API")
 @RestController
 @RequestMapping("/api/advice")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class AdviceController {
 
     @Autowired
