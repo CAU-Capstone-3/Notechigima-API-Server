@@ -17,7 +17,6 @@ import java.util.List;
 @Tag(name = "note", description = "노트 API")
 @RestController
 @RequestMapping("/api/note")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class NoteController {
 
     @Autowired

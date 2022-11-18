@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "comment", description = "댓글 API")
 @RestController
 @RequestMapping("/api/comment")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class CommentController {
 
 }

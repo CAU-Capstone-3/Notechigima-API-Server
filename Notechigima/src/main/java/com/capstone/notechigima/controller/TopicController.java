@@ -14,7 +14,6 @@ import java.util.List;
 @Tag(name = "topic", description = "주차별 조회 API")
 @RestController
 @RequestMapping("/api/topic")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class TopicController {
 
     @Autowired
