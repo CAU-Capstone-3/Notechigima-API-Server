@@ -36,10 +36,10 @@ public class NoteController {
         return new BaseResponse(BaseResponseStatus.SUCCESS_READ, noteService.getNote(noteId));
     }
 
-    @PostMapping("/{topicId}")
+    @PostMapping
     @Operation(summary = "노트 작성", description = "해당 토픽에 노트 작성")
-    public BaseResponse postNote(@PathVariable("topicId") int topicId, @RequestBody PostNoteRequestDTO body) throws BaseException {
-        noteService.postNote(topicId, body);
+    public BaseResponse postNote(@RequestBody PostNoteRequestDTO body) throws BaseException {
+        noteService.postNote(body);
         return new BaseResponse(BaseResponseStatus.SUCCESS_EDIT);
     }
 }
