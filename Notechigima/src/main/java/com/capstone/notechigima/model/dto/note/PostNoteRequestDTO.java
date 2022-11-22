@@ -10,8 +10,8 @@ public class PostNoteRequestDTO {
 
     @Schema(description = "토픽 ID", defaultValue = "1")
     private int topicId;
-    @Schema(description = "작성자 ID", defaultValue = "3")
-    private int writerId;
+    @Schema(description = "유저 ID", defaultValue = "3")
+    private int userId;
     @Schema(description = "노트 내용", defaultValue = "노트 내용입니다.")
     private String content;
 }

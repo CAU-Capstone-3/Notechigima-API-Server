@@ -5,7 +5,7 @@
 
 <mapper namespace="com.capstone.notechigima.repository.CommentRepository">
 
-    <select id="getComments" resultType="com.capstone.notechigima.model.dao.comment.CommentEntity">
+    <select id="getComments" resultType="com.capstone.notechigima.model.dao.comment.CommentDetailEntity">
         SELECT c.comment_id commentId, c.user_id userId, u.nickname userName,
                c.content content, c.created_at createdAt, c.updated_at updatedAt
         FROM advice_comment c
@@ -13,5 +13,9 @@
         WHERE #{adviceId} = c.advice_id;
     </select>
 
+    <insert id="postComment" parameterType="com.capstone.notechigima.model.dao.comment.CommentWriteEntity">
+        INSERT INO advice_comment (user_id, advice_id, content)
+        VALUES(#{userId}, #{adviceId}, #{content})
+    </insert>
 
 </mapper>

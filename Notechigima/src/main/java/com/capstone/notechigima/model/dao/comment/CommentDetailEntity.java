@@ -9,7 +9,7 @@ import java.util.Date;
 @Getter
 @Setter
 @AllArgsConstructor
-public class CommentEntity {
+public class CommentDetailEntity {
     private int commentId;
     private int userId;
     private String userName;
