@@ -14,7 +14,7 @@
     </select>
 
     <insert id="postComment" parameterType="com.capstone.notechigima.model.dao.comment.CommentWriteEntity">
-        INSERT INO advice_comment (user_id, advice_id, content)
+        INSERT INTO advice_comment (user_id, advice_id, content)
         VALUES(#{userId}, #{adviceId}, #{content})
     </insert>
 
