@@ -1,6 +1,6 @@
 package com.capstone.notechigima.model.dto.advice;
 
-import com.capstone.notechigima.model.dao.comment.CommentEntity;
+import com.capstone.notechigima.model.dao.comment.CommentDetailEntity;
 import com.capstone.notechigima.model.dto.sentence.SentenceVO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -20,5 +20,5 @@ public class AdviceResponseDTO {
     @Schema(description = "문장 2")
     private SentenceVO sentence2;
     @Schema(description = "댓글 목록")
-    private List<CommentEntity> comments;
+    private List<CommentDetailEntity> comments;
 }

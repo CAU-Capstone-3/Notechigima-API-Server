@@ -40,6 +40,6 @@ public class NoteController {
     @Operation(summary = "노트 작성", description = "해당 토픽에 노트 작성")
     public BaseResponse postNote(@RequestBody PostNoteRequestDTO body) throws BaseException {
         noteService.postNote(body);
-        return new BaseResponse(BaseResponseStatus.SUCCESS_EDIT);
+        return new BaseResponse(BaseResponseStatus.SUCCESS_WRITE);
     }
 }

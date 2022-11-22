@@ -1,10 +1,8 @@
 package com.capstone.notechigima.model;
 
 import com.capstone.notechigima.model.dao.advice.AdviceDetailEntity;
-import com.capstone.notechigima.model.dao.comment.CommentEntity;
 import com.capstone.notechigima.model.dao.note.NoteDetailEntity;
 import com.capstone.notechigima.model.dao.note.NoteOwnerEntity;
-import com.capstone.notechigima.model.dao.sentence.SentenceWithWriterEntity;
 import com.capstone.notechigima.model.dao.topic.TopicEntity;
 import com.capstone.notechigima.model.dao.sentence.SentenceEntity;
 import com.capstone.notechigima.model.dto.advice.AdviceResponseDTO;

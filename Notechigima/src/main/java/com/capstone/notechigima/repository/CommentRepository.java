@@ -1,6 +1,7 @@
 package com.capstone.notechigima.repository;
 
-import com.capstone.notechigima.model.dao.comment.CommentEntity;
+import com.capstone.notechigima.model.dao.comment.CommentDetailEntity;
+import com.capstone.notechigima.model.dao.comment.CommentWriteEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -10,5 +11,7 @@ import java.util.List;
 @Mapper
 public interface CommentRepository {
 
-    List<CommentEntity> getComments();
+    List<CommentDetailEntity> getComments();
+
+    int postComment(CommentWriteEntity entity);
 }

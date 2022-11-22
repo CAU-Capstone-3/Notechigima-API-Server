@@ -33,7 +33,7 @@ public class TopicController {
         if (topicService.getTopic(topicId).getAnalyzed() != 'B')
             return new BaseResponse(BaseResponseStatus.CAN_NOT_ANALYZE);
         topicService.requestAnalysis(topicId);
-        return new BaseResponse(BaseResponseStatus.SUCCESS_EDIT);
+        return new BaseResponse(BaseResponseStatus.SUCCESS_WRITE);
     }
 
 }
