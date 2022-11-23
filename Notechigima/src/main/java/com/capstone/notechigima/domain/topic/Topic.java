@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
@@ -37,6 +38,10 @@ public class Topic extends BaseTimeEntity {
         this.subjectId = subjectId;
         this.status = status;
         this.title = title;
+        this.analyzed = analyzed;
+    }
+
+    public void updateAnalyzed(TopicAnalyzed analyzed) {
         this.analyzed = analyzed;
     }
 }

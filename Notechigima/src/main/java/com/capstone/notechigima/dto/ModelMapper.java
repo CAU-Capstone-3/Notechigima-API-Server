@@ -5,6 +5,7 @@ import com.capstone.notechigima.domain.group.GroupCreateEntity;
 import com.capstone.notechigima.domain.group.GroupEntity;
 import com.capstone.notechigima.domain.note.NoteDetailEntity;
 import com.capstone.notechigima.domain.note.NoteOwnerEntity;
+import com.capstone.notechigima.domain.topic.Topic;
 import com.capstone.notechigima.domain.topic.TopicEntity;
 import com.capstone.notechigima.domain.sentence.SentenceEntity;
 import com.capstone.notechigima.domain.users.UserEntity;
@@ -19,6 +20,7 @@ import com.capstone.notechigima.dto.sentence.SentenceResponseDTO;
 import com.capstone.notechigima.dto.users.GetUserResponseDTO;
 
 import java.util.List;
+import java.util.Optional;
 
 public class ModelMapper {
 
@@ -88,5 +90,15 @@ public class ModelMapper {
                 entity.getEmail(),
                 entity.getNickname()
         );
+    }
+
+    public TopicResponseDTO map(Topic topic) {
+        return TopicResponseDTO
+                .builder()
+                .topicId(topic.getTopicId())
+                .title(topic.getTitle())
+                .updatedAt(topic.getUpdatedAt())
+                .analyzed(String.valueOf(topic.getAnalyzed()))
+                .build();
     }
 }
