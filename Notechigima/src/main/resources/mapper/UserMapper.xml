@@ -5,7 +5,7 @@
 
 <mapper namespace="com.capstone.notechigima.repository.UserRepository">
 
-    <select id="getMembersByGroupId" resultType="com.capstone.notechigima.model.dao.users.UserEntity">
+    <select id="getMembersByGroupId" resultType="com.capstone.notechigima.domain.usersty">
         SELECT u.user_id userId, u.email email, u.nickname nickname
         FROM group_member m
         LEFT JOIN user u USING (user_id)

@@ -1,7 +1,7 @@
 package com.capstone.notechigima.repository;
 
-import com.capstone.notechigima.model.dao.sentence.SentenceEntity;
-import com.capstone.notechigima.model.dao.sentence.SentenceWithWriterEntity;
+import com.capstone.notechigima.domain.SentenceEntity;
+import com.capstone.notechigima.domain.SentenceWithWriterEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
