@@ -14,7 +14,6 @@ public class GroupInvite extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "groupInviteId")
     private int groupInviteId;
 
     @Column(nullable = false)
@@ -33,5 +32,4 @@ public class GroupInvite extends BaseTimeEntity {
         this.groupId = groupId;
         this.accepted = accepted;
     }
-
 }
