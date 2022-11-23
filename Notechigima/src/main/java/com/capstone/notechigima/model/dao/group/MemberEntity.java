@@ -2,13 +2,11 @@ package com.capstone.notechigima.model.dao.group;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
 @AllArgsConstructor
-public class GroupCreateEntity {
-    private int ownerId;
+public class MemberEntity {
+    private int userId;
     private int groupId;
-    private String groupName;
+    private char access;
 }

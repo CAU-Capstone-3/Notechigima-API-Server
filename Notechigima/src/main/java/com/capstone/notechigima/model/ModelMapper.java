@@ -77,6 +77,7 @@ public class ModelMapper {
     public GroupCreateEntity map(PostGroupRequestDTO body) {
         return new GroupCreateEntity(
                 body.getUserId(),
+                0,
                 body.getGroupName()
         );
     }
