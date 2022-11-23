@@ -1,6 +1,6 @@
 package com.capstone.notechigima.model.dao.advice;
 
-import com.capstone.notechigima.model.dao.comment.CommentEntity;
+import com.capstone.notechigima.model.dao.comment.CommentDetailEntity;
 import lombok.*;
 
 import java.util.List;
@@ -20,5 +20,5 @@ public class AdviceDetailEntity {
     private String sentence2;
     private int writerId2;
     private String writerName2;
-    private List<CommentEntity> comments;
+    private List<CommentDetailEntity> comments;
 }

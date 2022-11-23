@@ -54,7 +54,7 @@ public class NoteServiceImpl implements NoteService {
     @Override
     public int postNote(PostNoteRequestDTO body) throws BaseException {
 
-        NoteInsertEntity entity = new NoteInsertEntity(0, body.getWriterId(), body.getTopicId());
+        NoteInsertEntity entity = new NoteInsertEntity(0, body.getUserId(), body.getTopicId());
         int result = noteRepository.insertNote(entity);
         int noteId = entity.getId();
 
