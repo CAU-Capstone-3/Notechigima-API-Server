@@ -13,5 +13,5 @@ public interface NoteService {
 
     GetNoteResponseDTO getNote(int noteId) throws BaseException;
 
-    int postNote(int topicId, PostNoteRequestDTO body) throws BaseException;
+    int postNote(PostNoteRequestDTO body) throws BaseException;
 }

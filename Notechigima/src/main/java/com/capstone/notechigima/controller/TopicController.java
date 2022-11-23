@@ -53,12 +53,4 @@ public class TopicController {
     public BaseResponse<List<AdviceResponseDTO>> getAdviceList(@PathVariable("topicId") int topicId) {
         return new BaseResponse(BaseResponseStatus.SUCCESS_READ, adviceService.getAdviceList(topicId));
     }
-
-    @PostMapping("/{topicId}/note")
-    @Operation(summary = "노트 작성", description = "해당 토픽에 노트 작성")
-    public BaseResponse postNote(@PathVariable("topicId") int topicId, @RequestBody PostNoteRequestDTO body) throws BaseException {
-        noteService.postNote(topicId, body);
-        return new BaseResponse(BaseResponseStatus.SUCCESS_WRITE);
-    }
-
 }
