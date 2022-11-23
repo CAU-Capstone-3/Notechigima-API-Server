@@ -1,14 +1,14 @@
 package com.capstone.notechigima.service;
 
 import com.capstone.notechigima.config.BaseException;
-import com.capstone.notechigima.model.ModelMapper;
-import com.capstone.notechigima.model.dao.note.NoteDetailEntity;
-import com.capstone.notechigima.model.dao.sentence.SentenceEntity;
-import com.capstone.notechigima.model.dao.note.NoteInsertEntity;
-import com.capstone.notechigima.model.dto.note.GetNoteResponseDTO;
-import com.capstone.notechigima.model.dto.note.GetNoteSummarizedDTO;
-import com.capstone.notechigima.model.dto.note.PostNoteRequestDTO;
-import com.capstone.notechigima.model.dto.sentence.SentenceResponseDTO;
+import com.capstone.notechigima.dto.ModelMapper;
+import com.capstone.notechigima.domain.note.NoteDetailEntity;
+import com.capstone.notechigima.domain.sentence.SentenceEntity;
+import com.capstone.notechigima.domain.note.NoteInsertEntity;
+import com.capstone.notechigima.dto.note.GetNoteResponseDTO;
+import com.capstone.notechigima.dto.note.GetNoteSummarizedDTO;
+import com.capstone.notechigima.dto.note.PostNoteRequestDTO;
+import com.capstone.notechigima.dto.sentence.SentenceResponseDTO;
 import com.capstone.notechigima.repository.NoteRepository;
 import com.capstone.notechigima.repository.SentenceRepository;
 import org.springframework.stereotype.Service;

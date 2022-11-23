@@ -1,6 +1,6 @@
 package com.capstone.notechigima.service;
 
-import com.capstone.notechigima.model.dto.users.GetUserResponseDTO;
+import com.capstone.notechigima.dto.users.GetUserResponseDTO;
 
 import java.util.List;
 

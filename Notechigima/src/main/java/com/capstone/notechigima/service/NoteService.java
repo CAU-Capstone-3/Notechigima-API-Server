@@ -1,9 +1,9 @@
 package com.capstone.notechigima.service;
 
 import com.capstone.notechigima.config.BaseException;
-import com.capstone.notechigima.model.dto.note.GetNoteResponseDTO;
-import com.capstone.notechigima.model.dto.note.GetNoteSummarizedDTO;
-import com.capstone.notechigima.model.dto.note.PostNoteRequestDTO;
+import com.capstone.notechigima.dto.note.GetNoteResponseDTO;
+import com.capstone.notechigima.dto.note.GetNoteSummarizedDTO;
+import com.capstone.notechigima.dto.note.PostNoteRequestDTO;
 
 import java.util.List;
 

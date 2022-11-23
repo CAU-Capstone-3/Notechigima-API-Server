@@ -1,8 +1,8 @@
 package com.capstone.notechigima.service;
 
 
-import com.capstone.notechigima.model.dto.group.GetGroupResponseDTO;
-import com.capstone.notechigima.model.dto.group.PostGroupRequestDTO;
+import com.capstone.notechigima.dto.group.GetGroupResponseDTO;
+import com.capstone.notechigima.dto.group.PostGroupRequestDTO;
 
 import java.util.List;
 

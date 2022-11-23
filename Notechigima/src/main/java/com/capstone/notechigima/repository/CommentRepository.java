@@ -1,7 +1,7 @@
 package com.capstone.notechigima.repository;
 
-import com.capstone.notechigima.model.dao.comment.CommentDetailEntity;
-import com.capstone.notechigima.model.dao.comment.CommentWriteEntity;
+import com.capstone.notechigima.domain.comment.CommentDetailEntity;
+import com.capstone.notechigima.domain.comment.CommentWriteEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 

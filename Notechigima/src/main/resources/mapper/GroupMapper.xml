@@ -5,19 +5,19 @@
 
 <mapper namespace="com.capstone.notechigima.repository.GroupRepository">
 
-    <select id="getGroupsByUserId" resultType="com.capstone.notechigima.model.dao.group.GroupEntity">
+    <select id="getGroupsByUserId" resultType="com.capstone.notechigima.domain.group.GroupEntity">
         SELECT g.group_id groupId, g.name groupName
         FROM study_group g
         LEFT JOIN group_member m USING (group_id)
         WHERE m.user_id = #{userId}
     </select>
 
-    <insert id="insertGroup" parameterType="com.capstone.notechigima.model.dao.group.GroupCreateEntity" useGeneratedKeys="true" keyProperty="groupId">
+    <insert id="insertGroup" parameterType="com.capstone.notechigima.domain.group.GroupCreateEntity" useGeneratedKeys="true" keyProperty="groupId">
         INSERT INTO study_group (name)
         VALUES(#{groupName})
     </insert>
 
-    <insert id="insertMember" parameterType="com.capstone.notechigima.model.dao.group.MemberEntity">
+    <insert id="insertMember" parameterType="com.capstone.notechigima.domain.users.MemberEntity">
         INSERT INTO group_member (user_id, group_id, access)
         VALUES (#{userId}, #{groupId}, #{access})
     </insert>

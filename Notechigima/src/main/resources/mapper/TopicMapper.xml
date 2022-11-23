@@ -5,16 +5,16 @@
 
 <mapper namespace="com.capstone.notechigima.repository.TopicRepository">
 
-    <select id="getTopic" resultType="com.capstone.notechigima.model.dao.topic.TopicEntity">
+    <select id="getTopic" resultType="com.capstone.notechigima.domain.topic.TopicEntity">
         SELECT topic_id topicId, subject_id subjectId, title, updated_at updatedAt, analyzed
         FROM topic t
         WHERE #{topicId} = t.topic_id
     </select>
 
-    <select id="getTopicList" resultType="com.capstone.notechigima.model.dao.topic.TopicEntity">
+    <select id="getTopicList" resultType="com.capstone.notechigima.domain.topic.TopicEntity">
         SELECT topic_id topicId, subject_id subjectId, title, updated_at updatedAt, analyzed
-        FROM topic s
-        WHERE #{subjectId} = s.subject_id
+        FROM topic t
+        WHERE #{subjectId} = t.subject_id
     </select>
 
     <update id="setTopicAnalyzed">

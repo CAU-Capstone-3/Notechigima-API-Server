@@ -1,17 +1,15 @@
 package com.capstone.notechigima.service;
 
-import com.capstone.notechigima.model.ModelMapper;
-import com.capstone.notechigima.model.dao.advice.AdviceEntity;
-import com.capstone.notechigima.model.dao.advice.AdviceType;
-import com.capstone.notechigima.model.dao.sentence.SentenceEntity;
-import com.capstone.notechigima.model.dao.sentence.SentenceWithWriterEntity;
-import com.capstone.notechigima.model.dto.advice.AdviceInferenceRequestVO;
-import com.capstone.notechigima.model.dto.topic.TopicResponseDTO;
+import com.capstone.notechigima.dto.ModelMapper;
+import com.capstone.notechigima.domain.advice.AdviceEntity;
+import com.capstone.notechigima.domain.advice.AdviceType;
+import com.capstone.notechigima.domain.sentence.SentenceWithWriterEntity;
+import com.capstone.notechigima.dto.advice.AdviceInferenceRequestVO;
+import com.capstone.notechigima.dto.topic.TopicResponseDTO;
 import com.capstone.notechigima.repository.AdviceRepository;
 import com.capstone.notechigima.repository.NoteRepository;
 import com.capstone.notechigima.repository.TopicRepository;
 import com.capstone.notechigima.repository.SentenceRepository;
-import io.swagger.v3.oas.annotations.Operation;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.scheduling.annotation.Async;

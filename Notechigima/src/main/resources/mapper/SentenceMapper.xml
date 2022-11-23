@@ -5,13 +5,13 @@
 
 <mapper namespace="com.capstone.notechigima.repository.SentenceRepository">
 
-    <select id="getSentenceListByNoteId" resultType="com.capstone.notechigima.model.dao.sentence.SentenceEntity">
+    <select id="getSentenceListByNoteId" resultType="com.capstone.notechigima.domain.sentence.SentenceEntity">
         SELECT *
         FROM sentence_unit s
         WHERE #{noteId} = s.note_id
     </select>
 
-    <select id="getSentenceListByTopicId" resultType="com.capstone.notechigima.model.dao.sentence.SentenceWithWriterEntity">
+    <select id="getSentenceListByTopicId" resultType="com.capstone.notechigima.domain.sentence.SentenceWithWriterEntity">
         SELECT s.sentence_id sentenceId, s.content content,
                u.user_id writerId, u.nickname writerName
         FROM sentence_unit s

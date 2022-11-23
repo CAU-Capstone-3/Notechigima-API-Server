@@ -1,6 +1,6 @@
 package com.capstone.notechigima.repository;
 
-import com.capstone.notechigima.model.dao.topic.TopicEntity;
+import com.capstone.notechigima.domain.topic.TopicEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
