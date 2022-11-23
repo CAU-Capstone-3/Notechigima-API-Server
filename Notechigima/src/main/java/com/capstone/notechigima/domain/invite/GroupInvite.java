@@ -1,15 +1,15 @@
 package com.capstone.notechigima.domain.invite;
 
+import com.capstone.notechigima.domain.BaseTimeEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Getter
 @NoArgsConstructor
 @Entity
-public class GroupInvite {
+public class GroupInvite extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,11 +24,5 @@ public class GroupInvite {
 
     @Column(nullable = false)
     private char accepted;
-
-    @Column(nullable = false)
-    private Date createdAt;
-
-    @Column(nullable = false)
-    private Date updatedAt;
 
 }
