@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.capstone.notechigima.repository.GroupRepositoryy">
+
+    <select id="getGroups" resultType="com.capstone.notechigima.model.dao.group.GroupEntity">
+        SELECT g.group_id groupId, g.name groupName
+        FROM study_group g
+        LEFT JOIN group_member m USING (group_id)
+        WHERE m.user_id = #{userId}
+    </select>
+
+    <insert id="insertGroup" parameterType="com.capstone.notechigima.model.dao.group.GroupCreateEntity" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO study_group (name)
+        VALUES(#{groupName})
+    </insert>
+
+</mapper>
