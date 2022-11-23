@@ -5,6 +5,6 @@ import com.capstone.notechigima.model.dto.comment.PostCommentRequestDTO;
 
 public interface CommentService {
 
-    int postComment(PostCommentRequestDTO request) throws BaseException;
+    int postComment(int adviceId, PostCommentRequestDTO request) throws BaseException;
 
 }

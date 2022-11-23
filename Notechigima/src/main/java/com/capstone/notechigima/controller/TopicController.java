@@ -1,38 +1,63 @@
 package com.capstone.notechigima.controller;
 
+import com.capstone.notechigima.config.BaseException;
 import com.capstone.notechigima.config.BaseResponseStatus;
 import com.capstone.notechigima.config.BaseResponse;
-import com.capstone.notechigima.model.dto.topic.TopicResponseDTO;
+import com.capstone.notechigima.model.dto.advice.AdviceResponseDTO;
+import com.capstone.notechigima.model.dto.note.GetNoteSummarizedDTO;
+import com.capstone.notechigima.model.dto.note.PostNoteRequestDTO;
+import com.capstone.notechigima.service.AdviceService;
+import com.capstone.notechigima.service.NoteService;
 import com.capstone.notechigima.service.TopicService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Tag(name = "topic", description = "주차별 조회 API")
+@Tag(name = "topic", description = "토푁 관련 API")
 @RestController
 @RequestMapping("/api/topic")
 public class TopicController {
 
-    @Autowired
-    private TopicService topicService;
+    private final TopicService topicService;
+    private final NoteService noteService;
+    private final AdviceService adviceService;
 
-    @ResponseBody
-    @GetMapping("/subject/{subjectId}")
-    @Operation(summary = "과목별 토픽 목록", description = "해당 과목 내의 모든 토픽 목록을 조회")
-    public BaseResponse<List<TopicResponseDTO>> getTopicList(@PathVariable("subjectId") int subjectId) {
-        return new BaseResponse(BaseResponseStatus.SUCCESS_READ, topicService.getTopicList(subjectId));
+    public TopicController(TopicService topicService, NoteService noteService, AdviceService adviceService) {
+        this.topicService = topicService;
+        this.noteService = noteService;
+        this.adviceService = adviceService;
     }
 
     @ResponseBody
-    @PostMapping("/advice/{topicId}")
+    @GetMapping("/{topicId}/note")
+    @Operation(summary = "토픽별 노트 목록", description = "해당 토픽 내에서 작성된 노트의 목록")
+    public BaseResponse<List<GetNoteSummarizedDTO>> getNoteList(@PathVariable("topicId") int topicId) throws BaseException {
+        return new BaseResponse(BaseResponseStatus.SUCCESS_READ, noteService.getNoteList(topicId));
+    }
+
+    @ResponseBody
+    @PostMapping("/{topicId}/advice")
     @Operation(summary = "분석 요청", description = "해당 토픽에 대한 분석 시작을 요청")
     public BaseResponse requestAnalysis(@PathVariable("topicId") int topicId) {
         if (topicService.getTopic(topicId).getAnalyzed() != 'B')
             return new BaseResponse(BaseResponseStatus.CAN_NOT_ANALYZE);
         topicService.requestAnalysis(topicId);
+        return new BaseResponse(BaseResponseStatus.SUCCESS_WRITE);
+    }
+
+    @ResponseBody
+    @GetMapping("/{topicId}/advice")
+    @Operation(summary = "토픽별 분석결과 API", description = "토픽별 분석결과 목록을 조회하는 API 입니다.")
+    public BaseResponse<List<AdviceResponseDTO>> getAdviceList(@PathVariable("topicId") int topicId) {
+        return new BaseResponse(BaseResponseStatus.SUCCESS_READ, adviceService.getAdviceList(topicId));
+    }
+
+    @PostMapping("/{topicId}/note")
+    @Operation(summary = "노트 작성", description = "해당 토픽에 노트 작성")
+    public BaseResponse postNote(@PathVariable("topicId") int topicId, @RequestBody PostNoteRequestDTO body) throws BaseException {
+        noteService.postNote(topicId, body);
         return new BaseResponse(BaseResponseStatus.SUCCESS_WRITE);
     }
 
