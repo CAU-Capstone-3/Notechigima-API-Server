@@ -5,7 +5,7 @@
 
 <mapper namespace="com.capstone.notechigima.repository.GroupRepository">
 
-    <select id="getGroups" resultType="com.capstone.notechigima.model.dao.group.GroupEntity">
+    <select id="getGroupsByUserId" resultType="com.capstone.notechigima.model.dao.group.GroupEntity">
         SELECT g.group_id groupId, g.name groupName
         FROM study_group g
         LEFT JOIN group_member m USING (group_id)

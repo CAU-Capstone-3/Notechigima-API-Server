@@ -24,7 +24,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public List<GetGroupResponseDTO> getGroups(int userId) {
-        return groupRepository.getGroups(userId).stream()
+        return groupRepository.getGroupsByUserId(userId).stream()
                 .map(entity -> modelMapper.map(entity))
                 .collect(Collectors.toList());
     }

@@ -3,7 +3,6 @@ package com.capstone.notechigima.controller;
 import com.capstone.notechigima.config.BaseException;
 import com.capstone.notechigima.config.BaseResponse;
 import com.capstone.notechigima.config.BaseResponseStatus;
-import com.capstone.notechigima.model.dto.note.PostNoteRequestDTO;
 import com.capstone.notechigima.model.dto.sentence.SentenceResponseDTO;
 import com.capstone.notechigima.service.NoteService;
 import io.swagger.v3.oas.annotations.Operation;
