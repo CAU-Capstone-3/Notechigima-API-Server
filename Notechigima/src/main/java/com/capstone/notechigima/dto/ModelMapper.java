@@ -1,13 +1,13 @@
 package com.capstone.notechigima.dto;
 
 import com.capstone.notechigima.domain.advice.AdviceDetailEntity;
-import com.capstone.notechigima.domain.group.GroupCreateEntity;
-import com.capstone.notechigima.domain.group.GroupEntity;
+import com.capstone.notechigima.domain.study_group.GroupCreateEntity;
+import com.capstone.notechigima.domain.study_group.GroupEntity;
 import com.capstone.notechigima.domain.note.NoteDetailEntity;
 import com.capstone.notechigima.domain.note.NoteOwnerEntity;
 import com.capstone.notechigima.domain.topic.Topic;
-import com.capstone.notechigima.domain.topic.TopicEntity;
 import com.capstone.notechigima.domain.sentence.SentenceEntity;
+import com.capstone.notechigima.domain.users.User;
 import com.capstone.notechigima.domain.users.UserEntity;
 import com.capstone.notechigima.dto.advice.AdviceResponseDTO;
 import com.capstone.notechigima.dto.group.GetGroupResponseDTO;
@@ -17,10 +17,9 @@ import com.capstone.notechigima.dto.note.GetNoteSummarizedDTO;
 import com.capstone.notechigima.dto.sentence.SentenceVO;
 import com.capstone.notechigima.dto.topic.TopicResponseDTO;
 import com.capstone.notechigima.dto.sentence.SentenceResponseDTO;
-import com.capstone.notechigima.dto.users.GetUserResponseDTO;
+import com.capstone.notechigima.dto.users.UserReadResponseDTO;
 
 import java.util.List;
-import java.util.Optional;
 
 public class ModelMapper {
 
@@ -81,8 +80,8 @@ public class ModelMapper {
         );
     }
 
-    public GetUserResponseDTO map(UserEntity entity) {
-        return new GetUserResponseDTO(
+    public UserReadResponseDTO map(UserEntity entity) {
+        return new UserReadResponseDTO(
                 entity.getUserId(),
                 entity.getEmail(),
                 entity.getNickname()
@@ -96,6 +95,14 @@ public class ModelMapper {
                 .title(topic.getTitle())
                 .updatedAt(topic.getUpdatedAt())
                 .analyzed(topic.getAnalyzed())
+                .build();
+    }
+
+    public UserReadResponseDTO map(User user) {
+        return UserReadResponseDTO.builder()
+                .userId(user.getUserId())
+                .email(user.getEmail())
+                .nickname(user.getNickname())
                 .build();
     }
 }

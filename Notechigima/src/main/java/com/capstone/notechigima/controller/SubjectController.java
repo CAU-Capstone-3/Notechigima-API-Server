@@ -3,7 +3,7 @@ package com.capstone.notechigima.controller;
 import com.capstone.notechigima.config.BaseResponse;
 import com.capstone.notechigima.config.BaseResponseStatus;
 import com.capstone.notechigima.dto.topic.TopicResponseDTO;
-import com.capstone.notechigima.service.TopicServiceTemp;
+import com.capstone.notechigima.service.TopicServiceJPA;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
@@ -15,9 +15,9 @@ import java.util.List;
 @RequestMapping("/api/subject")
 public class SubjectController {
 
-    private final TopicServiceTemp topicService;
+    private final TopicServiceJPA topicService;
 
-    public SubjectController(TopicServiceTemp topicService) {
+    public SubjectController(TopicServiceJPA topicService) {
         this.topicService = topicService;
     }
 

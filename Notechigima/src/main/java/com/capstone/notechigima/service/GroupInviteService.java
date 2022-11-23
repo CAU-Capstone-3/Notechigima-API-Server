@@ -1,6 +1,6 @@
 package com.capstone.notechigima.service;
 
-import com.capstone.notechigima.domain.invite.GroupInvite;
+import com.capstone.notechigima.domain.group_invite.GroupInvite;
 import com.capstone.notechigima.repository.GroupInviteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

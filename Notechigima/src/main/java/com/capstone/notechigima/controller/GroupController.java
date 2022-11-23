@@ -4,10 +4,11 @@ import com.capstone.notechigima.config.BaseException;
 import com.capstone.notechigima.config.BaseResponse;
 import com.capstone.notechigima.config.BaseResponseStatus;
 import com.capstone.notechigima.dto.group.PostGroupRequestDTO;
-import com.capstone.notechigima.dto.users.GetUserResponseDTO;
+import com.capstone.notechigima.dto.users.UserReadResponseDTO;
 import com.capstone.notechigima.service.GroupInviteService;
 import com.capstone.notechigima.service.GroupService;
 import com.capstone.notechigima.service.UserService;
+import com.capstone.notechigima.service.UserServiceJPA;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,7 +24,7 @@ import java.util.List;
 public class GroupController {
 
     private final GroupService groupService;
-    private final UserService userService;
+    private final UserServiceJPA userService;
     private final GroupInviteService groupInviteService;
 
     @PostMapping()
@@ -36,7 +37,7 @@ public class GroupController {
     @ResponseBody
     @GetMapping("/{groupId}/members")
     @Operation(summary = "멤버 조회", description = "그룹에 속한 멤버 목록 조회")
-    public BaseResponse<List<GetUserResponseDTO>> getMembersByGroupId(@PathVariable("groupId") int groupId) throws BaseException {
+    public BaseResponse<List<UserReadResponseDTO>> getMembersByGroupId(@PathVariable("groupId") int groupId) throws BaseException {
         return new BaseResponse(BaseResponseStatus.SUCCESS_READ, userService.getMembersByGroupId(groupId));
     }
 

@@ -1,4 +1,4 @@
-package com.capstone.notechigima.domain.invite;
+package com.capstone.notechigima.domain.group_invite;
 
 import com.capstone.notechigima.domain.BaseTimeEntity;
 import lombok.Builder;

@@ -9,7 +9,6 @@ import com.capstone.notechigima.dto.ModelMapper;
 import com.capstone.notechigima.dto.advice.AdviceInferenceRequestVO;
 import com.capstone.notechigima.dto.topic.TopicResponseDTO;
 import com.capstone.notechigima.repository.AdviceRepository;
-import com.capstone.notechigima.repository.NoteRepository;
 import com.capstone.notechigima.repository.SentenceRepository;
 import com.capstone.notechigima.repository.TopicRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +26,7 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
-public class TopicServiceTemp {
+public class TopicServiceJPA {
     private static final String NLI_ULI = "http://18.189.150.89:5000/nli";
 
     private final TopicRepository topicRepository;

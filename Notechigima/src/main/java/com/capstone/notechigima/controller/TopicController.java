@@ -8,7 +8,7 @@ import com.capstone.notechigima.dto.advice.AdviceResponseDTO;
 import com.capstone.notechigima.dto.note.GetNoteSummarizedDTO;
 import com.capstone.notechigima.service.AdviceService;
 import com.capstone.notechigima.service.NoteService;
-import com.capstone.notechigima.service.TopicServiceTemp;
+import com.capstone.notechigima.service.TopicServiceJPA;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
@@ -20,11 +20,11 @@ import java.util.List;
 @RequestMapping("/api/topic")
 public class TopicController {
 
-    private final TopicServiceTemp topicService;
+    private final TopicServiceJPA topicService;
     private final NoteService noteService;
     private final AdviceService adviceService;
 
-    public TopicController(TopicServiceTemp topicService, NoteService noteService, AdviceService adviceService) {
+    public TopicController(TopicServiceJPA topicService, NoteService noteService, AdviceService adviceService) {
         this.topicService = topicService;
         this.noteService = noteService;
         this.adviceService = adviceService;

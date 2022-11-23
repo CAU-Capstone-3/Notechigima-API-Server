@@ -1,6 +1,6 @@
 package com.capstone.notechigima.dto.invite;
 
-import com.capstone.notechigima.domain.invite.GroupInvite;
+import com.capstone.notechigima.domain.group_invite.GroupInvite;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

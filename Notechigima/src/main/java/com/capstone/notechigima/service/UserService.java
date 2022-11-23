@@ -1,9 +1,9 @@
 package com.capstone.notechigima.service;
 
-import com.capstone.notechigima.dto.users.GetUserResponseDTO;
+import com.capstone.notechigima.dto.users.UserReadResponseDTO;
 
 import java.util.List;
 
 public interface UserService {
-    List<GetUserResponseDTO> getMembersByGroupId(int groupId);
+    List<UserReadResponseDTO> getMembersByGroupId(int groupId);
 }
