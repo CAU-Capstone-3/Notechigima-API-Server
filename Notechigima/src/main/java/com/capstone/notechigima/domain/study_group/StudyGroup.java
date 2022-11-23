@@ -23,6 +23,7 @@ public class StudyGroup extends BaseTimeEntity {
     @Column(nullable = false)
     private String name;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ActiveStatus status;
 

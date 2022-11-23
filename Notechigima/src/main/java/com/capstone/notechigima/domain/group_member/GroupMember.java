@@ -8,14 +8,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Getter
 @NoArgsConstructor
 @Entity
 @IdClass(GroupMemberPK.class)
-public class GroupMember extends BaseTimeEntity implements Serializable {
+public class GroupMember extends BaseTimeEntity {
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private GroupAccessType access;
 
@@ -28,7 +28,6 @@ public class GroupMember extends BaseTimeEntity implements Serializable {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-
 
     @Builder
     public GroupMember(GroupAccessType access) {
