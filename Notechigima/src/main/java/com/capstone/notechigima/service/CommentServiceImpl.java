@@ -16,9 +16,9 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public int postComment(PostCommentRequestDTO body) throws BaseException {
+    public int postComment(int adviceId, PostCommentRequestDTO body) throws BaseException {
         return commentRepository.postComment(
-                new CommentWriteEntity(body.getUserId(), body.getAdviceId(), body.getContent())
+                new CommentWriteEntity(body.getUserId(), adviceId, body.getContent())
         );
     }
 }
