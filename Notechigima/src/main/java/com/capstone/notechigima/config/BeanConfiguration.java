@@ -1,6 +1,6 @@
 package com.capstone.notechigima.config;
 
-import com.capstone.notechigima.model.ModelMapper;
+import com.capstone.notechigima.dto.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

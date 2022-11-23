@@ -1,4 +1,4 @@
-package com.capstone.notechigima.model.sentence;
+package com.capstone.notechigima.dto.sentence;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

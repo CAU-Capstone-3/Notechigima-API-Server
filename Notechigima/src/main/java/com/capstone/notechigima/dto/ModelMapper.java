@@ -1,4 +1,4 @@
-package com.capstone.notechigima.model;
+package com.capstone.notechigima.dto;
 
 import com.capstone.notechigima.domain.advice.AdviceDetailEntity;
 import com.capstone.notechigima.domain.group.GroupCreateEntity;
@@ -8,15 +8,15 @@ import com.capstone.notechigima.domain.note.NoteOwnerEntity;
 import com.capstone.notechigima.domain.topic.TopicEntity;
 import com.capstone.notechigima.domain.sentence.SentenceEntity;
 import com.capstone.notechigima.domain.users.UserEntity;
-import com.capstone.notechigima.model.advice.AdviceResponseDTO;
-import com.capstone.notechigima.model.group.GetGroupResponseDTO;
-import com.capstone.notechigima.model.group.PostGroupRequestDTO;
-import com.capstone.notechigima.model.note.GetNoteResponseDTO;
-import com.capstone.notechigima.model.note.GetNoteSummarizedDTO;
-import com.capstone.notechigima.model.sentence.SentenceVO;
-import com.capstone.notechigima.model.topic.TopicResponseDTO;
-import com.capstone.notechigima.model.sentence.SentenceResponseDTO;
-import com.capstone.notechigima.model.users.GetUserResponseDTO;
+import com.capstone.notechigima.dto.advice.AdviceResponseDTO;
+import com.capstone.notechigima.dto.group.GetGroupResponseDTO;
+import com.capstone.notechigima.dto.group.PostGroupRequestDTO;
+import com.capstone.notechigima.dto.note.GetNoteResponseDTO;
+import com.capstone.notechigima.dto.note.GetNoteSummarizedDTO;
+import com.capstone.notechigima.dto.sentence.SentenceVO;
+import com.capstone.notechigima.dto.topic.TopicResponseDTO;
+import com.capstone.notechigima.dto.sentence.SentenceResponseDTO;
+import com.capstone.notechigima.dto.users.GetUserResponseDTO;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package com.capstone.notechigima.service;
 
-import com.capstone.notechigima.model.topic.TopicResponseDTO;
+import com.capstone.notechigima.dto.topic.TopicResponseDTO;
 import org.springframework.scheduling.annotation.Async;
 
 import java.util.List;

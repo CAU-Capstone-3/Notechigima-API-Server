@@ -1,4 +1,4 @@
-package com.capstone.notechigima.model.users;
+package com.capstone.notechigima.dto.users;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

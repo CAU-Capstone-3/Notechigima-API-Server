@@ -1,4 +1,4 @@
-package com.capstone.notechigima.model.advice;
+package com.capstone.notechigima.dto.advice;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

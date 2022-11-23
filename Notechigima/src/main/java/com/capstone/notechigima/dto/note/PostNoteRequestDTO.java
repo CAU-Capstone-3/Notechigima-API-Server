@@ -1,4 +1,4 @@
-package com.capstone.notechigima.model.note;
+package com.capstone.notechigima.dto.note;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

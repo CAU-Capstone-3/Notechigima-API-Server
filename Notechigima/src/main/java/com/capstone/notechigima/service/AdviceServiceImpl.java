@@ -1,7 +1,7 @@
 package com.capstone.notechigima.service;
 
-import com.capstone.notechigima.model.ModelMapper;
-import com.capstone.notechigima.model.advice.AdviceResponseDTO;
+import com.capstone.notechigima.dto.ModelMapper;
+import com.capstone.notechigima.dto.advice.AdviceResponseDTO;
 import com.capstone.notechigima.repository.AdviceRepository;
 import com.capstone.notechigima.repository.CommentRepository;
 import org.springframework.stereotype.Service;

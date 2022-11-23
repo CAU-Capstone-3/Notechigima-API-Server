@@ -2,7 +2,7 @@ package com.capstone.notechigima.service;
 
 import com.capstone.notechigima.config.BaseException;
 import com.capstone.notechigima.domain.comment.CommentWriteEntity;
-import com.capstone.notechigima.model.comment.PostCommentRequestDTO;
+import com.capstone.notechigima.dto.comment.PostCommentRequestDTO;
 import com.capstone.notechigima.repository.CommentRepository;
 import org.springframework.stereotype.Service;
 

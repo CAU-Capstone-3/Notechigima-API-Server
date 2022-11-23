@@ -1,6 +1,6 @@
-package com.capstone.notechigima.model.note;
+package com.capstone.notechigima.dto.note;
 
-import com.capstone.notechigima.model.sentence.SentenceResponseDTO;
+import com.capstone.notechigima.dto.sentence.SentenceResponseDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
