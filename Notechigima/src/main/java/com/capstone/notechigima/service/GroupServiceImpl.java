@@ -1,10 +1,10 @@
 package com.capstone.notechigima.service;
 
 import com.capstone.notechigima.model.ModelMapper;
-import com.capstone.notechigima.model.dao.group.GroupCreateEntity;
-import com.capstone.notechigima.model.dao.group.MemberEntity;
-import com.capstone.notechigima.model.dto.group.GetGroupResponseDTO;
-import com.capstone.notechigima.model.dto.group.PostGroupRequestDTO;
+import com.capstone.notechigima.domain.GroupCreateEntity;
+import com.capstone.notechigima.domain.MemberEntity;
+import com.capstone.notechigima.model.group.GetGroupResponseDTO;
+import com.capstone.notechigima.model.group.PostGroupRequestDTO;
 import com.capstone.notechigima.repository.GroupRepository;
 import org.springframework.stereotype.Service;
 

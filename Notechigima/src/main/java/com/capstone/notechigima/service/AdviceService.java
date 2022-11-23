@@ -1,6 +1,6 @@
 package com.capstone.notechigima.service;
 
-import com.capstone.notechigima.model.dto.advice.AdviceResponseDTO;
+import com.capstone.notechigima.model.advice.AdviceResponseDTO;
 
 import java.util.List;
 

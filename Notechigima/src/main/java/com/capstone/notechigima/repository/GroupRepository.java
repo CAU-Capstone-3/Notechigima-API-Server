@@ -1,8 +1,8 @@
 package com.capstone.notechigima.repository;
 
-import com.capstone.notechigima.model.dao.group.GroupCreateEntity;
-import com.capstone.notechigima.model.dao.group.GroupEntity;
-import com.capstone.notechigima.model.dao.group.MemberEntity;
+import com.capstone.notechigima.domain.GroupCreateEntity;
+import com.capstone.notechigima.domain.GroupEntity;
+import com.capstone.notechigima.domain.MemberEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 

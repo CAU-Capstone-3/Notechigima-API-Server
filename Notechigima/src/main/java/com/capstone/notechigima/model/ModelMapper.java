@@ -1,22 +1,22 @@
 package com.capstone.notechigima.model;
 
-import com.capstone.notechigima.model.dao.advice.AdviceDetailEntity;
-import com.capstone.notechigima.model.dao.group.GroupCreateEntity;
-import com.capstone.notechigima.model.dao.group.GroupEntity;
-import com.capstone.notechigima.model.dao.note.NoteDetailEntity;
-import com.capstone.notechigima.model.dao.note.NoteOwnerEntity;
-import com.capstone.notechigima.model.dao.topic.TopicEntity;
-import com.capstone.notechigima.model.dao.sentence.SentenceEntity;
-import com.capstone.notechigima.model.dao.users.UserEntity;
-import com.capstone.notechigima.model.dto.advice.AdviceResponseDTO;
-import com.capstone.notechigima.model.dto.group.GetGroupResponseDTO;
-import com.capstone.notechigima.model.dto.group.PostGroupRequestDTO;
-import com.capstone.notechigima.model.dto.note.GetNoteResponseDTO;
-import com.capstone.notechigima.model.dto.note.GetNoteSummarizedDTO;
-import com.capstone.notechigima.model.dto.sentence.SentenceVO;
-import com.capstone.notechigima.model.dto.topic.TopicResponseDTO;
-import com.capstone.notechigima.model.dto.sentence.SentenceResponseDTO;
-import com.capstone.notechigima.model.dto.users.GetUserResponseDTO;
+import com.capstone.notechigima.domain.AdviceDetailEntity;
+import com.capstone.notechigima.domain.GroupCreateEntity;
+import com.capstone.notechigima.domain.GroupEntity;
+import com.capstone.notechigima.domain.NoteDetailEntity;
+import com.capstone.notechigima.domain.NoteOwnerEntity;
+import com.capstone.notechigima.domain.TopicEntity;
+import com.capstone.notechigima.domain.SentenceEntity;
+import com.capstone.notechigima.domain.UserEntity;
+import com.capstone.notechigima.model.advice.AdviceResponseDTO;
+import com.capstone.notechigima.model.group.GetGroupResponseDTO;
+import com.capstone.notechigima.model.group.PostGroupRequestDTO;
+import com.capstone.notechigima.model.note.GetNoteResponseDTO;
+import com.capstone.notechigima.model.note.GetNoteSummarizedDTO;
+import com.capstone.notechigima.model.sentence.SentenceVO;
+import com.capstone.notechigima.model.topic.TopicResponseDTO;
+import com.capstone.notechigima.model.sentence.SentenceResponseDTO;
+import com.capstone.notechigima.model.users.GetUserResponseDTO;
 
 import java.util.List;
 
