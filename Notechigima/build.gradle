@@ -21,7 +21,6 @@ repositories {
 dependencies {
     //spring boot
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
@@ -33,7 +32,7 @@ dependencies {
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.2'
 
     //jpa
-    implementation 'org.springframework.boot:spring-boot-stater-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
     //h2 database
     implementation 'com.h2database:h2'

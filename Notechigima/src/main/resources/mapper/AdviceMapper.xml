@@ -13,7 +13,7 @@
         </foreach>
     </insert>
     
-    <resultMap id="adviceList" type="com.capstone.notechigima.domain.adviceailEntity">
+    <resultMap id="adviceList" type="com.capstone.notechigima.domain.advice.AdviceEntity">
         <result property="adviceId" column="adviceId"/>
         <result property="adviceType" column="adviceType"/>
         <result property="sentenceId1" column="sentenceId1"/>

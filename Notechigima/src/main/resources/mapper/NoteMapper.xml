@@ -5,7 +5,7 @@
 
 <mapper namespace="com.capstone.notechigima.repository.NoteRepository">
 
-    <select id="getNoteDetail" resultType="com.capstone.notechigima.domain.noteailEntity">
+    <select id="getNoteDetail" resultType="com.capstone.notechigima.domain.note.NoteDetailEntity">
         SELECT n.note_id noteId, n.owner_id ownerId, n.topic_id topicId, n.status status,
                n.created_at createdAt, n.updated_at updatedAt,
                u.nickname ownerName,
