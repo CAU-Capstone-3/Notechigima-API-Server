@@ -1,4 +1,4 @@
-package com.capstone.notechigima.domain;
+package com.capstone.notechigima.domain.advice;
 
 public enum AdviceType {
     CONTRADICTION('C');

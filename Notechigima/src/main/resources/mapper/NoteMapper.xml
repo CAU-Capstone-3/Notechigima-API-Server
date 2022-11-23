@@ -17,12 +17,12 @@
         WHERE #{noteId} = n.note_id;
     </select>
 
-    <insert id="insertNote" parameterType="com.capstone.notechigima.domain.NoteInsertEntity" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertNote" parameterType="com.capstone.notechigima.domain.note.NoteInsertEntity" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO note (owner_id, topic_id)
         VALUES(#{ownerId}, #{topicId})
     </insert>
 
-    <select id="getNoteList" resultType="com.capstone.notechigima.domain.NoteOwnerEntity">
+    <select id="getNoteList" resultType="com.capstone.notechigima.domain.note.NoteOwnerEntity">
         SELECT n.note_id, n.owner_id, u.nickname, n.updated_at
         FROM note n
         LEFT JOIN user u ON n.owner_id = u.user_id

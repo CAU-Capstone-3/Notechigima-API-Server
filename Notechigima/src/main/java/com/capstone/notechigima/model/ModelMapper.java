@@ -1,13 +1,13 @@
 package com.capstone.notechigima.model;
 
-import com.capstone.notechigima.domain.AdviceDetailEntity;
-import com.capstone.notechigima.domain.GroupCreateEntity;
-import com.capstone.notechigima.domain.GroupEntity;
-import com.capstone.notechigima.domain.NoteDetailEntity;
-import com.capstone.notechigima.domain.NoteOwnerEntity;
-import com.capstone.notechigima.domain.TopicEntity;
-import com.capstone.notechigima.domain.SentenceEntity;
-import com.capstone.notechigima.domain.UserEntity;
+import com.capstone.notechigima.domain.advice.AdviceDetailEntity;
+import com.capstone.notechigima.domain.group.GroupCreateEntity;
+import com.capstone.notechigima.domain.group.GroupEntity;
+import com.capstone.notechigima.domain.note.NoteDetailEntity;
+import com.capstone.notechigima.domain.note.NoteOwnerEntity;
+import com.capstone.notechigima.domain.topic.TopicEntity;
+import com.capstone.notechigima.domain.sentence.SentenceEntity;
+import com.capstone.notechigima.domain.users.UserEntity;
 import com.capstone.notechigima.model.advice.AdviceResponseDTO;
 import com.capstone.notechigima.model.group.GetGroupResponseDTO;
 import com.capstone.notechigima.model.group.PostGroupRequestDTO;

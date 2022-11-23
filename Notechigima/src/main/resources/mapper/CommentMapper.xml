@@ -13,7 +13,7 @@
         WHERE #{adviceId} = c.advice_id;
     </select>
 
-    <insert id="postComment" parameterType="com.capstone.notechigima.domain.CommentWriteEntity">
+    <insert id="postComment" parameterType="com.capstone.notechigima.domain.comment.CommentWriteEntity">
         INSERT INTO advice_comment (user_id, advice_id, content)
         VALUES(#{userId}, #{adviceId}, #{content})
     </insert>

@@ -1,6 +1,6 @@
 package com.capstone.notechigima.repository;
 
-import com.capstone.notechigima.domain.UserEntity;
+import com.capstone.notechigima.domain.users.UserEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 

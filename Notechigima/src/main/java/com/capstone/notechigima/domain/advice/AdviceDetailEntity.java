@@ -1,5 +1,6 @@
-package com.capstone.notechigima.domain;
+package com.capstone.notechigima.domain.advice;
 
+import com.capstone.notechigima.domain.comment.CommentDetailEntity;
 import lombok.*;
 
 import java.util.List;

@@ -11,7 +11,7 @@
         WHERE #{noteId} = s.note_id
     </select>
 
-    <select id="getSentenceListByTopicId" resultType="com.capstone.notechigima.domain.SentenceWithWriterEntity">
+    <select id="getSentenceListByTopicId" resultType="com.capstone.notechigima.domain.sentence.SentenceWithWriterEntity">
         SELECT s.sentence_id sentenceId, s.content content,
                u.user_id writerId, u.nickname writerName
         FROM sentence_unit s

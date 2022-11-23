@@ -1,9 +1,9 @@
 package com.capstone.notechigima.service;
 
 import com.capstone.notechigima.model.ModelMapper;
-import com.capstone.notechigima.domain.AdviceEntity;
-import com.capstone.notechigima.domain.AdviceType;
-import com.capstone.notechigima.domain.SentenceWithWriterEntity;
+import com.capstone.notechigima.domain.advice.AdviceEntity;
+import com.capstone.notechigima.domain.advice.AdviceType;
+import com.capstone.notechigima.domain.sentence.SentenceWithWriterEntity;
 import com.capstone.notechigima.model.advice.AdviceInferenceRequestVO;
 import com.capstone.notechigima.model.topic.TopicResponseDTO;
 import com.capstone.notechigima.repository.AdviceRepository;

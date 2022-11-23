@@ -1,8 +1,8 @@
 package com.capstone.notechigima.service;
 
 import com.capstone.notechigima.model.ModelMapper;
-import com.capstone.notechigima.domain.GroupCreateEntity;
-import com.capstone.notechigima.domain.MemberEntity;
+import com.capstone.notechigima.domain.group.GroupCreateEntity;
+import com.capstone.notechigima.domain.users.MemberEntity;
 import com.capstone.notechigima.model.group.GetGroupResponseDTO;
 import com.capstone.notechigima.model.group.PostGroupRequestDTO;
 import com.capstone.notechigima.repository.GroupRepository;

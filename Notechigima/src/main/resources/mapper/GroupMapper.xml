@@ -12,12 +12,12 @@
         WHERE m.user_id = #{userId}
     </select>
 
-    <insert id="insertGroup" parameterType="com.capstone.notechigima.domain.GroupCreateEntity" useGeneratedKeys="true" keyProperty="groupId">
+    <insert id="insertGroup" parameterType="com.capstone.notechigima.domain.group.GroupCreateEntity" useGeneratedKeys="true" keyProperty="groupId">
         INSERT INTO study_group (name)
         VALUES(#{groupName})
     </insert>
 
-    <insert id="insertMember" parameterType="com.capstone.notechigima.domain.MemberEntity">
+    <insert id="insertMember" parameterType="com.capstone.notechigima.domain.users.MemberEntity">
         INSERT INTO group_member (user_id, group_id, access)
         VALUES (#{userId}, #{groupId}, #{access})
     </insert>

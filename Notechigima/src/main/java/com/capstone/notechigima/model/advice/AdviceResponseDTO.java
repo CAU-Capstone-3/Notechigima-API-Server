@@ -1,6 +1,6 @@
 package com.capstone.notechigima.model.advice;
 
-import com.capstone.notechigima.domain.CommentDetailEntity;
+import com.capstone.notechigima.domain.comment.CommentDetailEntity;
 import com.capstone.notechigima.model.sentence.SentenceVO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

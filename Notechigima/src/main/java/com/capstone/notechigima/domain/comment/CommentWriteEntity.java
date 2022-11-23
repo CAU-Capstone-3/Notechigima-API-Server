@@ -1,4 +1,4 @@
-package com.capstone.notechigima.domain;
+package com.capstone.notechigima.domain.comment;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

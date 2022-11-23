@@ -1,8 +1,8 @@
 package com.capstone.notechigima.repository;
 
-import com.capstone.notechigima.domain.GroupCreateEntity;
-import com.capstone.notechigima.domain.GroupEntity;
-import com.capstone.notechigima.domain.MemberEntity;
+import com.capstone.notechigima.domain.group.GroupCreateEntity;
+import com.capstone.notechigima.domain.group.GroupEntity;
+import com.capstone.notechigima.domain.users.MemberEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 

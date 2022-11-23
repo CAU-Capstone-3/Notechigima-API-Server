@@ -2,9 +2,9 @@ package com.capstone.notechigima.service;
 
 import com.capstone.notechigima.config.BaseException;
 import com.capstone.notechigima.model.ModelMapper;
-import com.capstone.notechigima.domain.NoteDetailEntity;
-import com.capstone.notechigima.domain.SentenceEntity;
-import com.capstone.notechigima.domain.NoteInsertEntity;
+import com.capstone.notechigima.domain.note.NoteDetailEntity;
+import com.capstone.notechigima.domain.sentence.SentenceEntity;
+import com.capstone.notechigima.domain.note.NoteInsertEntity;
 import com.capstone.notechigima.model.note.GetNoteResponseDTO;
 import com.capstone.notechigima.model.note.GetNoteSummarizedDTO;
 import com.capstone.notechigima.model.note.PostNoteRequestDTO;

@@ -1,8 +1,8 @@
 package com.capstone.notechigima.repository;
 
-import com.capstone.notechigima.domain.NoteDetailEntity;
-import com.capstone.notechigima.domain.NoteInsertEntity;
-import com.capstone.notechigima.domain.NoteOwnerEntity;
+import com.capstone.notechigima.domain.note.NoteDetailEntity;
+import com.capstone.notechigima.domain.note.NoteInsertEntity;
+import com.capstone.notechigima.domain.note.NoteOwnerEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
