@@ -32,9 +32,6 @@ public class ModelMapper {
         return new GetNoteSummarizedDTO(entity.getNoteId(), entity.getOwnerId(), entity.getOwnerName(), entity.getUpdatedAt());
     }
 
-    public TopicResponseDTO map(TopicEntity entity) {
-        return new TopicResponseDTO(entity.getTopicId(), entity.getTitle(), entity.getUpdatedAt(), entity.getAnalyzed());
-    }
 
     public GetNoteResponseDTO map(NoteDetailEntity entity, List<SentenceResponseDTO> sentenceResult) {
         return new GetNoteResponseDTO(
@@ -98,7 +95,7 @@ public class ModelMapper {
                 .topicId(topic.getTopicId())
                 .title(topic.getTitle())
                 .updatedAt(topic.getUpdatedAt())
-                .analyzed(String.valueOf(topic.getAnalyzed()))
+                .analyzed(topic.getAnalyzed())
                 .build();
     }
 }
