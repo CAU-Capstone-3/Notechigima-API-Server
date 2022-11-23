@@ -33,6 +33,6 @@ public class GroupController {
     @PostMapping()
     public BaseResponse postGroup(@RequestBody PostGroupRequestDTO body) throws BaseException {
         groupService.postGroup(body);
-        return new BaseResponse(BaseResponseStatus.SUCCESS_EDIT);
+        return new BaseResponse(BaseResponseStatus.SUCCESS_WRITE);
     }
 }
