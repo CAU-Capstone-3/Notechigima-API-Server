@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Tag(name = "topic", description = "주차별 조회 API")
+@Tag(name = "topic", description = "토푁 관련 API")
 @RestController
 @RequestMapping("/api/topic")
 public class TopicController {
