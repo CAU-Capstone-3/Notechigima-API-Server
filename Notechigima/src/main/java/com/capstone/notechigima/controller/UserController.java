@@ -29,8 +29,8 @@ public class UserController {
         return new BaseResponse(BaseResponseStatus.SUCCESS_READ, groupService.getGroups(userId));
     }
 
-    @ResponseBody
-    @GetMapping("/{userId}/invites")
-    @Operation(summary = "초대된 그룹 목록", description = "나한테 그룹 초대를 요청한 목록 조회")
-    public BaseResponse<List<GroupInvite>>
+//    @ResponseBody
+//    @GetMapping("/{userId}/invites")
+//    @Operation(summary = "초대된 그룹 목록", description = "나한테 그룹 초대를 요청한 목록 조회")
+//    public BaseResponse<List<GroupInvite>>
 }
