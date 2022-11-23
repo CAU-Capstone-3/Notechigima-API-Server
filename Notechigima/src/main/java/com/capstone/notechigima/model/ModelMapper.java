@@ -1,11 +1,15 @@
 package com.capstone.notechigima.model;
 
 import com.capstone.notechigima.model.dao.advice.AdviceDetailEntity;
+import com.capstone.notechigima.model.dao.group.GroupCreateEntity;
+import com.capstone.notechigima.model.dao.group.GroupEntity;
 import com.capstone.notechigima.model.dao.note.NoteDetailEntity;
 import com.capstone.notechigima.model.dao.note.NoteOwnerEntity;
 import com.capstone.notechigima.model.dao.topic.TopicEntity;
 import com.capstone.notechigima.model.dao.sentence.SentenceEntity;
 import com.capstone.notechigima.model.dto.advice.AdviceResponseDTO;
+import com.capstone.notechigima.model.dto.group.GetGroupResponseDTO;
+import com.capstone.notechigima.model.dto.group.PostGroupRequestDTO;
 import com.capstone.notechigima.model.dto.note.GetNoteResponseDTO;
 import com.capstone.notechigima.model.dto.note.GetNoteSummarizedDTO;
 import com.capstone.notechigima.model.dto.sentence.SentenceVO;
@@ -58,6 +62,21 @@ public class ModelMapper {
                 content,
                 writerId,
                 writerName
+        );
+    }
+
+    public GetGroupResponseDTO map(GroupEntity entity) {
+        return new GetGroupResponseDTO(
+                entity.getGroupId(),
+                entity.getGroupName()
+        );
+    }
+
+    public GroupCreateEntity map(PostGroupRequestDTO body) {
+        return new GroupCreateEntity(
+                body.getUserId(),
+                0,
+                body.getGroupName()
         );
     }
 }
