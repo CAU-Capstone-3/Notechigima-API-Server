@@ -7,6 +7,7 @@ import com.capstone.notechigima.model.dao.note.NoteDetailEntity;
 import com.capstone.notechigima.model.dao.note.NoteOwnerEntity;
 import com.capstone.notechigima.model.dao.topic.TopicEntity;
 import com.capstone.notechigima.model.dao.sentence.SentenceEntity;
+import com.capstone.notechigima.model.dao.users.UserEntity;
 import com.capstone.notechigima.model.dto.advice.AdviceResponseDTO;
 import com.capstone.notechigima.model.dto.group.GetGroupResponseDTO;
 import com.capstone.notechigima.model.dto.group.PostGroupRequestDTO;
@@ -15,6 +16,7 @@ import com.capstone.notechigima.model.dto.note.GetNoteSummarizedDTO;
 import com.capstone.notechigima.model.dto.sentence.SentenceVO;
 import com.capstone.notechigima.model.dto.topic.TopicResponseDTO;
 import com.capstone.notechigima.model.dto.sentence.SentenceResponseDTO;
+import com.capstone.notechigima.model.dto.users.GetUserResponseDTO;
 
 import java.util.List;
 
@@ -77,6 +79,14 @@ public class ModelMapper {
                 body.getUserId(),
                 0,
                 body.getGroupName()
+        );
+    }
+
+    public GetUserResponseDTO map(UserEntity entity) {
+        return new GetUserResponseDTO(
+                entity.getUserId(),
+                entity.getEmail(),
+                entity.getNickname()
         );
     }
 }

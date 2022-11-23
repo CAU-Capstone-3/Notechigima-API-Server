@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 @Mapper
 public interface GroupRepository {
-    List<GroupEntity> getGroups(int userId);
+    List<GroupEntity> getGroupsByUserId(int userId);
     int insertGroup(GroupCreateEntity body);
     int insertMember(MemberEntity entity);
 }
