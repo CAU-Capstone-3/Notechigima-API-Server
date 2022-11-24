@@ -6,7 +6,7 @@ import com.capstone.notechigima.config.BaseResponse;
 import com.capstone.notechigima.domain.topic.TopicAnalyzedType;
 import com.capstone.notechigima.dto.advice.AdviceGetResponseDTO;
 import com.capstone.notechigima.dto.note.NoteListGetResponseDTO;
-import com.capstone.notechigima.service.AdviceService;
+import com.capstone.notechigima.service.AdviceServiceJPA;
 import com.capstone.notechigima.service.NoteServiceJPA;
 import com.capstone.notechigima.service.TopicServiceJPA;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,7 +24,7 @@ public class TopicController {
 
     private final TopicServiceJPA topicService;
     private final NoteServiceJPA noteService;
-    private final AdviceService adviceService;
+    private final AdviceServiceJPA adviceService;
 
     @ResponseBody
     @GetMapping("/{topicId}/note")
