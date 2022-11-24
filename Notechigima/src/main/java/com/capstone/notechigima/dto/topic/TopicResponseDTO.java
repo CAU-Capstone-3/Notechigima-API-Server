@@ -1,6 +1,6 @@
 package com.capstone.notechigima.dto.topic;
 
-import com.capstone.notechigima.domain.topic.TopicAnalyzed;
+import com.capstone.notechigima.domain.topic.TopicAnalyzedType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,10 +18,10 @@ public class TopicResponseDTO {
     @Schema(description = "최종 업데이트 시간")
     private LocalDateTime updatedAt;
     @Schema(description = "분석 완료 여부", defaultValue = "false")
-    private TopicAnalyzed analyzed;
+    private TopicAnalyzedType analyzed;
 
     @Builder
-    public TopicResponseDTO(int topicId, String title, LocalDateTime updatedAt, TopicAnalyzed analyzed) {
+    public TopicResponseDTO(int topicId, String title, LocalDateTime updatedAt, TopicAnalyzedType analyzed) {
         this.topicId = topicId;
         this.title = title;
         this.updatedAt = updatedAt;

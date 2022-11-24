@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
@@ -30,10 +29,10 @@ public class Topic extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private TopicAnalyzed analyzed;
+    private TopicAnalyzedType analyzed;
 
     @Builder
-    public Topic(int topicId, int subjectId, VisibilityStatus status, String title, TopicAnalyzed analyzed) {
+    public Topic(int topicId, int subjectId, VisibilityStatus status, String title, TopicAnalyzedType analyzed) {
         this.topicId = topicId;
         this.subjectId = subjectId;
         this.status = status;
@@ -41,7 +40,7 @@ public class Topic extends BaseTimeEntity {
         this.analyzed = analyzed;
     }
 
-    public void updateAnalyzed(TopicAnalyzed analyzed) {
+    public void updateAnalyzed(TopicAnalyzedType analyzed) {
         this.analyzed = analyzed;
     }
 }

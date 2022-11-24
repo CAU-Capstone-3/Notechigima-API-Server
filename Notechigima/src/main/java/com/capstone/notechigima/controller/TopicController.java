@@ -3,7 +3,7 @@ package com.capstone.notechigima.controller;
 import com.capstone.notechigima.config.BaseException;
 import com.capstone.notechigima.config.BaseResponseStatus;
 import com.capstone.notechigima.config.BaseResponse;
-import com.capstone.notechigima.domain.topic.TopicAnalyzed;
+import com.capstone.notechigima.domain.topic.TopicAnalyzedType;
 import com.capstone.notechigima.dto.advice.AdviceResponseDTO;
 import com.capstone.notechigima.dto.note.GetNoteSummarizedDTO;
 import com.capstone.notechigima.service.AdviceService;
@@ -41,7 +41,7 @@ public class TopicController {
     @PostMapping("/{topicId}/advice")
     @Operation(summary = "분석 요청", description = "해당 토픽에 대한 분석 시작을 요청")
     public BaseResponse requestAnalysis(@PathVariable("topicId") int topicId) {
-        if (topicService.getTopic(topicId).getAnalyzed() != TopicAnalyzed.READY)
+        if (topicService.getTopic(topicId).getAnalyzed() != TopicAnalyzedType.READY)
             return new BaseResponse(BaseResponseStatus.CAN_NOT_ANALYZE);
         topicService.requestAnalysis(topicId);
         return new BaseResponse(BaseResponseStatus.SUCCESS_WRITE);

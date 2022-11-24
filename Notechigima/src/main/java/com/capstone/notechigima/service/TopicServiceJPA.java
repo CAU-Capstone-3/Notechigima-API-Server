@@ -4,7 +4,7 @@ import com.capstone.notechigima.domain.advice.AdviceEntity;
 import com.capstone.notechigima.domain.advice.AdviceType;
 import com.capstone.notechigima.domain.sentence.SentenceWithWriterEntity;
 import com.capstone.notechigima.domain.topic.Topic;
-import com.capstone.notechigima.domain.topic.TopicAnalyzed;
+import com.capstone.notechigima.domain.topic.TopicAnalyzedType;
 import com.capstone.notechigima.dto.ModelMapper;
 import com.capstone.notechigima.dto.advice.AdviceInferenceRequestVO;
 import com.capstone.notechigima.dto.topic.TopicResponseDTO;
@@ -48,7 +48,7 @@ public class TopicServiceJPA {
     @Async("threadPoolTaskExecutor")
     public void requestAnalysis(int topicId) {
         Topic topicToUpdate = topicRepository.findById(topicId).orElseThrow();
-        topicToUpdate.updateAnalyzed(TopicAnalyzed.RUNNING);
+        topicToUpdate.updateAnalyzed(TopicAnalyzedType.RUNNING);
         topicRepository.save(topicToUpdate);
 
         ArrayList<AdviceEntity> advices = new ArrayList<>();
@@ -69,7 +69,7 @@ public class TopicServiceJPA {
         if (!advices.isEmpty())
             adviceRepository.insertAll(toMap(advices));
 
-        topicToUpdate.updateAnalyzed(TopicAnalyzed.FINISH);
+        topicToUpdate.updateAnalyzed(TopicAnalyzedType.FINISH);
         topicRepository.save(topicToUpdate);
     }
 

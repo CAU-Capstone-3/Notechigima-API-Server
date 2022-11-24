@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum TopicAnalyzed {
+public enum TopicAnalyzedType {
 
     UNREADY("UNREADY", "토픽 내에 노트를 작성하지 않은 사람이 있어서 분석 불가"),
     READY("READY", "노트를 모두 작성하여 분석 가능"),
