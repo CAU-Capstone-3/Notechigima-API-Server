@@ -18,7 +18,7 @@ public class UserServiceJPA {
     private final ModelMapper modelMapper;
 
     public List<UserReadResponseDTO> getMembersByGroupId(int groupId) {
-        return groupMemberRepository.findAllEntityByGroupId(groupId)
+        return groupMemberRepository.findAllByStudyGroup_GroupId(groupId)
                 .stream()
                 .map(groupMember -> modelMapper.map(groupMember.getUser()))
                 .collect(Collectors.toList());
