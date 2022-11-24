@@ -10,7 +10,7 @@ import com.capstone.notechigima.dto.ModelMapper;
 import com.capstone.notechigima.dto.note.NoteGetResponseDTO;
 import com.capstone.notechigima.dto.note.NoteListGetResponseDTO;
 import com.capstone.notechigima.dto.note.PostNoteRequestDTO;
-import com.capstone.notechigima.dto.sentence.SentenceResponseDTO;
+import com.capstone.notechigima.dto.sentence.SentenceListGetResponseDTO;
 import com.capstone.notechigima.mapper.NoteMapper;
 import com.capstone.notechigima.repository.NoteRepository;
 import com.capstone.notechigima.repository.SentenceRepository;
@@ -40,7 +40,7 @@ public class NoteServiceJPA {
 
     public NoteGetResponseDTO getNote(int noteId) throws BaseException {
         List<SentenceEntity> sentenceList = sentenceRepository.getSentenceListByNoteId(noteId);
-        List<SentenceResponseDTO> sentenceResult =
+        List<SentenceListGetResponseDTO> sentenceResult =
                 sentenceList.stream()
                         .map(entity -> modelMapper.map(entity))
                         .collect(Collectors.toList());

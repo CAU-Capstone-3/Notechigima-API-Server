@@ -4,7 +4,7 @@ import com.capstone.notechigima.config.BaseException;
 import com.capstone.notechigima.config.BaseResponseStatus;
 import com.capstone.notechigima.config.BaseResponse;
 import com.capstone.notechigima.domain.topic.TopicAnalyzedType;
-import com.capstone.notechigima.dto.advice.AdviceResponseDTO;
+import com.capstone.notechigima.dto.advice.AdviceGetResponseDTO;
 import com.capstone.notechigima.dto.note.NoteListGetResponseDTO;
 import com.capstone.notechigima.service.AdviceService;
 import com.capstone.notechigima.service.NoteServiceJPA;
@@ -46,7 +46,7 @@ public class TopicController {
     @ResponseBody
     @GetMapping("/{topicId}/advice")
     @Operation(summary = "토픽별 분석결과 API", description = "토픽별 분석결과 목록을 조회하는 API 입니다.")
-    public BaseResponse<List<AdviceResponseDTO>> getAdviceList(@PathVariable("topicId") int topicId) {
+    public BaseResponse<List<AdviceGetResponseDTO>> getAdviceList(@PathVariable("topicId") int topicId) {
         return new BaseResponse(BaseResponseStatus.SUCCESS_READ, adviceService.getAdviceList(topicId));
     }
 }

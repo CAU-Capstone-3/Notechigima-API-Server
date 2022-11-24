@@ -3,7 +3,7 @@ package com.capstone.notechigima.mapper;
 import com.capstone.notechigima.domain.note.Note;
 import com.capstone.notechigima.dto.note.NoteGetResponseDTO;
 import com.capstone.notechigima.dto.note.NoteListGetResponseDTO;
-import com.capstone.notechigima.dto.sentence.SentenceResponseDTO;
+import com.capstone.notechigima.dto.sentence.SentenceListGetResponseDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -24,7 +24,7 @@ public interface NoteMapper {
     }
 
     // TODO : subject 완료 후 구현 예정
-    default NoteGetResponseDTO toNoteGetResponseDTO(Note note, List<SentenceResponseDTO> sentenceList) {
+    default NoteGetResponseDTO toNoteGetResponseDTO(Note note, List<SentenceListGetResponseDTO> sentenceList) {
         return NoteGetResponseDTO.builder()
                 .sentenceList(sentenceList)
                 .build();

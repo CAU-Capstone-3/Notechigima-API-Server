@@ -4,7 +4,7 @@ import com.capstone.notechigima.config.BaseException;
 import com.capstone.notechigima.config.BaseResponse;
 import com.capstone.notechigima.config.BaseResponseStatus;
 import com.capstone.notechigima.dto.note.PostNoteRequestDTO;
-import com.capstone.notechigima.dto.sentence.SentenceResponseDTO;
+import com.capstone.notechigima.dto.sentence.SentenceListGetResponseDTO;
 import com.capstone.notechigima.service.NoteServiceJPA;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,7 +24,7 @@ public class NoteController {
     @ResponseBody
     @GetMapping(value="/{noteId}")
     @Operation(summary = "노트 상세조회", description = "노트 ID로 노트의 상세 내용을 조회")
-    public BaseResponse<List<SentenceResponseDTO>> getNote(@PathVariable("noteId") int noteId) throws BaseException {
+    public BaseResponse<List<SentenceListGetResponseDTO>> getNote(@PathVariable("noteId") int noteId) throws BaseException {
         return new BaseResponse(BaseResponseStatus.SUCCESS_READ, noteService.getNote(noteId));
     }
 

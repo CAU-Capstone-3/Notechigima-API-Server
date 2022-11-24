@@ -9,21 +9,21 @@ import com.capstone.notechigima.domain.topic.Topic;
 import com.capstone.notechigima.domain.sentence.SentenceEntity;
 import com.capstone.notechigima.domain.users.User;
 import com.capstone.notechigima.domain.users.UserEntity;
-import com.capstone.notechigima.dto.advice.AdviceResponseDTO;
+import com.capstone.notechigima.dto.advice.AdviceGetResponseDTO;
 import com.capstone.notechigima.dto.study_group.StudyGroupGetResponseDTO;
 import com.capstone.notechigima.dto.note.NoteGetResponseDTO;
 import com.capstone.notechigima.dto.note.NoteListGetResponseDTO;
-import com.capstone.notechigima.dto.sentence.SentenceVO;
+import com.capstone.notechigima.dto.sentence.SentenceGetResponseDTO;
 import com.capstone.notechigima.dto.topic.TopicResponseDTO;
-import com.capstone.notechigima.dto.sentence.SentenceResponseDTO;
+import com.capstone.notechigima.dto.sentence.SentenceListGetResponseDTO;
 import com.capstone.notechigima.dto.users.UserGetResponseDTO;
 
 import java.util.List;
 
 public class ModelMapper {
 
-    public SentenceResponseDTO map(SentenceEntity entity) {
-        return new SentenceResponseDTO(entity.getContent(), entity.getSequenceNum(), entity.getSentenceType());
+    public SentenceListGetResponseDTO map(SentenceEntity entity) {
+        return new SentenceListGetResponseDTO(entity.getContent(), entity.getSequenceNum(), entity.getSentenceType());
     }
 
     public NoteListGetResponseDTO map(NoteOwnerEntity entity) {
@@ -31,7 +31,7 @@ public class ModelMapper {
     }
 
 
-    public NoteGetResponseDTO map(NoteDetailEntity entity, List<SentenceResponseDTO> sentenceResult) {
+    public NoteGetResponseDTO map(NoteDetailEntity entity, List<SentenceListGetResponseDTO> sentenceResult) {
         return new NoteGetResponseDTO(
                 entity.getSubjectId(),
                 entity.getSubjectName(),
@@ -45,8 +45,8 @@ public class ModelMapper {
         );
     }
 
-    public AdviceResponseDTO map(AdviceDetailEntity entity) {
-        return new AdviceResponseDTO(
+    public AdviceGetResponseDTO map(AdviceDetailEntity entity) {
+        return new AdviceGetResponseDTO(
                 entity.getAdviceId(),
                 entity.getAdviceType() == 'C' ? "상반되는 문장이 있어요." : "",
                 map(entity.getSentenceId1(), entity.getSentence1(), entity.getWriterId1(), entity.getWriterName1()),
@@ -55,8 +55,8 @@ public class ModelMapper {
         );
     }
 
-    public SentenceVO map(int sentenceId, String content, int writerId, String writerName) {
-        return new SentenceVO(
+    public SentenceGetResponseDTO map(int sentenceId, String content, int writerId, String writerName) {
+        return new SentenceGetResponseDTO(
                 sentenceId,
                 content,
                 writerId,

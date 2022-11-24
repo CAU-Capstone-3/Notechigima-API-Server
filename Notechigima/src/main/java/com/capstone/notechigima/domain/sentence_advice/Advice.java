@@ -12,7 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "sentence_advice")
-public class SentenceAdvice extends BaseTimeEntity {
+public class Advice extends BaseTimeEntity {
 
     @Id
     @Column(name = "advice_id")
@@ -32,7 +32,7 @@ public class SentenceAdvice extends BaseTimeEntity {
     private Sentence sentence2;
 
     @Builder
-    public SentenceAdvice(int adviceId, AdviceType adviceType, Sentence sentence1, Sentence sentence2) {
+    public Advice(int adviceId, AdviceType adviceType, Sentence sentence1, Sentence sentence2) {
         this.adviceId = adviceId;
         this.adviceType = adviceType;
         this.sentence1 = sentence1;

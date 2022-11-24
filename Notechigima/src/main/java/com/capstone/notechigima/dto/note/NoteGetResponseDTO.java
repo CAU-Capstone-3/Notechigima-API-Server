@@ -1,6 +1,6 @@
 package com.capstone.notechigima.dto.note;
 
-import com.capstone.notechigima.dto.sentence.SentenceResponseDTO;
+import com.capstone.notechigima.dto.sentence.SentenceListGetResponseDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,12 +27,12 @@ public class NoteGetResponseDTO {
     @Schema(description = "노트 작성자명", defaultValue = "장훈석")
     private String writerName;
     @Schema(description = "노트 내 문장 목록")
-    private List<SentenceResponseDTO> sentenceList;
+    private List<SentenceListGetResponseDTO> sentenceList;
     @Schema(description = "노트 최종 업데이트 시간")
     private Date lastUpdate;
 
     @Builder
-    public NoteGetResponseDTO(int subjectId, String subjectName, int topicId, String topicName, int noteId, int writerId, String writerName, List<SentenceResponseDTO> sentenceList, Date lastUpdate) {
+    public NoteGetResponseDTO(int subjectId, String subjectName, int topicId, String topicName, int noteId, int writerId, String writerName, List<SentenceListGetResponseDTO> sentenceList, Date lastUpdate) {
         this.subjectId = subjectId;
         this.subjectName = subjectName;
         this.topicId = topicId;
