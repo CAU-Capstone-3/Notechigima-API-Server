@@ -13,6 +13,6 @@ import java.util.List;
 
 public interface NoteRepository extends JpaRepository<Note, Integer> {
 
-    @EntityGraph(attributePaths = {"topic"})
+    @EntityGraph(attributePaths = {"topic", "owner"})
     List<Note> findAllByTopic_TopicId(int topicId);
 }
