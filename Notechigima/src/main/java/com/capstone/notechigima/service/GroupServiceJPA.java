@@ -26,7 +26,7 @@ public class GroupServiceJPA {
     private final GroupMemberRepository groupMemberRepository;
     private final ModelMapper modelMapper;
 
-    public List<StudyGroupGetResponseDTO> getGroups(int userId) {
+    public List<StudyGroupGetResponseDTO> getStudyGroupsByUserId(int userId) {
         return groupMemberRepository.findAllByUser_UserId(userId).stream()
                 .map(entity -> modelMapper.map(entity.getStudyGroup()))
                 .collect(Collectors.toList());

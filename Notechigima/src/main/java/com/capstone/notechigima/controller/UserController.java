@@ -5,7 +5,6 @@ import com.capstone.notechigima.config.BaseResponse;
 import com.capstone.notechigima.config.BaseResponseStatus;
 import com.capstone.notechigima.dto.study_group.StudyGroupGetResponseDTO;
 import com.capstone.notechigima.service.GroupInviteService;
-import com.capstone.notechigima.service.GroupService;
 import com.capstone.notechigima.service.GroupServiceJPA;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,7 +26,7 @@ public class UserController {
     @GetMapping("/{userId}/group")
     @Operation(summary = "그룹 조회", description = "사용자가 속한 그룹 목록 조회")
     public BaseResponse<List<StudyGroupGetResponseDTO>> getGroupList(@PathVariable("userId") int userId) throws BaseException {
-        return new BaseResponse(BaseResponseStatus.SUCCESS_READ, groupService.getGroups(userId));
+        return new BaseResponse(BaseResponseStatus.SUCCESS_READ, groupService.getStudyGroupsByUserId(userId));
     }
 
 //    @ResponseBody
