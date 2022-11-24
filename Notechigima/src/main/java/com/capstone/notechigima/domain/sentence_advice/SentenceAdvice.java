@@ -24,11 +24,11 @@ public class SentenceAdvice extends BaseTimeEntity {
     private AdviceType adviceType;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "SENTENCE_ID")
+    @JoinColumn(name = "SENTENCE1_ID", referencedColumnName = "SENTENCE_ID")
     private Sentence sentence1;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "SENTENCE_ID")
+    @JoinColumn(name = "SENTENCE2_ID", referencedColumnName = "SENTENCE_ID")
     private Sentence sentence2;
 
     @Builder
