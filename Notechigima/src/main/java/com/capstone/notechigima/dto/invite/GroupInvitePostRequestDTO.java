@@ -7,12 +7,12 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class GroupInviteCreateRequestDTO {
+public class GroupInvitePostRequestDTO {
     private int userId;
     private int groupId;
 
     @Builder
-    public GroupInviteCreateRequestDTO(int userId, int groupId) {
+    public GroupInvitePostRequestDTO(int userId, int groupId) {
         this.userId = userId;
         this.groupId = groupId;
     }

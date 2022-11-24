@@ -1,9 +1,9 @@
 package com.capstone.notechigima.service;
 
+import com.capstone.notechigima.domain.group_member.GroupMemberPK;
 import com.capstone.notechigima.dto.ModelMapper;
-import com.capstone.notechigima.dto.users.UserReadResponseDTO;
+import com.capstone.notechigima.dto.users.UserGetResponseDTO;
 import com.capstone.notechigima.repository.GroupMemberRepository;
-import com.capstone.notechigima.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +17,7 @@ public class UserServiceJPA {
     private final GroupMemberRepository groupMemberRepository;
     private final ModelMapper modelMapper;
 
-    public List<UserReadResponseDTO> getMembersByGroupId(int groupId) {
+    public List<UserGetResponseDTO> getMembersByGroupId(int groupId) {
         return groupMemberRepository.findAllByStudyGroup_GroupId(groupId)
                 .stream()
                 .map(groupMember -> modelMapper.map(groupMember.getUser()))

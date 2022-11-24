@@ -6,6 +6,7 @@ import com.capstone.notechigima.domain.group_member.GroupMember;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import java.util.List;
 @Entity
 public class User extends BaseTimeEntity {
     @Id
+    @Column(name = "USER_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userId;
 
@@ -27,14 +29,15 @@ public class User extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    @ColumnDefault("ActiveStatus.ACTIVE")
     private ActiveStatus status;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    @ColumnDefault("UserRole.USER")
     private UserRole role;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
+    @OneToMany(mappedBy = "user")
     private List<GroupMember> memberGroups = new ArrayList<>();
 
     @Builder

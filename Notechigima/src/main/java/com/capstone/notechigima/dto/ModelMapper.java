@@ -5,19 +5,20 @@ import com.capstone.notechigima.domain.study_group.GroupCreateEntity;
 import com.capstone.notechigima.domain.study_group.GroupEntity;
 import com.capstone.notechigima.domain.note.NoteDetailEntity;
 import com.capstone.notechigima.domain.note.NoteOwnerEntity;
+import com.capstone.notechigima.domain.study_group.StudyGroup;
 import com.capstone.notechigima.domain.topic.Topic;
 import com.capstone.notechigima.domain.sentence.SentenceEntity;
 import com.capstone.notechigima.domain.users.User;
 import com.capstone.notechigima.domain.users.UserEntity;
 import com.capstone.notechigima.dto.advice.AdviceResponseDTO;
-import com.capstone.notechigima.dto.group.GetGroupResponseDTO;
-import com.capstone.notechigima.dto.group.PostGroupRequestDTO;
+import com.capstone.notechigima.dto.study_group.StudyGroupGetResponseDTO;
+import com.capstone.notechigima.dto.study_group.StudyGroupPostRequestDTO;
 import com.capstone.notechigima.dto.note.GetNoteResponseDTO;
 import com.capstone.notechigima.dto.note.GetNoteSummarizedDTO;
 import com.capstone.notechigima.dto.sentence.SentenceVO;
 import com.capstone.notechigima.dto.topic.TopicResponseDTO;
 import com.capstone.notechigima.dto.sentence.SentenceResponseDTO;
-import com.capstone.notechigima.dto.users.UserReadResponseDTO;
+import com.capstone.notechigima.dto.users.UserGetResponseDTO;
 
 import java.util.List;
 
@@ -65,44 +66,45 @@ public class ModelMapper {
         );
     }
 
-    public GetGroupResponseDTO map(GroupEntity entity) {
-        return new GetGroupResponseDTO(
+    public StudyGroupGetResponseDTO map(GroupEntity entity) {
+        return new StudyGroupGetResponseDTO(
                 entity.getGroupId(),
                 entity.getGroupName()
         );
     }
 
-    public GroupCreateEntity map(PostGroupRequestDTO body) {
-        return new GroupCreateEntity(
-                body.getUserId(),
-                0,
-                body.getGroupName()
-        );
-    }
 
-    public UserReadResponseDTO map(UserEntity entity) {
-        return new UserReadResponseDTO(
+    public UserGetResponseDTO map(UserEntity entity) {
+        return new UserGetResponseDTO(
                 entity.getUserId(),
                 entity.getEmail(),
                 entity.getNickname()
         );
     }
 
-    public TopicResponseDTO map(Topic topic) {
+    public TopicResponseDTO map(Topic entity) {
         return TopicResponseDTO
                 .builder()
-                .topicId(topic.getTopicId())
-                .title(topic.getTitle())
-                .updatedAt(topic.getUpdatedAt())
-                .analyzed(topic.getAnalyzed())
+                .topicId(entity.getTopicId())
+                .title(entity.getTitle())
+                .updatedAt(entity.getUpdatedAt())
+                .analyzed(entity.getAnalyzed())
                 .build();
     }
 
-    public UserReadResponseDTO map(User user) {
-        return UserReadResponseDTO.builder()
-                .userId(user.getUserId())
-                .email(user.getEmail())
-                .nickname(user.getNickname())
+    public UserGetResponseDTO map(User entity) {
+        return UserGetResponseDTO.builder()
+                .userId(entity.getUserId())
+                .email(entity.getEmail())
+                .nickname(entity.getNickname())
                 .build();
     }
+
+    public StudyGroupGetResponseDTO map(StudyGroup entity) {
+        return StudyGroupGetResponseDTO.builder()
+                .groupId(entity.getGroupId())
+                .groupName(entity.getName())
+                .build();
+    }
+
 }

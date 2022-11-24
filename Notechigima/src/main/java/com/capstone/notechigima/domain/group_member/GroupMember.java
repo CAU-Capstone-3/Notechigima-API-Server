@@ -6,31 +6,35 @@ import com.capstone.notechigima.domain.users.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
 @Entity
+@DynamicInsert
 @IdClass(GroupMemberPK.class)
 public class GroupMember extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column
     private GroupAccessType access;
 
     @Id
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "group_id", foreignKey = @ForeignKey(name = "FK_GROUP_MEMBER_GROUP_ID"))
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "GROUP_ID")
     private StudyGroup studyGroup;
 
     @Id
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "FK_GROUP_MEMBER_USER_ID"))
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "USER_ID")
     private User user;
 
     @Builder
-    public GroupMember(GroupAccessType access) {
+    public GroupMember(GroupAccessType access, StudyGroup studyGroup, User user) {
         this.access = access;
+        this.studyGroup = studyGroup;
+        this.user = user;
     }
 }
