@@ -1,16 +1,20 @@
 package com.capstone.notechigima.service;
 
 import com.capstone.notechigima.config.BaseException;
-import com.capstone.notechigima.domain.note.NoteDetailEntity;
-import com.capstone.notechigima.domain.note.NoteInsertEntity;
+import com.capstone.notechigima.domain.VisibilityStatus;
+import com.capstone.notechigima.domain.note.Note;
 import com.capstone.notechigima.domain.sentence.SentenceEntity;
+import com.capstone.notechigima.domain.topic.Topic;
+import com.capstone.notechigima.domain.users.User;
 import com.capstone.notechigima.dto.ModelMapper;
-import com.capstone.notechigima.dto.note.GetNoteResponseDTO;
-import com.capstone.notechigima.dto.note.GetNoteSummarizedDTO;
+import com.capstone.notechigima.dto.note.NoteGetResopnseDTO;
+import com.capstone.notechigima.dto.note.NoteListGetResponseDTO;
 import com.capstone.notechigima.dto.note.PostNoteRequestDTO;
 import com.capstone.notechigima.dto.sentence.SentenceResponseDTO;
 import com.capstone.notechigima.repository.NoteRepository;
 import com.capstone.notechigima.repository.SentenceRepository;
+import com.capstone.notechigima.repository.TopicRepository;
+import com.capstone.notechigima.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,31 +27,39 @@ public class NoteServiceJPA {
 
     private final SentenceRepository sentenceRepository;
     private final NoteRepository noteRepository;
+    private final UserRepository userRepository;
+    private final TopicRepository topicRepository;
     private final ModelMapper modelMapper;
 
-    public List<GetNoteSummarizedDTO> getNoteList(int topicId) throws BaseException {
-        return noteRepository.getNoteList(topicId).stream()
+    public List<NoteListGetResponseDTO> getNoteList(int topicId) throws BaseException {
+        return noteRepository.findAllByTopic_TopicId(topicId).stream()
                 .map(entity -> modelMapper.map(entity)
                 ).collect(Collectors.toList());
     }
 
-    public GetNoteResponseDTO getNote(int noteId) throws BaseException {
+    public NoteGetResopnseDTO getNote(int noteId) throws BaseException {
         List<SentenceEntity> sentenceList = sentenceRepository.getSentenceListByNoteId(noteId);
         List<SentenceResponseDTO> sentenceResult =
                 sentenceList.stream()
                         .map(entity -> modelMapper.map(entity))
                         .collect(Collectors.toList());
 
-        NoteDetailEntity note = noteRepository.getNoteDetail(noteId);
-        GetNoteResponseDTO result = modelMapper.map(note, sentenceResult);
+        Note note = noteRepository.findById(noteId).orElseThrow();
+        NoteGetResopnseDTO result = modelMapper.map(note, sentenceResult);
         return result;
     }
 
-    public int postNote(PostNoteRequestDTO body) throws BaseException {
+    public void postNote(PostNoteRequestDTO body) throws BaseException {
+        User owner = userRepository.findById(body.getUserId()).orElseThrow();
+        Topic topic = topicRepository.findById(body.getTopicId()).orElseThrow();
 
-        NoteInsertEntity entity = new NoteInsertEntity(0, body.getUserId(), body.getTopicId());
-        int result = noteRepository.insertNote(entity);
-        int noteId = entity.getId();
+        Note entity = Note.builder()
+                .owner(owner)
+                .topic(topic)
+                .status(VisibilityStatus.VISIBLE)
+                .build();
+
+        noteRepository.save(entity);
 
         List<String> sentences = Arrays.stream(body.getContent().split("\n")).toList();
         sentences.stream().forEach(str -> str = str.replaceAll("\n", ""));
@@ -55,13 +67,12 @@ public class NoteServiceJPA {
 
         ArrayList<SentenceEntity> sentenceEntities = new ArrayList<>();
         for (int i = 0; i < sentencesFiltered.size(); i++) {
-            sentenceEntities.add(new SentenceEntity(body.getTopicId(), noteId, sentencesFiltered.get(i), 'N', i + 1));
+            sentenceEntities.add(new SentenceEntity(body.getTopicId(), entity.getNoteId(), sentencesFiltered.get(i), 'N', i + 1));
         }
 
         Map<String, Object> sentenceMap = new HashMap<>();
         sentenceMap.put("list", sentenceEntities);
         sentenceRepository.insertAll(sentenceMap);
 
-        return result;
     }
 }

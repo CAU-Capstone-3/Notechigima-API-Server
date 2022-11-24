@@ -1,5 +1,6 @@
 package com.capstone.notechigima.dto;
 
+import com.capstone.notechigima.domain.note.Note;
 import com.capstone.notechigima.domain.sentence_advice.AdviceDetailEntity;
 import com.capstone.notechigima.domain.study_group.GroupEntity;
 import com.capstone.notechigima.domain.note.NoteDetailEntity;
@@ -11,8 +12,8 @@ import com.capstone.notechigima.domain.users.User;
 import com.capstone.notechigima.domain.users.UserEntity;
 import com.capstone.notechigima.dto.advice.AdviceResponseDTO;
 import com.capstone.notechigima.dto.study_group.StudyGroupGetResponseDTO;
-import com.capstone.notechigima.dto.note.GetNoteResponseDTO;
-import com.capstone.notechigima.dto.note.GetNoteSummarizedDTO;
+import com.capstone.notechigima.dto.note.NoteGetResopnseDTO;
+import com.capstone.notechigima.dto.note.NoteListGetResponseDTO;
 import com.capstone.notechigima.dto.sentence.SentenceVO;
 import com.capstone.notechigima.dto.topic.TopicResponseDTO;
 import com.capstone.notechigima.dto.sentence.SentenceResponseDTO;
@@ -26,13 +27,13 @@ public class ModelMapper {
         return new SentenceResponseDTO(entity.getContent(), entity.getSequenceNum(), entity.getSentenceType());
     }
 
-    public GetNoteSummarizedDTO map(NoteOwnerEntity entity) {
-        return new GetNoteSummarizedDTO(entity.getNoteId(), entity.getOwnerId(), entity.getOwnerName(), entity.getUpdatedAt());
+    public NoteListGetResponseDTO map(NoteOwnerEntity entity) {
+        return new NoteListGetResponseDTO(entity.getNoteId(), entity.getOwnerId(), entity.getOwnerName(), entity.getUpdatedAt());
     }
 
 
-    public GetNoteResponseDTO map(NoteDetailEntity entity, List<SentenceResponseDTO> sentenceResult) {
-        return new GetNoteResponseDTO(
+    public NoteGetResopnseDTO map(NoteDetailEntity entity, List<SentenceResponseDTO> sentenceResult) {
+        return new NoteGetResopnseDTO(
                 entity.getSubjectId(),
                 entity.getSubjectName(),
                 entity.getTopicId(),
@@ -104,5 +105,15 @@ public class ModelMapper {
                 .groupName(entity.getName())
                 .build();
     }
+
+    public NoteListGetResponseDTO map(Note entity) {
+        return NoteListGetResponseDTO.builder()
+                .noteId(entity.getNoteId())
+                .ownerId(entity.getOwner().getUserId())
+                .ownerName(entity.getOwner().getNickname())
+                .updatedAt(entity.getUpdatedAt())
+                .build();
+    }
+
 
 }

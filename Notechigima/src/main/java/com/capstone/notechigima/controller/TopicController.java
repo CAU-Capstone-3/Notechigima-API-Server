@@ -5,7 +5,7 @@ import com.capstone.notechigima.config.BaseResponseStatus;
 import com.capstone.notechigima.config.BaseResponse;
 import com.capstone.notechigima.domain.topic.TopicAnalyzedType;
 import com.capstone.notechigima.dto.advice.AdviceResponseDTO;
-import com.capstone.notechigima.dto.note.GetNoteSummarizedDTO;
+import com.capstone.notechigima.dto.note.NoteListGetResponseDTO;
 import com.capstone.notechigima.service.AdviceService;
 import com.capstone.notechigima.service.NoteService;
 import com.capstone.notechigima.service.TopicServiceJPA;
@@ -33,7 +33,7 @@ public class TopicController {
     @ResponseBody
     @GetMapping("/{topicId}/note")
     @Operation(summary = "토픽별 노트 목록", description = "해당 토픽 내에서 작성된 노트의 목록")
-    public BaseResponse<List<GetNoteSummarizedDTO>> getNoteList(@PathVariable("topicId") int topicId) throws BaseException {
+    public BaseResponse<List<NoteListGetResponseDTO>> getNoteList(@PathVariable("topicId") int topicId) throws BaseException {
         return new BaseResponse(BaseResponseStatus.SUCCESS_READ, noteService.getNoteList(topicId));
     }
 

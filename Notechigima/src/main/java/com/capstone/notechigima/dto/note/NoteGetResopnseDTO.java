@@ -10,7 +10,7 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
-public class GetNoteResponseDTO {
+public class NoteGetResopnseDTO {
     @Schema(description = "노트가 속한 과목 ID", defaultValue = "3")
     private int subjectId;
     @Schema(description = "노트가 속한 과목명", defaultValue = "컴퓨터통신")
