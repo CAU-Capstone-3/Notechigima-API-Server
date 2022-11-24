@@ -27,7 +27,8 @@ public class StudyGroup extends BaseTimeEntity {
     @Column(nullable = false)
     private ActiveStatus status;
 
-    @OneToMany(mappedBy = "studyGroup")
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "group_id")
     private List<GroupMember> members = new ArrayList<>();
 
     @Builder

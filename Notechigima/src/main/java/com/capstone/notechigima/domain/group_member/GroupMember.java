@@ -20,13 +20,13 @@ public class GroupMember extends BaseTimeEntity {
     private GroupAccessType access;
 
     @Id
-    @ManyToOne
-    @JoinColumn(name = "group_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "group_id", foreignKey = @ForeignKey(name = "FK_GROUP_MEMBER_GROUP_ID"))
     private StudyGroup studyGroup;
 
     @Id
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "FK_GROUP_MEMBER_USER_ID"))
     private User user;
 
     @Builder
