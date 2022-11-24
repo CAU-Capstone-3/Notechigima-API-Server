@@ -22,9 +22,9 @@ import java.util.List;
 
 public class ModelMapper {
 
-    public SentenceListGetResponseDTO map(SentenceEntity entity) {
-        return new SentenceListGetResponseDTO(entity.getContent(), entity.getSequenceNum(), entity.getSentenceType());
-    }
+//    public SentenceListGetResponseDTO map(SentenceEntity entity) {
+//        return new SentenceListGetResponseDTO(entity.getContent(), entity.getSequenceNum(), entity.getSentenceType());
+//    }
 
     public NoteListGetResponseDTO map(NoteOwnerEntity entity) {
         return new NoteListGetResponseDTO(entity.getNoteId(), entity.getOwnerId(), entity.getOwnerName(), null);

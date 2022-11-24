@@ -1,5 +1,7 @@
 package com.capstone.notechigima.service;
 
+import com.capstone.notechigima.domain.sentence.Sentence;
+import com.capstone.notechigima.domain.sentence_advice.Advice;
 import com.capstone.notechigima.domain.sentence_advice.AdviceEntity;
 import com.capstone.notechigima.domain.sentence_advice.AdviceType;
 import com.capstone.notechigima.domain.sentence.SentenceWithWriterEntity;
@@ -51,36 +53,36 @@ public class TopicServiceJPA {
         topicToUpdate.updateAnalyzed(TopicAnalyzedType.RUNNING);
         topicRepository.save(topicToUpdate);
 
-        ArrayList<AdviceEntity> advices = new ArrayList<>();
-        List<SentenceWithWriterEntity> sentences = sentenceRepository.getSentenceListByTopicId(topicId);
-        List<SentenceWithWriterEntity[]> sentComb = getComb(sentences);
+        ArrayList<Advice> advices = new ArrayList<>();
+        List<Sentence> sentences = sentenceRepository.findAllByNote_Topic_TopicId(topicId);
+        List<Sentence[]> sentComb = getComb(sentences);
 
-        for (SentenceWithWriterEntity[] comb : sentComb) {
+        for (Sentence[] comb : sentComb) {
             if (isContradiction(comb[0].getContent(), comb[1].getContent())) {
-                advices.add(new AdviceEntity(
-                        0,
-                        comb[0].getSentenceId(),
-                        comb[1].getSentenceId(),
-                        AdviceType.CONTRADICTION.getType()
-                ));
+                advices.add(
+                        Advice.builder()
+                                .sentence1(comb[0])
+                                .sentence2(comb[1])
+                                .adviceType(AdviceType.CONTRADICTION)
+                                .build());
             }
         }
 
         if (!advices.isEmpty())
-            adviceRepository.insertAll(toMap(advices));
+            adviceRepository.saveAll(advices);
 
         topicToUpdate.updateAnalyzed(TopicAnalyzedType.FINISH);
         topicRepository.save(topicToUpdate);
     }
 
-    private List<SentenceWithWriterEntity[]> getComb(List<SentenceWithWriterEntity> sentences) {
-        ArrayList<SentenceWithWriterEntity[]> comb = new ArrayList<>();
+    private List<Sentence[]> getComb(List<Sentence> sentences) {
+        ArrayList<Sentence[]> comb = new ArrayList<>();
         for (int i = 0; i < sentences.size(); i++) {
             for (int j = i + 1; j < sentences.size(); j++) {
-                SentenceWithWriterEntity sent1 = sentences.get(i);
-                SentenceWithWriterEntity sent2 = sentences.get(j);
-                if (sent1.getWriterId() != sent2.getWriterId())
-                    comb.add(new SentenceWithWriterEntity[] { sent1, sent2 });
+                Sentence sent1 = sentences.get(i);
+                Sentence sent2 = sentences.get(j);
+                if (sent1.getNote().getOwner() != sent2.getNote().getOwner())
+                    comb.add(new Sentence[] { sent1, sent2 });
             }
         }
         return comb;

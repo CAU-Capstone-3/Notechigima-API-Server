@@ -3,7 +3,7 @@ package com.capstone.notechigima.controller;
 import com.capstone.notechigima.config.BaseException;
 import com.capstone.notechigima.config.BaseResponse;
 import com.capstone.notechigima.config.BaseResponseStatus;
-import com.capstone.notechigima.dto.note.PostNoteRequestDTO;
+import com.capstone.notechigima.dto.note.NotePostRequestDTO;
 import com.capstone.notechigima.dto.sentence.SentenceListGetResponseDTO;
 import com.capstone.notechigima.service.NoteServiceJPA;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,7 +30,7 @@ public class NoteController {
 
     @PostMapping
     @Operation(summary = "노트 작성", description = "해당 토픽에 노트 작성")
-    public BaseResponse postNote(@RequestBody PostNoteRequestDTO body) throws BaseException {
+    public BaseResponse postNote(@RequestBody NotePostRequestDTO body) throws BaseException {
         noteService.postNote(body);
         return new BaseResponse(BaseResponseStatus.SUCCESS_WRITE);
     }

@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class PostNoteRequestDTO {
+public class NotePostRequestDTO {
     @Schema(description = "노트를 작성할 토픽 ID", defaultValue = "2")
     private int topicId;
     @Schema(description = "유저 ID", defaultValue = "3")
