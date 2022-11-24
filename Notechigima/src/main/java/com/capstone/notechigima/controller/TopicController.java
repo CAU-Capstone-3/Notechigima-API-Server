@@ -7,10 +7,11 @@ import com.capstone.notechigima.domain.topic.TopicAnalyzedType;
 import com.capstone.notechigima.dto.advice.AdviceResponseDTO;
 import com.capstone.notechigima.dto.note.NoteListGetResponseDTO;
 import com.capstone.notechigima.service.AdviceService;
-import com.capstone.notechigima.service.NoteService;
+import com.capstone.notechigima.service.NoteServiceJPA;
 import com.capstone.notechigima.service.TopicServiceJPA;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,17 +19,12 @@ import java.util.List;
 @Tag(name = "topic", description = "토푁 관련 API")
 @RestController
 @RequestMapping("/api/topic")
+@RequiredArgsConstructor
 public class TopicController {
 
     private final TopicServiceJPA topicService;
-    private final NoteService noteService;
+    private final NoteServiceJPA noteService;
     private final AdviceService adviceService;
-
-    public TopicController(TopicServiceJPA topicService, NoteService noteService, AdviceService adviceService) {
-        this.topicService = topicService;
-        this.noteService = noteService;
-        this.adviceService = adviceService;
-    }
 
     @ResponseBody
     @GetMapping("/{topicId}/note")

@@ -5,9 +5,10 @@ import com.capstone.notechigima.config.BaseResponse;
 import com.capstone.notechigima.config.BaseResponseStatus;
 import com.capstone.notechigima.dto.note.PostNoteRequestDTO;
 import com.capstone.notechigima.dto.sentence.SentenceResponseDTO;
-import com.capstone.notechigima.service.NoteService;
+import com.capstone.notechigima.service.NoteServiceJPA;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,13 +16,10 @@ import java.util.List;
 @Tag(name = "note", description = "노트 API")
 @RestController
 @RequestMapping("/api/note")
+@RequiredArgsConstructor
 public class NoteController {
 
-    private final NoteService noteService;
-
-    public NoteController(NoteService noteService) {
-        this.noteService = noteService;
-    }
+    private final NoteServiceJPA noteService;
 
     @ResponseBody
     @GetMapping(value="/{noteId}")
