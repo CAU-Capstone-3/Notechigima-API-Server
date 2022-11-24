@@ -11,7 +11,8 @@ public class GroupInviteService {
     private final GroupInviteRepository groupInviteRepository;
 
     public int save(int groupId, int userId) {
-        return groupInviteRepository.save(GroupInvite.builder()
+        return groupInviteRepository.save(
+                GroupInvite.builder()
                 .groupId(groupId)
                 .userId(userId)
                 .build()
