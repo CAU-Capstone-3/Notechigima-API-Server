@@ -1,4 +1,4 @@
-package com.capstone.notechigima.domain.advice;
+package com.capstone.notechigima.domain.sentence_advice;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

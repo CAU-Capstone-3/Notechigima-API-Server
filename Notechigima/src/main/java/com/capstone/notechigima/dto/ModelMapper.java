@@ -1,7 +1,6 @@
 package com.capstone.notechigima.dto;
 
-import com.capstone.notechigima.domain.advice.AdviceDetailEntity;
-import com.capstone.notechigima.domain.study_group.GroupCreateEntity;
+import com.capstone.notechigima.domain.sentence_advice.AdviceDetailEntity;
 import com.capstone.notechigima.domain.study_group.GroupEntity;
 import com.capstone.notechigima.domain.note.NoteDetailEntity;
 import com.capstone.notechigima.domain.note.NoteOwnerEntity;
@@ -12,7 +11,6 @@ import com.capstone.notechigima.domain.users.User;
 import com.capstone.notechigima.domain.users.UserEntity;
 import com.capstone.notechigima.dto.advice.AdviceResponseDTO;
 import com.capstone.notechigima.dto.study_group.StudyGroupGetResponseDTO;
-import com.capstone.notechigima.dto.study_group.StudyGroupPostRequestDTO;
 import com.capstone.notechigima.dto.note.GetNoteResponseDTO;
 import com.capstone.notechigima.dto.note.GetNoteSummarizedDTO;
 import com.capstone.notechigima.dto.sentence.SentenceVO;

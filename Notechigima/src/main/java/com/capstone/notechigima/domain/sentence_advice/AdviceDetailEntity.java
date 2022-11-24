@@ -1,4 +1,4 @@
-package com.capstone.notechigima.domain.advice;
+package com.capstone.notechigima.domain.sentence_advice;
 
 import com.capstone.notechigima.domain.comment.CommentDetailEntity;
 import lombok.*;

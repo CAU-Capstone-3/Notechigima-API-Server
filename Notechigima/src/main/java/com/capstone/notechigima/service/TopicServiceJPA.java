@@ -1,7 +1,7 @@
 package com.capstone.notechigima.service;
 
-import com.capstone.notechigima.domain.advice.AdviceEntity;
-import com.capstone.notechigima.domain.advice.AdviceType;
+import com.capstone.notechigima.domain.sentence_advice.AdviceEntity;
+import com.capstone.notechigima.domain.sentence_advice.AdviceType;
 import com.capstone.notechigima.domain.sentence.SentenceWithWriterEntity;
 import com.capstone.notechigima.domain.topic.Topic;
 import com.capstone.notechigima.domain.topic.TopicAnalyzedType;
