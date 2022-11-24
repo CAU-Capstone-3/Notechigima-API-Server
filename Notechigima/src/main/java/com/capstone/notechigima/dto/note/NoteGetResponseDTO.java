@@ -2,15 +2,16 @@ package com.capstone.notechigima.dto.note;
 
 import com.capstone.notechigima.dto.sentence.SentenceResponseDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.List;
 
 @Getter
-@AllArgsConstructor
-public class NoteGetResopnseDTO {
+@NoArgsConstructor
+public class NoteGetResponseDTO {
     @Schema(description = "노트가 속한 과목 ID", defaultValue = "3")
     private int subjectId;
     @Schema(description = "노트가 속한 과목명", defaultValue = "컴퓨터통신")
@@ -29,4 +30,17 @@ public class NoteGetResopnseDTO {
     private List<SentenceResponseDTO> sentenceList;
     @Schema(description = "노트 최종 업데이트 시간")
     private Date lastUpdate;
+
+    @Builder
+    public NoteGetResponseDTO(int subjectId, String subjectName, int topicId, String topicName, int noteId, int writerId, String writerName, List<SentenceResponseDTO> sentenceList, Date lastUpdate) {
+        this.subjectId = subjectId;
+        this.subjectName = subjectName;
+        this.topicId = topicId;
+        this.topicName = topicName;
+        this.noteId = noteId;
+        this.writerId = writerId;
+        this.writerName = writerName;
+        this.sentenceList = sentenceList;
+        this.lastUpdate = lastUpdate;
+    }
 }

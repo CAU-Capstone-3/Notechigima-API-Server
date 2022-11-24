@@ -7,10 +7,11 @@ import com.capstone.notechigima.domain.sentence.SentenceEntity;
 import com.capstone.notechigima.domain.topic.Topic;
 import com.capstone.notechigima.domain.users.User;
 import com.capstone.notechigima.dto.ModelMapper;
-import com.capstone.notechigima.dto.note.NoteGetResopnseDTO;
+import com.capstone.notechigima.dto.note.NoteGetResponseDTO;
 import com.capstone.notechigima.dto.note.NoteListGetResponseDTO;
 import com.capstone.notechigima.dto.note.PostNoteRequestDTO;
 import com.capstone.notechigima.dto.sentence.SentenceResponseDTO;
+import com.capstone.notechigima.mapper.NoteMapper;
 import com.capstone.notechigima.repository.NoteRepository;
 import com.capstone.notechigima.repository.SentenceRepository;
 import com.capstone.notechigima.repository.TopicRepository;
@@ -33,11 +34,11 @@ public class NoteServiceJPA {
 
     public List<NoteListGetResponseDTO> getNoteList(int topicId) throws BaseException {
         return noteRepository.findAllByTopic_TopicId(topicId).stream()
-                .map(entity -> modelMapper.map(entity)
+                .map(entity -> NoteMapper.INSTANCE.toNoteListGetResponseDTO(entity)
                 ).collect(Collectors.toList());
     }
 
-    public NoteGetResopnseDTO getNote(int noteId) throws BaseException {
+    public NoteGetResponseDTO getNote(int noteId) throws BaseException {
         List<SentenceEntity> sentenceList = sentenceRepository.getSentenceListByNoteId(noteId);
         List<SentenceResponseDTO> sentenceResult =
                 sentenceList.stream()
@@ -45,7 +46,7 @@ public class NoteServiceJPA {
                         .collect(Collectors.toList());
 
         Note note = noteRepository.findById(noteId).orElseThrow();
-        NoteGetResopnseDTO result = modelMapper.map(note, sentenceResult);
+        NoteGetResponseDTO result = NoteMapper.INSTANCE.toNoteGetResponseDTO(note, sentenceResult);
         return result;
     }
 
