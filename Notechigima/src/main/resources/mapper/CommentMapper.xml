@@ -5,7 +5,7 @@
 
 <mapper namespace="com.capstone.notechigima.repository.CommentRepository">
 
-    <select id="getComments" resultType="com.capstone.notechigima.domain.comment.CommentDetailEntity">
+    <select id="getComments" resultType="com.capstone.notechigima.dto.comment.CommentListGetResponseDTO">
         SELECT c.comment_id commentId, c.user_id userId, u.nickname userName,
                c.content content, c.created_at createdAt, c.updated_at updatedAt
         FROM advice_comment c

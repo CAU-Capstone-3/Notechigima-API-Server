@@ -1,6 +1,6 @@
 package com.capstone.notechigima.dto.advice;
 
-import com.capstone.notechigima.domain.comment.CommentDetailEntity;
+import com.capstone.notechigima.dto.comment.CommentListGetResponseDTO;
 import com.capstone.notechigima.dto.sentence.SentenceGetResponseDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -21,10 +21,10 @@ public class AdviceGetResponseDTO {
     @Schema(description = "문장 2")
     private SentenceGetResponseDTO sentence2;
     @Schema(description = "댓글 목록")
-    private List<CommentDetailEntity> comments;
+    private List<CommentListGetResponseDTO> comments;
 
     @Builder
-    public AdviceGetResponseDTO(int adviceId, String advice, SentenceGetResponseDTO sentence1, SentenceGetResponseDTO sentence2, List<CommentDetailEntity> comments) {
+    public AdviceGetResponseDTO(int adviceId, String advice, SentenceGetResponseDTO sentence1, SentenceGetResponseDTO sentence2, List<CommentListGetResponseDTO> comments) {
         this.adviceId = adviceId;
         this.advice = advice;
         this.sentence1 = sentence1;

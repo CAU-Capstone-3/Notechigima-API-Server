@@ -1,6 +1,6 @@
 package com.capstone.notechigima.domain.sentence_advice;
 
-import com.capstone.notechigima.domain.comment.CommentDetailEntity;
+import com.capstone.notechigima.dto.comment.CommentListGetResponseDTO;
 import lombok.*;
 
 import java.util.List;
@@ -20,5 +20,5 @@ public class AdviceDetailEntity {
     private String sentence2;
     private int writerId2;
     private String writerName2;
-    private List<CommentDetailEntity> comments;
+    private List<CommentListGetResponseDTO> comments;
 }
