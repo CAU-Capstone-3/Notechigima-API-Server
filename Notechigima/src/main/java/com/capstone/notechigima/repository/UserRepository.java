@@ -1,13 +1,14 @@
 package com.capstone.notechigima.repository;
 
-import com.capstone.notechigima.domain.users.UserEntity;
-import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Repository;
+import com.capstone.notechigima.domain.users.User;
+import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-@Repository
-@Mapper
-public interface UserRepository {
-    List<UserEntity> getMembersByGroupId(int groupId);
+public interface UserRepository extends JpaRepository<User, Integer> {
+
+//    List<UserEntity> getMembersByGroupId(int groupId);
+
 }

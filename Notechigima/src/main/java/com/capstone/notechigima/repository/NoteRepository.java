@@ -1,20 +1,18 @@
 package com.capstone.notechigima.repository;
 
+import com.capstone.notechigima.domain.note.Note;
 import com.capstone.notechigima.domain.note.NoteDetailEntity;
 import com.capstone.notechigima.domain.note.NoteInsertEntity;
 import com.capstone.notechigima.domain.note.NoteOwnerEntity;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
-@Mapper
-public interface NoteRepository {
+public interface NoteRepository extends JpaRepository<Note, Integer> {
 
-    List<NoteOwnerEntity> getNoteList(int sectionId);
-
-    NoteDetailEntity getNoteDetail(int noteId);
-
-    int insertNote(NoteInsertEntity body);
+    @EntityGraph(attributePaths = {"topic", "owner"})
+    List<Note> findAllByTopic_TopicId(int topicId);
 }

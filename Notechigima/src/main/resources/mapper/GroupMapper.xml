@@ -5,14 +5,14 @@
 
 <mapper namespace="com.capstone.notechigima.repository.GroupRepository">
 
-    <select id="getGroupsByUserId" resultType="com.capstone.notechigima.domain.group.GroupEntity">
+    <select id="getGroupsByUserId" resultType="com.capstone.notechigima.domain.study_group.GroupEntity">
         SELECT g.group_id groupId, g.name groupName
         FROM study_group g
         LEFT JOIN group_member m USING (group_id)
         WHERE m.user_id = #{userId}
     </select>
 
-    <insert id="insertGroup" parameterType="com.capstone.notechigima.domain.group.GroupCreateEntity" useGeneratedKeys="true" keyProperty="groupId">
+    <insert id="insertGroup" parameterType="com.capstone.notechigima.domain.study_group.GroupCreateEntity" useGeneratedKeys="true" keyProperty="groupId">
         INSERT INTO study_group (name)
         VALUES(#{groupName})
     </insert>

@@ -1,17 +1,13 @@
 package com.capstone.notechigima.repository;
 
-import com.capstone.notechigima.domain.comment.CommentDetailEntity;
-import com.capstone.notechigima.domain.comment.CommentWriteEntity;
-import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Repository;
+import com.capstone.notechigima.domain.comment.Comment;
+import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-@Repository
-@Mapper
-public interface CommentRepository {
+public interface CommentRepository extends JpaRepository<Comment, Integer> {
 
-    List<CommentDetailEntity> getComments();
-
-    int postComment(CommentWriteEntity entity);
+    @EntityGraph(attributePaths = {"advice"})
+    List<Comment> findAllByAdvice_AdviceId(int adviceId);
 }

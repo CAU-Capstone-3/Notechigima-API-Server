@@ -1,11 +1,11 @@
 package com.capstone.notechigima.service;
 
-import com.capstone.notechigima.dto.advice.AdviceResponseDTO;
+import com.capstone.notechigima.dto.advice.AdviceGetResponseDTO;
 
 import java.util.List;
 
 public interface AdviceService {
 
-    List<AdviceResponseDTO> getAdviceList(int sectionId);
+    List<AdviceGetResponseDTO> getAdviceList(int sectionId);
 
 }
