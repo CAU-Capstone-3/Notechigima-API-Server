@@ -5,9 +5,9 @@ import com.capstone.notechigima.domain.sentence_advice.Advice;
 import com.capstone.notechigima.domain.sentence_advice.AdviceType;
 import com.capstone.notechigima.domain.topic.Topic;
 import com.capstone.notechigima.domain.topic.TopicAnalyzedType;
-import com.capstone.notechigima.dto.ModelMapper;
 import com.capstone.notechigima.dto.advice.AdviceInferenceRequestVO;
-import com.capstone.notechigima.dto.topic.TopicResponseDTO;
+import com.capstone.notechigima.dto.topic.TopicGetResponseDTO;
+import com.capstone.notechigima.mapper.TopicMapper;
 import com.capstone.notechigima.repository.AdviceRepository;
 import com.capstone.notechigima.repository.SentenceRepository;
 import com.capstone.notechigima.repository.TopicRepository;
@@ -32,15 +32,14 @@ public class TopicService {
     private final TopicRepository topicRepository;
     private final AdviceRepository adviceRepository;
     private final SentenceRepository sentenceRepository;
-    private final ModelMapper modelMapper;
 
-    public TopicResponseDTO getTopic(int topicId) throws NoSuchElementException {
-        return modelMapper.map(topicRepository.findById(topicId).orElseThrow());
+    public TopicGetResponseDTO getTopic(int topicId) throws NoSuchElementException {
+        return TopicMapper.INSTANCE.toTopicGetResponseDTO(topicRepository.findById(topicId).orElseThrow());
     }
 
-    public List<TopicResponseDTO> getTopicList(int subjectId) {
+    public List<TopicGetResponseDTO> getTopicList(int subjectId) {
         return topicRepository.findAllBySubjectId(subjectId).stream()
-                .map(entity -> modelMapper.map(entity)
+                .map(entity -> TopicMapper.INSTANCE.toTopicGetResponseDTO(entity)
                 ).collect(Collectors.toList());
     }
 

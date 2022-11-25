@@ -5,9 +5,9 @@ import com.capstone.notechigima.domain.group_member.GroupAccessType;
 import com.capstone.notechigima.domain.group_member.GroupMember;
 import com.capstone.notechigima.domain.study_group.StudyGroup;
 import com.capstone.notechigima.domain.users.User;
-import com.capstone.notechigima.dto.ModelMapper;
 import com.capstone.notechigima.dto.study_group.StudyGroupGetResponseDTO;
 import com.capstone.notechigima.dto.study_group.StudyGroupPostRequestDTO;
+import com.capstone.notechigima.mapper.StudyGroupMapper;
 import com.capstone.notechigima.repository.GroupMemberRepository;
 import com.capstone.notechigima.repository.GroupRepository;
 import com.capstone.notechigima.repository.UserRepository;
@@ -24,11 +24,10 @@ public class GroupService {
     private final UserRepository userRepository;
     private final GroupRepository groupRepository;
     private final GroupMemberRepository groupMemberRepository;
-    private final ModelMapper modelMapper;
 
     public List<StudyGroupGetResponseDTO> getStudyGroupsByUserId(int userId) {
         return groupMemberRepository.findAllByUser_UserId(userId).stream()
-                .map(entity -> modelMapper.map(entity.getStudyGroup()))
+                .map(entity -> StudyGroupMapper.INSTANCE.toStudyGroupGetResponseDTO(entity))
                 .collect(Collectors.toList());
     }
 
