@@ -5,7 +5,7 @@ import com.capstone.notechigima.config.BaseResponse;
 import com.capstone.notechigima.config.BaseResponseStatus;
 import com.capstone.notechigima.dto.study_group.StudyGroupGetResponseDTO;
 import com.capstone.notechigima.service.GroupInviteService;
-import com.capstone.notechigima.service.GroupServiceJPA;
+import com.capstone.notechigima.service.GroupService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final GroupServiceJPA groupService;
+    private final GroupService groupService;
     private final GroupInviteService groupInviteService;
 
     @ResponseBody

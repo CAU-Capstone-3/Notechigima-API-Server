@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
-public class TopicResponseDTO {
+public class TopicGetResponseDTO {
     @Schema(description = "토픽 ID", defaultValue = "3")
     private int topicId;
     @Schema(description = "토픽명", defaultValue = "컴퓨터통신")
@@ -21,7 +21,7 @@ public class TopicResponseDTO {
     private TopicAnalyzedType analyzed;
 
     @Builder
-    public TopicResponseDTO(int topicId, String title, LocalDateTime updatedAt, TopicAnalyzedType analyzed) {
+    public TopicGetResponseDTO(int topicId, String title, LocalDateTime updatedAt, TopicAnalyzedType analyzed) {
         this.topicId = topicId;
         this.title = title;
         this.updatedAt = updatedAt;

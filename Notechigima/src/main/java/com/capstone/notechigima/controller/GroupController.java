@@ -7,8 +7,7 @@ import com.capstone.notechigima.dto.study_group.StudyGroupPostRequestDTO;
 import com.capstone.notechigima.dto.users.UserGetResponseDTO;
 import com.capstone.notechigima.service.GroupInviteService;
 import com.capstone.notechigima.service.GroupService;
-import com.capstone.notechigima.service.GroupServiceJPA;
-import com.capstone.notechigima.service.UserServiceJPA;
+import com.capstone.notechigima.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,8 +22,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GroupController {
 
-    private final GroupServiceJPA groupService;
-    private final UserServiceJPA userService;
+    private final GroupService groupService;
+    private final UserService userService;
     private final GroupInviteService groupInviteService;
 
     @PostMapping()
