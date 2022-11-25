@@ -4,8 +4,8 @@ import com.capstone.notechigima.config.BaseException;
 import com.capstone.notechigima.config.BaseResponse;
 import com.capstone.notechigima.config.BaseResponseStatus;
 import com.capstone.notechigima.dto.comment.CommentPostReqeustDTO;
-import com.capstone.notechigima.service.AdviceServiceJPA;
-import com.capstone.notechigima.service.CommentServiceJPA;
+import com.capstone.notechigima.service.AdviceService;
+import com.capstone.notechigima.service.CommentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AdviceController {
 
-    private final AdviceServiceJPA adviceService;
-    private final CommentServiceJPA commentService;
+    private final AdviceService adviceService;
+    private final CommentService commentService;
 
 
     @PostMapping("/{adviceId}/comment")

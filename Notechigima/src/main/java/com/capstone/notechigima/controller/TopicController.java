@@ -6,9 +6,9 @@ import com.capstone.notechigima.config.BaseResponse;
 import com.capstone.notechigima.domain.topic.TopicAnalyzedType;
 import com.capstone.notechigima.dto.advice.AdviceGetResponseDTO;
 import com.capstone.notechigima.dto.note.NoteListGetResponseDTO;
-import com.capstone.notechigima.service.AdviceServiceJPA;
-import com.capstone.notechigima.service.NoteServiceJPA;
-import com.capstone.notechigima.service.TopicServiceJPA;
+import com.capstone.notechigima.service.AdviceService;
+import com.capstone.notechigima.service.NoteService;
+import com.capstone.notechigima.service.TopicService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -22,9 +22,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TopicController {
 
-    private final TopicServiceJPA topicService;
-    private final NoteServiceJPA noteService;
-    private final AdviceServiceJPA adviceService;
+    private final TopicService topicService;
+    private final NoteService noteService;
+    private final AdviceService adviceService;
 
     @ResponseBody
     @GetMapping("/{topicId}/note")

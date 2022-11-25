@@ -5,7 +5,7 @@ import com.capstone.notechigima.config.BaseResponse;
 import com.capstone.notechigima.config.BaseResponseStatus;
 import com.capstone.notechigima.dto.note.NotePostRequestDTO;
 import com.capstone.notechigima.dto.sentence.SentenceListGetResponseDTO;
-import com.capstone.notechigima.service.NoteServiceJPA;
+import com.capstone.notechigima.service.NoteService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class NoteController {
 
-    private final NoteServiceJPA noteService;
+    private final NoteService noteService;
 
     @ResponseBody
     @GetMapping(value="/{noteId}")

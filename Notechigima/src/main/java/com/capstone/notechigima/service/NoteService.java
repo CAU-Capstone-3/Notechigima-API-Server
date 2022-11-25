@@ -1,17 +1,82 @@
 package com.capstone.notechigima.service;
 
 import com.capstone.notechigima.config.BaseException;
+import com.capstone.notechigima.domain.VisibilityStatus;
+import com.capstone.notechigima.domain.note.Note;
+import com.capstone.notechigima.domain.sentence.Sentence;
+import com.capstone.notechigima.domain.sentence.SentenceType;
+import com.capstone.notechigima.domain.topic.Topic;
+import com.capstone.notechigima.domain.users.User;
 import com.capstone.notechigima.dto.note.NoteGetResponseDTO;
 import com.capstone.notechigima.dto.note.NoteListGetResponseDTO;
 import com.capstone.notechigima.dto.note.NotePostRequestDTO;
+import com.capstone.notechigima.dto.sentence.SentenceListGetResponseDTO;
+import com.capstone.notechigima.mapper.NoteMapper;
+import com.capstone.notechigima.mapper.SentenceMapper;
+import com.capstone.notechigima.repository.NoteRepository;
+import com.capstone.notechigima.repository.SentenceRepository;
+import com.capstone.notechigima.repository.TopicRepository;
+import com.capstone.notechigima.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
-public interface NoteService {
+@RequiredArgsConstructor
+@Service
+public class NoteService {
 
-    List<NoteListGetResponseDTO> getNoteList(int topicId) throws BaseException;
+    private final SentenceRepository sentenceRepository;
+    private final NoteRepository noteRepository;
+    private final UserRepository userRepository;
+    private final TopicRepository topicRepository;
 
-    NoteGetResponseDTO getNote(int noteId) throws BaseException;
+    public List<NoteListGetResponseDTO> getNoteList(int topicId) throws BaseException {
+        return noteRepository.findAllByTopic_TopicId(topicId).stream()
+                .map(entity -> NoteMapper.INSTANCE.toNoteListGetResponseDTO(entity)
+                ).collect(Collectors.toList());
+    }
 
-    int postNote(NotePostRequestDTO body) throws BaseException;
+    public NoteGetResponseDTO getNote(int noteId) throws BaseException {
+        List<Sentence> sentenceList = sentenceRepository.findAllByNote_NoteId(noteId);
+        List<SentenceListGetResponseDTO> sentenceResult =
+                sentenceList.stream()
+                        .map(entity -> SentenceMapper.INSTANCE.toSentenceListGetResponseDTO(entity))
+                        .collect(Collectors.toList());
+
+        Note note = noteRepository.findById(noteId).orElseThrow();
+        NoteGetResponseDTO result = NoteMapper.INSTANCE.toNoteGetResponseDTO(note, sentenceResult);
+        return result;
+    }
+
+    public void postNote(NotePostRequestDTO body) throws BaseException {
+        User owner = userRepository.findById(body.getUserId()).orElseThrow();
+        Topic topic = topicRepository.findById(body.getTopicId()).orElseThrow();
+
+        Note entity = Note.builder()
+                .owner(owner)
+                .topic(topic)
+                .status(VisibilityStatus.VISIBLE)
+                .build();
+
+        noteRepository.save(entity);
+
+        List<String> sentences = Arrays.stream(body.getContent().split("\n")).toList();
+        sentences.stream().forEach(str -> str = str.replaceAll("\n", ""));
+        List<String> sentencesFiltered = sentences.stream().filter(str -> str != null && !str.isEmpty()).toList();
+
+        ArrayList<Sentence> sentenceEntities = new ArrayList<>();
+        for (int i = 0; i < sentencesFiltered.size(); i++) {
+            Sentence createSentence = Sentence.builder()
+                    .note(entity)
+                    .content(sentencesFiltered.get(i))
+                    .sentenceType(SentenceType.PLAIN)
+                    .sequenceNum(i + 1)
+                    .build();
+        }
+
+        sentenceRepository.saveAll(sentenceEntities);
+
+    }
 }
