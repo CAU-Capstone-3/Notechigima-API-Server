@@ -4,9 +4,11 @@ import com.capstone.notechigima.config.BaseException;
 import com.capstone.notechigima.config.BaseResponse;
 import com.capstone.notechigima.config.BaseResponseStatus;
 import com.capstone.notechigima.dto.study_group.StudyGroupPostRequestDTO;
+import com.capstone.notechigima.dto.subject.SubjectGetResponseDTO;
 import com.capstone.notechigima.dto.users.UserGetResponseDTO;
 import com.capstone.notechigima.service.GroupInviteService;
 import com.capstone.notechigima.service.GroupService;
+import com.capstone.notechigima.service.SubjectService;
 import com.capstone.notechigima.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -25,6 +27,7 @@ public class GroupController {
     private final GroupService groupService;
     private final UserService userService;
     private final GroupInviteService groupInviteService;
+    private final SubjectService subjectService;
 
     @PostMapping()
     @Operation(summary = "그룹 추가", description = "그룹 생성 후 사용자가 그룹의 관리자로 등록됨")
@@ -36,18 +39,23 @@ public class GroupController {
     @ResponseBody
     @GetMapping("/{groupId}/members")
     @Operation(summary = "멤버 조회", description = "그룹에 속한 멤버 목록 조회")
-    public BaseResponse<List<UserGetResponseDTO>> getMembersByGroupId(@PathVariable("groupId") int groupId) throws BaseException {
+    public BaseResponse<List<UserGetResponseDTO>> getMembersByGroup(@PathVariable("groupId") int groupId) throws BaseException {
         return new BaseResponse(BaseResponseStatus.SUCCESS_READ, userService.getMembersByGroupId(groupId));
     }
 
     @ResponseBody
     @PostMapping("/{groupId}/invite/{userId}")
     @Operation(summary = "멤버 초대", description = "그룹에 멤버를 초대")
-    public BaseResponse postInvite(
-            @Schema(description = "그룹 ID", defaultValue = "1") @PathVariable("groupId") int groupId,
-            @Schema(description = "초대할 사용자 ID", defaultValue = "4") @PathVariable("userId") int userId
-    ) throws BaseException {
+    public BaseResponse postInvite(@PathVariable("groupId") int groupId, @PathVariable("userId") int userId) throws BaseException {
         groupInviteService.save(groupId, userId);
         return new BaseResponse(BaseResponseStatus.SUCCESS_WRITE);
     }
+
+    @ResponseBody
+    @GetMapping("/{groupId}/subjects")
+    @Operation(summary = "과목 목록 조회", description = "그룹에 속한 전체 과목 목록을 조회")
+    public BaseResponse<List<SubjectGetResponseDTO>> getSubjectsByGroup(@PathVariable("groupId") int groupId) throws BaseException {
+        return new BaseResponse(BaseResponseStatus.SUCCESS_READ, subjectService.getSubjectsByGroupId(groupId));
+    }
+
 }
