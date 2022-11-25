@@ -21,4 +21,6 @@ public class SubjectService {
                 .map(entity -> SubjectMapper.INSTANCE.toSubjectGetResponseDTO(entity))
                 .collect(Collectors.toList());
     }
+
+
 }

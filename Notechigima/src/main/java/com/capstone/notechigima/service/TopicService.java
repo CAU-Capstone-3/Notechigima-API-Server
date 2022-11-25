@@ -38,7 +38,7 @@ public class TopicService {
     }
 
     public List<TopicGetResponseDTO> getTopicList(int subjectId) {
-        return topicRepository.findAllBySubjectId(subjectId).stream()
+        return topicRepository.findAllBySubject_SubjectId(subjectId).stream()
                 .map(entity -> TopicMapper.INSTANCE.toTopicGetResponseDTO(entity)
                 ).collect(Collectors.toList());
     }
