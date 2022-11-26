@@ -4,9 +4,11 @@ import com.capstone.notechigima.domain.group_invite.AcceptType;
 import com.capstone.notechigima.domain.group_invite.GroupInvite;
 import com.capstone.notechigima.domain.study_group.StudyGroup;
 import com.capstone.notechigima.domain.users.User;
+import com.capstone.notechigima.dto.invite.GroupInviteAcceptRequestDTO;
 import com.capstone.notechigima.dto.invite.GroupInviteGetResponseDTO;
 import com.capstone.notechigima.mapper.GroupInviteMapper;
 import com.capstone.notechigima.repository.GroupInviteRepository;
+import com.capstone.notechigima.repository.GroupMemberRepository;
 import com.capstone.notechigima.repository.GroupRepository;
 import com.capstone.notechigima.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +40,19 @@ public class GroupInviteService {
 
     public List<GroupInviteGetResponseDTO> getGroupInvited(int userId) {
         return groupInviteRepository.findAllByUser_UserId(userId).stream()
-                .map(entity -> GroupInviteMapper.INSTANCE.toDto(entity))
+                .map(GroupInviteMapper.INSTANCE::toDto)
                 .collect(Collectors.toList());
+    }
+
+    public void acceptInvite(int groupInviteId) {
+        GroupInvite groupInvite = groupInviteRepository.findById(groupInviteId).orElseThrow();
+        groupInvite.updateAccepted(AcceptType.ACCEPTED);
+        groupInviteRepository.save(groupInvite);
+    }
+
+    public void declineInvite(int groupInviteId) {
+        GroupInvite groupInvite = groupInviteRepository.findById(groupInviteId).orElseThrow();
+        groupInvite.updateAccepted(AcceptType.DECLINED);
+        groupInviteRepository.save(groupInvite);
     }
 }
