@@ -3,6 +3,7 @@ package com.capstone.notechigima.domain.topic;
 
 import com.capstone.notechigima.domain.BaseTimeEntity;
 import com.capstone.notechigima.domain.VisibilityStatus;
+import com.capstone.notechigima.domain.subject.Subject;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,9 +18,6 @@ public class Topic extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int topicId;
 
-    @Column(nullable = false)
-    private int subjectId;
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private VisibilityStatus status;
@@ -31,13 +29,17 @@ public class Topic extends BaseTimeEntity {
     @Column(nullable = false)
     private TopicAnalyzedType analyzed;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "SUBJECT_ID")
+    private Subject subject;
+
     @Builder
-    public Topic(int topicId, int subjectId, VisibilityStatus status, String title, TopicAnalyzedType analyzed) {
+    public Topic(int topicId, VisibilityStatus status, String title, TopicAnalyzedType analyzed, Subject subject) {
         this.topicId = topicId;
-        this.subjectId = subjectId;
         this.status = status;
         this.title = title;
         this.analyzed = analyzed;
+        this.subject = subject;
     }
 
     public void updateAnalyzed(TopicAnalyzedType analyzed) {
