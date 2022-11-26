@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Tag(name = "topic", description = "토푁 관련 API")
+@Tag(name = "topic", description = "토픽 관련 API")
 @RestController
-@RequestMapping("/api/topic")
+@RequestMapping("/api/topics")
 @RequiredArgsConstructor
 public class TopicController {
 
@@ -27,14 +27,14 @@ public class TopicController {
     private final AdviceService adviceService;
 
     @ResponseBody
-    @GetMapping("/{topicId}/note")
+    @GetMapping("/{topicId}/notes")
     @Operation(summary = "토픽별 노트 목록", description = "해당 토픽 내에서 작성된 노트의 목록")
     public BaseResponse<List<NoteListGetResponseDTO>> getNoteList(@PathVariable("topicId") int topicId) throws BaseException {
         return new BaseResponse(BaseResponseStatus.SUCCESS_READ, noteService.getNoteList(topicId));
     }
 
     @ResponseBody
-    @PostMapping("/{topicId}/advice")
+    @PostMapping("/{topicId}/advices")
     @Operation(summary = "분석 요청", description = "해당 토픽에 대한 분석 시작을 요청")
     public BaseResponse requestAnalysis(@PathVariable("topicId") int topicId) {
         if (topicService.getTopic(topicId).getAnalyzed() != TopicAnalyzedType.READY)
@@ -44,7 +44,7 @@ public class TopicController {
     }
 
     @ResponseBody
-    @GetMapping("/{topicId}/advice")
+    @GetMapping("/{topicId}/advices")
     @Operation(summary = "토픽별 분석결과 API", description = "토픽별 분석결과 목록을 조회하는 API 입니다.")
     public BaseResponse<List<AdviceGetResponseDTO>> getAdviceList(@PathVariable("topicId") int topicId) {
         return new BaseResponse(BaseResponseStatus.SUCCESS_READ, adviceService.getAdviceList(topicId));

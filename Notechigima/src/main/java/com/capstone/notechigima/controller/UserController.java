@@ -24,7 +24,7 @@ public class UserController {
     private final GroupInviteService groupInviteService;
 
     @ResponseBody
-    @GetMapping("/{userId}/group")
+    @GetMapping("/{userId}/groups")
     @Operation(summary = "그룹 조회", description = "사용자가 속한 그룹 목록 조회")
     public BaseResponse<List<StudyGroupGetResponseDTO>> getGroupList(@PathVariable("userId") int userId) throws BaseException {
         return new BaseResponse(BaseResponseStatus.SUCCESS_READ, groupService.getStudyGroupsByUserId(userId));

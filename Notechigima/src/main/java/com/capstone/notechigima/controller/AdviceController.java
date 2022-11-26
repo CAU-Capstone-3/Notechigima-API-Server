@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "advice", description = "분석 결과 API")
 @RestController
-@RequestMapping("/api/advice")
+@RequestMapping("/api/advices")
 @RequiredArgsConstructor
 public class AdviceController {
 
@@ -21,7 +21,7 @@ public class AdviceController {
     private final CommentService commentService;
 
 
-    @PostMapping("/{adviceId}/comment")
+    @PostMapping("/{adviceId}/comments")
     @Operation(summary = "댓글 작성", description = "분석 결과에 댓글 작성")
     public BaseResponse postComment(@PathVariable("adviceId") int adviceId, @RequestBody CommentPostReqeustDTO request) throws BaseException {
         commentService.postComment(adviceId, request);

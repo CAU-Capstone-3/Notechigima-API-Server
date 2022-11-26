@@ -19,7 +19,7 @@ import java.util.List;
 
 @Tag(name = "group", description = "그룹 관련 API")
 @RestController
-@RequestMapping("/api/group")
+@RequestMapping("/api/groups")
 @RequiredArgsConstructor
 public class GroupController {
 

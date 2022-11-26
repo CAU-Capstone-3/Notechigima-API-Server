@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "invite", description = "그룹 초대 관련 API")
 @RestController
-@RequestMapping("/api/invite")
+@RequestMapping("/api/invites")
 @RequiredArgsConstructor
 public class InviteController {
 
     private final GroupInviteService groupInviteService;
     private final GroupMemberService groupMemberService;
 
-    @PostMapping("/accept")
+    @PostMapping("/accepts")
     @Operation(summary = "그룹 초대 승인 또는 거절", description = "사용자에게 온 그룹 초대를 승인하거나 거절 (승인 -> true, 거절 -> false)")
     public BaseResponse postInviteAccept(@RequestBody GroupInviteAcceptRequestDTO body) throws BaseException {
         if (body.isAccept()) {
