@@ -24,4 +24,5 @@ public class GroupMemberService {
                 .build();
         groupMemberRepository.save(groupMember);
     }
+
 }

@@ -1,14 +1,20 @@
 package com.capstone.notechigima.service;
 
+import com.capstone.notechigima.domain.group_member.GroupMember;
+import com.capstone.notechigima.domain.note.Note;
 import com.capstone.notechigima.domain.sentence.Sentence;
 import com.capstone.notechigima.domain.sentence_advice.Advice;
 import com.capstone.notechigima.domain.sentence_advice.AdviceType;
 import com.capstone.notechigima.domain.topic.Topic;
 import com.capstone.notechigima.domain.topic.TopicAnalyzedType;
+import com.capstone.notechigima.domain.users.User;
 import com.capstone.notechigima.dto.advice.AdviceInferenceRequestVO;
 import com.capstone.notechigima.dto.topic.TopicGetResponseDTO;
+import com.capstone.notechigima.dto.users.UserNicknameGetResponseDTO;
 import com.capstone.notechigima.mapper.TopicMapper;
+import com.capstone.notechigima.mapper.UserMapper;
 import com.capstone.notechigima.repository.AdviceRepository;
+import com.capstone.notechigima.repository.GroupRepository;
 import com.capstone.notechigima.repository.SentenceRepository;
 import com.capstone.notechigima.repository.TopicRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +35,7 @@ import java.util.stream.Collectors;
 public class TopicService {
     private static final String NLI_ULI = "http://18.189.150.89:5000/nli";
 
+    private final GroupRepository groupRepository;
     private final TopicRepository topicRepository;
     private final AdviceRepository adviceRepository;
     private final SentenceRepository sentenceRepository;
@@ -41,6 +48,25 @@ public class TopicService {
         return topicRepository.findAllBySubject_SubjectId(subjectId).stream()
                 .map(entity -> TopicMapper.INSTANCE.toTopicGetResponseDTO(entity)
                 ).collect(Collectors.toList());
+    }
+
+    public List<UserNicknameGetResponseDTO> getUnwrittenUsers(int topicId) {
+        Topic topic = topicRepository.findById(topicId).orElseThrow();
+        List<User> groupUsers = topic.getSubject().getStudyGroup().getMembers()
+                .stream()
+                .map(GroupMember::getUser).toList();
+
+        Set<User> writers = topic.getNotes().stream()
+                .map(Note::getOwner)
+                .collect(Collectors.toSet());
+
+        List<User> unwrittenUsers = groupUsers.stream()
+                .filter(user -> !writers.contains(user))
+                .toList();
+
+        return unwrittenUsers.stream()
+                .map(user -> UserMapper.INSTANCE.toUserNicknameGetResponseDTO(user))
+                .toList();
     }
 
     @Transactional

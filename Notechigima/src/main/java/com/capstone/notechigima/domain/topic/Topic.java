@@ -3,12 +3,15 @@ package com.capstone.notechigima.domain.topic;
 
 import com.capstone.notechigima.domain.BaseTimeEntity;
 import com.capstone.notechigima.domain.VisibilityStatus;
+import com.capstone.notechigima.domain.note.Note;
 import com.capstone.notechigima.domain.subject.Subject;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -33,13 +36,17 @@ public class Topic extends BaseTimeEntity {
     @JoinColumn(name = "SUBJECT_ID")
     private Subject subject;
 
+    @OneToMany(mappedBy = "topic")
+    private List<Note> notes = new ArrayList<>();
+
     @Builder
-    public Topic(int topicId, VisibilityStatus status, String title, TopicAnalyzedType analyzed, Subject subject) {
+    public Topic(int topicId, VisibilityStatus status, String title, TopicAnalyzedType analyzed, Subject subject, List<Note> notes) {
         this.topicId = topicId;
         this.status = status;
         this.title = title;
         this.analyzed = analyzed;
         this.subject = subject;
+        this.notes = notes;
     }
 
     public void updateAnalyzed(TopicAnalyzedType analyzed) {

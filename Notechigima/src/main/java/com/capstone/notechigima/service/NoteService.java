@@ -2,6 +2,7 @@ package com.capstone.notechigima.service;
 
 import com.capstone.notechigima.config.BaseException;
 import com.capstone.notechigima.domain.VisibilityStatus;
+import com.capstone.notechigima.domain.group_member.GroupMember;
 import com.capstone.notechigima.domain.note.Note;
 import com.capstone.notechigima.domain.sentence.Sentence;
 import com.capstone.notechigima.domain.sentence.SentenceType;
@@ -13,10 +14,7 @@ import com.capstone.notechigima.dto.note.NotePostRequestDTO;
 import com.capstone.notechigima.dto.sentence.SentenceListGetResponseDTO;
 import com.capstone.notechigima.mapper.NoteMapper;
 import com.capstone.notechigima.mapper.SentenceMapper;
-import com.capstone.notechigima.repository.NoteRepository;
-import com.capstone.notechigima.repository.SentenceRepository;
-import com.capstone.notechigima.repository.TopicRepository;
-import com.capstone.notechigima.repository.UserRepository;
+import com.capstone.notechigima.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -34,8 +32,8 @@ public class NoteService {
 
     public List<NoteListGetResponseDTO> getNoteList(int topicId) throws BaseException {
         return noteRepository.findAllByTopic_TopicId(topicId).stream()
-                .map(entity -> NoteMapper.INSTANCE.toNoteListGetResponseDTO(entity)
-                ).collect(Collectors.toList());
+                .map(NoteMapper.INSTANCE::toNoteListGetResponseDTO
+                ).toList();
     }
 
     public NoteGetResponseDTO getNote(int noteId) throws BaseException {

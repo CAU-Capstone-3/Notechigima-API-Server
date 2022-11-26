@@ -6,9 +6,9 @@ import com.capstone.notechigima.config.BaseResponse;
 import com.capstone.notechigima.domain.topic.TopicAnalyzedType;
 import com.capstone.notechigima.dto.advice.AdviceGetResponseDTO;
 import com.capstone.notechigima.dto.note.NoteListGetResponseDTO;
-import com.capstone.notechigima.service.AdviceService;
-import com.capstone.notechigima.service.NoteService;
-import com.capstone.notechigima.service.TopicService;
+import com.capstone.notechigima.dto.topic.TopicNoteListGetResponseDTO;
+import com.capstone.notechigima.dto.users.UserNicknameGetResponseDTO;
+import com.capstone.notechigima.service.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -25,12 +25,20 @@ public class TopicController {
     private final TopicService topicService;
     private final NoteService noteService;
     private final AdviceService adviceService;
+    private final UserService userService;
 
     @ResponseBody
     @GetMapping("/{topicId}/notes")
     @Operation(summary = "토픽별 노트 목록", description = "해당 토픽 내에서 작성된 노트의 목록")
-    public BaseResponse<List<NoteListGetResponseDTO>> getNoteList(@PathVariable("topicId") int topicId) throws BaseException {
-        return new BaseResponse(BaseResponseStatus.SUCCESS_READ, noteService.getNoteList(topicId));
+    public BaseResponse<TopicNoteListGetResponseDTO> getNoteList(@PathVariable("topicId") int topicId) throws BaseException {
+        List<NoteListGetResponseDTO> notes = noteService.getNoteList(topicId);
+        List<UserNicknameGetResponseDTO> unwrittenUsers = topicService.getUnwrittenUsers(topicId);
+
+        TopicNoteListGetResponseDTO response = TopicNoteListGetResponseDTO.builder()
+                .notes(notes)
+                .unwrittenUsers(unwrittenUsers)
+                .build();
+        return new BaseResponse(BaseResponseStatus.SUCCESS_READ, response);
     }
 
     @ResponseBody
