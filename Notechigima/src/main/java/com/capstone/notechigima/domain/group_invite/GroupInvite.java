@@ -37,4 +37,8 @@ public class GroupInvite extends BaseTimeEntity {
         this.user = user;
         this.studyGroup = studyGroup;
     }
+
+    public void updateAccepted(AcceptType accepted) {
+        this.accepted = accepted;
+    }
 }
