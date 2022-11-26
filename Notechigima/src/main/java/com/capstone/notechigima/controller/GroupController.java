@@ -43,14 +43,6 @@ public class GroupController {
     }
 
     @ResponseBody
-    @PostMapping("/{groupId}/invite/{userId}")
-    @Operation(summary = "멤버 초대", description = "그룹에 멤버를 초대")
-    public BaseResponse postInvite(@PathVariable("groupId") int groupId, @PathVariable("userId") int userId) throws BaseException {
-        groupInviteService.postGroupInvite(groupId, userId);
-        return new BaseResponse(BaseResponseStatus.SUCCESS_WRITE);
-    }
-
-    @ResponseBody
     @GetMapping("/{groupId}/subjects")
     @Operation(summary = "과목 목록 조회", description = "그룹에 속한 전체 과목 목록을 조회")
     public BaseResponse<List<SubjectGetResponseDTO>> getSubjectsByGroup(@PathVariable("groupId") int groupId) throws BaseException {
