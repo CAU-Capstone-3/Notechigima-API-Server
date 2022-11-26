@@ -1,6 +1,8 @@
 package com.capstone.notechigima.domain.group_invite;
 
 import com.capstone.notechigima.domain.BaseTimeEntity;
+import com.capstone.notechigima.domain.study_group.StudyGroup;
+import com.capstone.notechigima.domain.users.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,20 +18,23 @@ public class GroupInvite extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int groupInviteId;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private int userId;
+    private AcceptType accepted;
 
-    @Column(nullable = false)
-    private int groupId;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "USER_ID")
+    private User user;
 
-    @Column(nullable = false)
-    private char accepted;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "GROUP_ID")
+    private StudyGroup studyGroup;
 
     @Builder
-    public GroupInvite(int groupInviteId, int userId, int groupId, char accepted) {
+    public GroupInvite(int groupInviteId, AcceptType accepted, User user, StudyGroup studyGroup) {
         this.groupInviteId = groupInviteId;
-        this.userId = userId;
-        this.groupId = groupId;
         this.accepted = accepted;
+        this.user = user;
+        this.studyGroup = studyGroup;
     }
 }

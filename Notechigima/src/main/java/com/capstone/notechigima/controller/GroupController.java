@@ -11,7 +11,6 @@ import com.capstone.notechigima.service.GroupService;
 import com.capstone.notechigima.service.SubjectService;
 import com.capstone.notechigima.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -47,7 +46,7 @@ public class GroupController {
     @PostMapping("/{groupId}/invite/{userId}")
     @Operation(summary = "멤버 초대", description = "그룹에 멤버를 초대")
     public BaseResponse postInvite(@PathVariable("groupId") int groupId, @PathVariable("userId") int userId) throws BaseException {
-        groupInviteService.save(groupId, userId);
+        groupInviteService.postGroupInvite(groupId, userId);
         return new BaseResponse(BaseResponseStatus.SUCCESS_WRITE);
     }
 
