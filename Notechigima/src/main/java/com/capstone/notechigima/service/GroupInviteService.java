@@ -38,7 +38,7 @@ public class GroupInviteService {
     }
 
     public List<GroupInviteGetResponseDTO> getGroupInvited(int userId) {
-        return groupInviteRepository.findAllByUser_UserId(userId).stream()
+        return groupInviteRepository.findAllByUser_UserIdAndAccepted(userId, AcceptType.UNCHECKED).stream()
                 .map(GroupInviteMapper.INSTANCE::toDto)
                 .collect(Collectors.toList());
     }
