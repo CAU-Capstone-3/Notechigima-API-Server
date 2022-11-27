@@ -72,9 +72,9 @@ public class NoteService {
                     .sentenceType(SentenceType.PLAIN)
                     .sequenceNum(i + 1)
                     .build();
+            sentenceEntities.add(createSentence);
         }
 
         sentenceRepository.saveAll(sentenceEntities);
-
     }
 }
