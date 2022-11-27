@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class PrincipleDetailService implements UserDetailsService {
+public class PrincipalDetailService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
@@ -19,6 +19,6 @@ public class PrincipleDetailService implements UserDetailsService {
         User user = userRepository.getUserByEmail(email)
                 .orElseThrow();
 
-        return new PrincipleDetails(user);
+        return new PrincipalDetails(user);
     }
 }
