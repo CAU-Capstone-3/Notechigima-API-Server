@@ -1,6 +1,5 @@
 package com.capstone.notechigima.config.jwt;
 
-import com.capstone.notechigima.config.auth.PrincipalDetails;
 import com.capstone.notechigima.dto.auth.LoginPostRequestDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +14,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Date;
 
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {

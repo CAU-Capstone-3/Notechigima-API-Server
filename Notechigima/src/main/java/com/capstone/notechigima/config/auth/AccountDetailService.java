@@ -10,15 +10,15 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class PrincipalDetailService implements UserDetailsService {
+public class AccountDetailService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.getUserByEmail(email)
-                .orElseThrow();
+                .orElseThrow(() -> new UsernameNotFoundException("해당 이메일과 일치하는 계정이 없습니다."));
 
-        return new PrincipalDetails(user);
+        return new AccountDetails(user);
     }
 }

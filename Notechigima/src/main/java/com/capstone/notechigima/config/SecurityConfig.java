@@ -9,6 +9,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @RequiredArgsConstructor
@@ -20,25 +22,29 @@ public class SecurityConfig {
         return (web) -> web.ignoring().mvcMatchers(
                 "/swagger-ui/**",
                 "/error"
-                ,"/login/**"
-                );
+                , "/login/**"
+        );
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-        return http.antMatcher("/**")
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http, JwtProvider ) throws Exception {
+        return http
+                .httpBasic().disable()
                 .cors().disable()
                 .csrf().disable()
-                .httpBasic().disable()
-                .formLogin().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-
+                .and()
                 .authorizeRequests()
-                .antMatchers("/admin/").access("hasRole('ROLE_ADMIN')")
+                .antMatchers("/admin/**").hasRole("ROLE_ADMIN")
                 .antMatchers("/api/**").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-
-
-                .anyRequest().permitAll()
+                .and()
+                .addFilterBefore()
 //                .and()
 //                .addFilterBefore(jwtFilter)
 //                .exceptionHandling()
@@ -58,6 +64,6 @@ public class SecurityConfig {
 //                            ExceptionResponse.of(ExceptionCode.FAIL_AUTHORIZATION)
 //                    );
 //                })).and()
-    .build();
+                .build();
     }
 }

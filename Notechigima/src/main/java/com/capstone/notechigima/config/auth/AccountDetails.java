@@ -7,11 +7,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class PrincipalDetails implements UserDetails {
+public class AccountDetails implements UserDetails {
 
     private User user;
 
-    public PrincipalDetails(User user) {
+    public AccountDetails(User user) {
         this.user = user;
     }
 
@@ -51,7 +51,7 @@ public class PrincipalDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+        Collection<GrantedAuthority> authorities = new ArrayList();
         authorities.add(() -> user.getRole().getKey());
         return authorities;
     }
