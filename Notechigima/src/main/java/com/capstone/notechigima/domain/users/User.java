@@ -7,8 +7,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
+import org.springframework.context.annotation.Configuration;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +25,10 @@ public class User extends BaseTimeEntity {
 
     @Column(nullable = false)
     private String email;
+
+    @Column(nullable = false)
+    @Size(min = 6, max = 20)
+    private String password;
 
     @Column(nullable = false)
     private String nickname;
