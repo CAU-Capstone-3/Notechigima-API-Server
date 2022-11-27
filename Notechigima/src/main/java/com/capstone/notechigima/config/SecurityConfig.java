@@ -1,5 +1,7 @@
 package com.capstone.notechigima.config;
 
+import com.capstone.notechigima.config.jwt.JwtAuthenticationFilter;
+import com.capstone.notechigima.config.jwt.JwtProvider;
 import com.capstone.notechigima.domain.users.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +14,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @RequiredArgsConstructor
 @EnableWebSecurity
@@ -31,9 +34,13 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    JwtAuthenticationFilter jwtAuthenticationFilter(JwtProvider jwtProvider) {
+        return new JwtAuthenticationFilter(jwtProvider);
+    }
+
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, JwtProvider ) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, JwtProvider jwtProvider) throws Exception {
         return http
                 .httpBasic().disable()
                 .cors().disable()
@@ -41,29 +48,11 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/admin/**").hasRole("ROLE_ADMIN")
-                .antMatchers("/api/**").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/api/**").access("hasRole('USER') or hasRole('ADMIN')")
+                .antMatchers("/**").permitAll()
                 .and()
-                .addFilterBefore()
-//                .and()
-//                .addFilterBefore(jwtFilter)
-//                .exceptionHandling()
-//                .authenticationEntryPoint(((request, response, authException) -> {
-//                    response.setStatus(HttpStatus.UNAUTHORIZED.value());
-//                    response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-//                    objectMapper.writeValue(
-//                            response.getOutputStream(),
-//                            ExceptionResponse.of(ExceptionCode.FAIL_AUTHENTICATION)
-//                    );
-//                }))
-//                .accessDeniedHandler(((request, response, accessDeniedException) -> {
-//                    response.setStatus(HttpStatus.FORBIDDEN.value());
-//                    response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-//                    objectMapper.writeValue(
-//                            response.getOutputStream(),
-//                            ExceptionResponse.of(ExceptionCode.FAIL_AUTHORIZATION)
-//                    );
-//                })).and()
+                .addFilterBefore(jwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 }

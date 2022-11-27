@@ -3,66 +3,55 @@ package com.capstone.notechigima.config.jwt;
 import com.capstone.notechigima.dto.auth.LoginPostRequestDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.json.JSONObject;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.filter.GenericFilterBean;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @RequiredArgsConstructor
-public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+public class JwtAuthenticationFilter extends GenericFilterBean {
 
-    private final AuthenticationManager authenticationManager;
-
-    @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IllegalArgumentException {
-
-        ObjectMapper om = new ObjectMapper();
-        LoginPostRequestDTO loginRequestDto = null;
-
-        try {
-            loginRequestDto = om.readValue(request.getInputStream(), LoginPostRequestDTO.class);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        if (loginRequestDto.getEmail() == null || loginRequestDto.getPassword() == null) {
-            throw new IllegalArgumentException("올바르지 않은 입력");
-        }
-
-        UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(
-                        loginRequestDto.getEmail(),
-                        loginRequestDto.getPassword());
-
-        Authentication authentication =
-                authenticationManager.authenticate(authenticationToken);
-
-//        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-        return authentication;
-    }
+    private final JwtProvider jwtProvider;
 
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
-                                            Authentication authResult) throws IOException, ServletException {
-    // TODO : jwt accesstoken & refreshtoken 생성해서 주기
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        Authentication authenticate;
 
+        HttpServletRequest req = (HttpServletRequest) request;
+        HttpServletResponse res = (HttpServletResponse) response;
 
-//        PrincipalDetails principalDetailis = (PrincipalDetails) authResult.getPrincipal();
-//
-//        String jwtToken = JWT.create()
-//                .withSubject(principalDetailis.getUsername())
-//                .withExpiresAt(new Date(System.currentTimeMillis()+JwtProperties.EXPIRATION_TIME))
-//                .withClaim("id", principalDetailis.getUser().getId())
-//                .withClaim("username", principalDetailis.getUser().getUsername())
-//                .sign(Algorithm.HMAC512(JwtProperties.SECRET));
-//
-//        response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken);
+        String accessToken = req.getHeader("access_token");
+        if (accessToken != null && !jwtProvider.isTokenExpired(accessToken)) {
+            try {
+                String emailFromToken = jwtProvider.getEmailFromToken(accessToken);
+                authenticate = jwtProvider.authenticate(new UsernamePasswordAuthenticationToken(emailFromToken, ""));
+
+                SecurityContextHolder.getContext().setAuthentication(authenticate);
+            } catch (Exception e) {
+                res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                res.setContentType("application/json");
+                res.setCharacterEncoding("UTF-8");
+
+                JSONObject responseJson = new JSONObject();
+                responseJson.put("code", 401);
+                responseJson.put("message", e.getMessage());
+
+                res.getWriter().write(responseJson.toString());
+            }
+        }
+
+        chain.doFilter(request, response);
     }
 }
