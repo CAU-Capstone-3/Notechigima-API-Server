@@ -46,7 +46,7 @@ public class TopicController {
     @Operation(summary = "분석 요청", description = "해당 토픽에 대한 분석 시작을 요청")
     public BaseResponse requestAnalysis(@PathVariable("topicId") int topicId) {
         if (topicService.getTopic(topicId).getAnalyzed() != TopicAnalyzedType.READY)
-            return new BaseResponse(BaseResponseStatus.CAN_NOT_ANALYZE);
+            return new BaseResponse(BaseResponseStatus.ERROR_INVALID_ANALYZED_STATUS);
         topicService.requestAnalysis(topicId);
         return new BaseResponse(BaseResponseStatus.SUCCESS_WRITE);
     }
