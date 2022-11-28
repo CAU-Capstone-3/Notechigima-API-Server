@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.expression.AccessException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -30,16 +31,22 @@ public class NoteController {
     @GetMapping(value="/{noteId}")
     @Operation(summary = "노트 상세조회", description = "노트 ID로 노트의 상세 내용을 조회")
     public BaseResponse<List<SentenceListGetResponseDTO>> getNote(
-            @PathVariable("noteId") int noteId,
-            @RequestHeader Map<String, String> headers) throws AccessException {
+            HttpServletRequest request,
+            @PathVariable("noteId") int noteId
+            ) throws AccessException {
 
-        authService.authorizationByNoteId(headers.get(ACCESS_TOKEN_HEADER), noteId);
+        authService.authorizationByNoteId(request.getHeader(ACCESS_TOKEN_HEADER), noteId);
         return new BaseResponse(SuccessCode.SUCCESS_READ, noteService.getNote(noteId));
     }
 
     @PostMapping
     @Operation(summary = "노트 작성", description = "해당 토픽에 노트 작성")
-    public BaseResponse postNote(@RequestBody NotePostRequestDTO body) {
+    public BaseResponse postNote(
+            HttpServletRequest request,
+            @RequestBody NotePostRequestDTO body) throws AccessException {
+
+        authService.authorizationByTopicId(request.getHeader(ACCESS_TOKEN_HEADER), body.getTopicId());
+
         noteService.postNote(body);
         return new BaseResponse(SuccessCode.SUCCESS_WRITE);
     }

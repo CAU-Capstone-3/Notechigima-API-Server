@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.expression.AccessException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.net.http.HttpHeaders;
 import java.util.List;
 import java.util.Map;
 
@@ -40,10 +42,11 @@ public class GroupController {
     @GetMapping("/{groupId}/members")
     @Operation(summary = "멤버 조회", description = "그룹에 속한 멤버 목록 조회")
     public BaseResponse<List<UserGetResponseDTO>> getMembersByGroup(
-            @PathVariable("groupId") int groupId,
-            @RequestHeader Map<String, String> headers) throws AccessException {
+            HttpServletRequest request,
+            @PathVariable("groupId") int groupId
+            ) throws AccessException {
 
-        authService.authorizationByGroupId(headers.get(ACCESS_TOKEN_HEADER), groupId);
+        authService.authorizationByGroupId(request.getHeader(ACCESS_TOKEN_HEADER), groupId);
         return new BaseResponse(SuccessCode.SUCCESS_READ, userService.getMembersByGroupId(groupId));
     }
 
@@ -51,10 +54,11 @@ public class GroupController {
     @GetMapping("/{groupId}/subjects")
     @Operation(summary = "과목 목록 조회", description = "그룹에 속한 전체 과목 목록을 조회")
     public BaseResponse<List<SubjectGetResponseDTO>> getSubjectsByGroup(
-            @PathVariable("groupId") int groupId,
-            @RequestHeader Map<String, String> headers) throws AccessException {
+            HttpServletRequest request,
+            @PathVariable("groupId") int groupId
+            ) throws AccessException {
 
-        authService.authorizationByGroupId(headers.get(ACCESS_TOKEN_HEADER) ,groupId);
+        authService.authorizationByGroupId(request.getHeader(ACCESS_TOKEN_HEADER) ,groupId);
         return new BaseResponse(SuccessCode.SUCCESS_READ, subjectService.getSubjectsByGroupId(groupId));
     }
 
