@@ -14,6 +14,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -34,7 +35,7 @@ public class JwtProvider implements AuthenticationProvider {
     @Value("${spring.jwt.issuer}")
     private String ISSUER;
 
-    public String getEmailFromToken(String token) {
+    public String getEmailFromToken(String token) throws JWTVerificationException {
         DecodedJWT verifiedToken = validateToken(token);
         return verifiedToken.getClaim("email").asString();
     }
@@ -49,12 +50,13 @@ public class JwtProvider implements AuthenticationProvider {
 
     public boolean isTokenExpired(String token) {
         try {
-            DecodedJWT decodedJWT = validateToken(token);
+            validateToken(token);
             return false;
         } catch (JWTVerificationException e) {
             return true;
         }
     }
+
 
     private Algorithm getSigningKey(String secretKey) {
         return Algorithm.HMAC256(secretKey);
@@ -70,6 +72,10 @@ public class JwtProvider implements AuthenticationProvider {
                 .build();
     }
 
+    public DecodedJWT validateToken(String token) throws JWTVerificationException {
+        JWTVerifier validator = getTokenValidator();
+        return validator.verify(token);
+    }
 
     public String doGenerateToken(long expireTime, Map<String, String> payload) {
         long now = System.currentTimeMillis();
@@ -82,13 +88,8 @@ public class JwtProvider implements AuthenticationProvider {
                 .sign(getSigningKey(SECRET_KEY));
     }
 
-    private DecodedJWT validateToken(String token) throws JWTVerificationException {
-        JWTVerifier validator = getTokenValidator();
-        return validator.verify(token);
-    }
-
     @Override
-    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+    public Authentication authenticate(Authentication authentication) throws AuthenticationException, UsernameNotFoundException {
         AccountDetails userDetails = (AccountDetails) accountDetailService.loadUserByUsername(authentication.getName());
 
         return new UsernamePasswordAuthenticationToken(

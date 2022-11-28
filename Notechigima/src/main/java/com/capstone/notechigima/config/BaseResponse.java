@@ -25,7 +25,7 @@ public class BaseResponse<T> {
 
     public BaseResponse(ExceptionCode status) {
         this.success = false;
-        this.status = status.getCode();
+        this.status = status.getResponseCode();
         this.message = status.getMessage();
     }
 

@@ -33,17 +33,13 @@ public class AuthController {
     @ResponseBody
     @PostMapping("/login")
     @Operation(summary = "로그인", description = "사용자 이메일(ID)과 비밀번호로 로그인")
-    public BaseResponse<LoginPostResponseDTO> login(@RequestBody LoginPostRequestDTO body) {
-        try {
-            AccountDetails accountDetails = (AccountDetails) accountDetailService.loadUserByUsername(body.getEmail());
-            if (accountDetails.getPassword().equals(body.getPassword())) {
-                return new BaseResponse(SuccessCode.SUCCESS_READ, getAuthorizationDTO(accountDetails));
-            } else {
-                return new BaseResponse(ExceptionCode.ERROR_INVALID_PASSWORD);
-            }
+    public BaseResponse<LoginPostResponseDTO> login(@RequestBody LoginPostRequestDTO body) throws UsernameNotFoundException {
 
-        } catch (UsernameNotFoundException e) {
-            return new BaseResponse(ExceptionCode.ERROR_NOT_FOUND_USER);
+        AccountDetails accountDetails = (AccountDetails) accountDetailService.loadUserByUsername(body.getEmail());
+        if (accountDetails.getPassword().equals(body.getPassword())) {
+            return new BaseResponse(SuccessCode.SUCCESS_READ, getAuthorizationDTO(accountDetails));
+        } else {
+            return new BaseResponse(ExceptionCode.ERROR_INVALID_PASSWORD);
         }
     }
 
