@@ -4,14 +4,19 @@ import com.capstone.notechigima.config.BaseResponse;
 import com.capstone.notechigima.config.SuccessCode;
 import com.capstone.notechigima.dto.subject.SubjectPostRequestDTO;
 import com.capstone.notechigima.dto.topic.TopicGetResponseDTO;
+import com.capstone.notechigima.service.AuthService;
 import com.capstone.notechigima.service.SubjectService;
 import com.capstone.notechigima.service.TopicService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.expression.AccessException;
 import org.springframework.web.bind.annotation.*;
+import org.webjars.NotFoundException;
 
 import java.util.List;
+
+import static com.capstone.notechigima.config.jwt.JwtUtils.ACCESS_TOKEN_HEADER;
 
 @Tag(name = "subject", description = "과목 API")
 @RestController
@@ -21,11 +26,16 @@ public class SubjectController {
 
     private final TopicService topicService;
     private final SubjectService subjectService;
+    private final AuthService authService;
 
     @ResponseBody
     @GetMapping("/{subjectId}/topics")
     @Operation(summary = "과목별 토픽 목록", description = "해당 과목 내의 모든 토픽 목록을 조회")
-    public BaseResponse<List<TopicGetResponseDTO>> getTopicList(@PathVariable("subjectId") int subjectId) {
+    public BaseResponse<List<TopicGetResponseDTO>> getTopicList(
+            @PathVariable("subjectId") int subjectId,
+            @RequestHeader(ACCESS_TOKEN_HEADER) String token) throws AccessException {
+
+        authService.validateBySubjectId(token, subjectId);
         return new BaseResponse(SuccessCode.SUCCESS_READ, topicService.getTopicList(subjectId));
     }
 

@@ -78,7 +78,7 @@ public class AuthService {
         Comment comment = commentRepository.findById(commentId).orElseThrow(this::createNotFoundException);
         validateByAdviceId(token, comment.getAdvice().getAdviceId());
     }
-    
+
     private AccessException createAccessException() {
         return new AccessException(ExceptionCode.PERMISSION_DENIED.getMessage());
     }
