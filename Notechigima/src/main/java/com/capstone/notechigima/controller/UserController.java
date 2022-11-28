@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.capstone.notechigima.config.jwt.JwtUtils.ACCESS_TOKEN_HEADER;
+
 @Tag(name = "users", description = "유저 관련 API")
 @RestController
 @RequestMapping("/api/users")
@@ -25,7 +27,10 @@ public class UserController {
     @ResponseBody
     @GetMapping("/{userId}/groups")
     @Operation(summary = "그룹 조회", description = "사용자가 속한 그룹 목록 조회")
-    public BaseResponse<List<StudyGroupGetResponseDTO>> getGroupList(@PathVariable("userId") int userId) {
+    public BaseResponse<List<StudyGroupGetResponseDTO>> getGroupList(
+            @PathVariable("userId") int userId,
+            @RequestHeader(ACCESS_TOKEN_HEADER) String token) {
+
         return new BaseResponse(SuccessCode.SUCCESS_READ, groupService.getStudyGroupsByUserId(userId));
     }
 

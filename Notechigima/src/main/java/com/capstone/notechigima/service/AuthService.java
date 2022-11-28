@@ -1,0 +1,60 @@
+package com.capstone.notechigima.service;
+
+import com.capstone.notechigima.config.ExceptionCode;
+import com.capstone.notechigima.config.jwt.JwtProvider;
+import com.capstone.notechigima.domain.group_member.GroupMember;
+import com.capstone.notechigima.domain.users.User;
+import com.capstone.notechigima.repository.*;
+import lombok.RequiredArgsConstructor;
+import org.springframework.expression.AccessException;
+import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
+
+import java.util.List;
+
+import static com.capstone.notechigima.config.jwt.JwtUtils.parseToken;
+
+@Service
+@RequiredArgsConstructor
+public class AuthService {
+
+    private final JwtProvider jwtProvider;
+    private final UserRepository userRepository;
+    private final GroupMemberRepository groupMemberRepository;
+    private final TopicRepository topicRepository;
+    private final NoteRepository noteRepository;
+    private final AdviceRepository adviceRepository;
+
+    public void validateByUserId(String token, int userId) throws AccessException, NotFoundException {
+        if (getUserId(token) != userId) {
+            throw createAccessException();
+        }
+    }
+
+    public void validateByGroupId(String token, int groupId) throws AccessException, NotFoundException {
+        int userId = getUserId(token);
+        List<GroupMember> groupMembers = groupMemberRepository.findAllByUser_UserId(userId);
+        for (GroupMember member : groupMembers) {
+            if (member.getStudyGroup().getGroupId() == groupId) return;
+        }
+        throw createAccessException();
+    }
+
+
+    private AccessException createAccessException() {
+        return new AccessException(ExceptionCode.PERMISSION_DENIED.getMessage());
+    }
+
+    private NotFoundException createNotFoundException() {
+        return new NotFoundException(ExceptionCode.ERROR_NOT_FOUND_RESOURCE.getMessage());
+    }
+
+    private int getUserId(String token) throws NotFoundException {
+        token = parseToken(token);
+        String email = jwtProvider.getEmailFromToken(token);
+        User user = userRepository.getUserByEmail(email).orElseThrow(
+                this::createNotFoundException);
+        return user.getUserId();
+    }
+
+}

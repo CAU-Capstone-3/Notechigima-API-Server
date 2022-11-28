@@ -3,6 +3,7 @@ package com.capstone.notechigima.config.jwt;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.capstone.notechigima.config.ExceptionCode;
 import lombok.RequiredArgsConstructor;
+import org.springframework.expression.AccessException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -16,11 +17,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static com.capstone.notechigima.config.jwt.JwtUtils.parseToken;
+
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    public static final String ACCESS_TOKEN_HEADER = "Authorization";
-    public static final String BEARER_PREFIX = "Bearer ";
+    public static final String ATTRIBUTE_EXCEPTION = "exception";
 
     private final JwtProvider jwtProvider;
 
@@ -29,7 +31,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         Authentication authenticate;
 
         try {
-            String accessToken = getToken(request);
+            String accessToken = parseToken(request.getHeader(JwtUtils.ACCESS_TOKEN_HEADER));
             jwtProvider.validateToken(accessToken);
 
             String emailFromToken = jwtProvider.getEmailFromToken(accessToken);
@@ -38,31 +40,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(authenticate);
 
         } catch (SecurityException e) {
-            request.setAttribute("exception", ExceptionCode.WRONG_TYPE_TOKEN.getHttpStatus());
+            request.setAttribute(ATTRIBUTE_EXCEPTION, ExceptionCode.WRONG_TYPE_TOKEN.getHttpStatus());
         } catch (TokenExpiredException e) {
-            request.setAttribute("exception", ExceptionCode.EXPIRED_TOKEN.getHttpStatus());
+            request.setAttribute(ATTRIBUTE_EXCEPTION, ExceptionCode.EXPIRED_TOKEN.getHttpStatus());
         } catch (UsernameNotFoundException e) {
-            request.setAttribute("exception", ExceptionCode.ERROR_NOT_FOUND_USER.getHttpStatus());
+            request.setAttribute(ATTRIBUTE_EXCEPTION, ExceptionCode.ERROR_NOT_FOUND_USER.getHttpStatus());
         } catch (AuthenticationException e) {
-            request.setAttribute("exception", ExceptionCode.WRONG_TOKEN.getHttpStatus());
+            request.setAttribute(ATTRIBUTE_EXCEPTION, ExceptionCode.WRONG_TOKEN.getHttpStatus());
+        } catch (IllegalArgumentException e) {
+            request.setAttribute(ATTRIBUTE_EXCEPTION, ExceptionCode.ERROR_NOT_FOUND_RESOURCE);
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("exception", ExceptionCode.ERROR_UNKNOWN.getHttpStatus());
+            request.setAttribute(ATTRIBUTE_EXCEPTION, ExceptionCode.ERROR_UNKNOWN.getHttpStatus());
         }
 
         filterChain.doFilter(request, response);
-    }
-
-    private String getToken(HttpServletRequest request) throws SecurityException {
-        String token = request.getHeader(ACCESS_TOKEN_HEADER);
-        if (token == null) {
-            throw new SecurityException(ExceptionCode.WRONG_TOKEN.getMessage());
-        }
-
-        if (token.startsWith(BEARER_PREFIX)) {
-            return token.substring(BEARER_PREFIX.length());
-        }
-        return token;
     }
 
 }
