@@ -21,4 +21,5 @@ public class UserService {
                 .map(groupMember -> UserMapper.INSTANCE.toUserGetResponseDTO(groupMember.getUser()))
                 .collect(Collectors.toList());
     }
+
 }

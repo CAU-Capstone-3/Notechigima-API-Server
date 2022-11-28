@@ -12,6 +12,8 @@ public enum BaseResponseStatus {
 
     ERROR_INVALID_REQUEST(false, 404, "요청한 값이 잘못되었습니다."),
     ERROR_AUTH(false, 401, "접근할 수 없는 경로입니다."),
+    ERROR_NOT_FOUND_USER(false, 401, "해당하는 사용자 ID가 없습니다"),
+    ERROR_INVALID_PASSWORD(false, 401, "ID나 PW가 잘못되었습니다."),
     ERROR_INVALID_ANALYZED_STATUS(false, 404, "분석하지 않은 토픽만 요청할 수 있습니다.");
 
     private final boolean success;

@@ -25,7 +25,7 @@ public class SecurityConfig {
         return (web) -> web.ignoring().mvcMatchers(
                 "/swagger-ui/**",
                 "/error"
-                , "/login/**"
+                , "/api/auth/**"
         );
     }
 
