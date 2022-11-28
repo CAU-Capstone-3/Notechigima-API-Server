@@ -2,7 +2,7 @@ package com.capstone.notechigima.controller;
 
 import com.capstone.notechigima.config.BaseException;
 import com.capstone.notechigima.config.BaseResponse;
-import com.capstone.notechigima.config.BaseResponseStatus;
+import com.capstone.notechigima.config.SuccessCode;
 import com.capstone.notechigima.dto.study_group.StudyGroupPostRequestDTO;
 import com.capstone.notechigima.dto.subject.SubjectGetResponseDTO;
 import com.capstone.notechigima.dto.users.UserGetResponseDTO;
@@ -32,21 +32,21 @@ public class GroupController {
     @Operation(summary = "그룹 추가", description = "그룹 생성 후 사용자가 그룹의 관리자로 등록됨")
     public BaseResponse postGroup(@RequestBody StudyGroupPostRequestDTO body) throws BaseException {
         groupService.postStudyGroup(body);
-        return new BaseResponse(BaseResponseStatus.SUCCESS_WRITE);
+        return new BaseResponse(SuccessCode.SUCCESS_WRITE);
     }
 
     @ResponseBody
     @GetMapping("/{groupId}/members")
     @Operation(summary = "멤버 조회", description = "그룹에 속한 멤버 목록 조회")
     public BaseResponse<List<UserGetResponseDTO>> getMembersByGroup(@PathVariable("groupId") int groupId) throws BaseException {
-        return new BaseResponse(BaseResponseStatus.SUCCESS_READ, userService.getMembersByGroupId(groupId));
+        return new BaseResponse(SuccessCode.SUCCESS_READ, userService.getMembersByGroupId(groupId));
     }
 
     @ResponseBody
     @GetMapping("/{groupId}/subjects")
     @Operation(summary = "과목 목록 조회", description = "그룹에 속한 전체 과목 목록을 조회")
     public BaseResponse<List<SubjectGetResponseDTO>> getSubjectsByGroup(@PathVariable("groupId") int groupId) throws BaseException {
-        return new BaseResponse(BaseResponseStatus.SUCCESS_READ, subjectService.getSubjectsByGroupId(groupId));
+        return new BaseResponse(SuccessCode.SUCCESS_READ, subjectService.getSubjectsByGroupId(groupId));
     }
 
 }

@@ -1,5 +1,7 @@
 package com.capstone.notechigima.config;
 
+import com.capstone.notechigima.config.auth.CustomAccessDeniedHandler;
+import com.capstone.notechigima.config.auth.CustomAuthenticationEntryPoint;
 import com.capstone.notechigima.config.jwt.JwtAuthenticationFilter;
 import com.capstone.notechigima.config.jwt.JwtProvider;
 import com.capstone.notechigima.domain.users.UserRole;
@@ -51,6 +53,10 @@ public class SecurityConfig {
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/api/**").access("hasRole('USER') or hasRole('ADMIN')")
                 .antMatchers("/**").permitAll()
+                .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+                .accessDeniedHandler(new CustomAccessDeniedHandler())
                 .and()
                 .addFilterBefore(jwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)
                 .build();

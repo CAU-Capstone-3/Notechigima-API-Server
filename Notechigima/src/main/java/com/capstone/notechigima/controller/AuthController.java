@@ -1,7 +1,8 @@
 package com.capstone.notechigima.controller;
 
 import com.capstone.notechigima.config.BaseResponse;
-import com.capstone.notechigima.config.BaseResponseStatus;
+import com.capstone.notechigima.config.ExceptionCode;
+import com.capstone.notechigima.config.SuccessCode;
 import com.capstone.notechigima.config.auth.AccountDetailService;
 import com.capstone.notechigima.config.auth.AccountDetails;
 import com.capstone.notechigima.config.jwt.JwtProvider;
@@ -36,13 +37,13 @@ public class AuthController {
         try {
             AccountDetails accountDetails = (AccountDetails) accountDetailService.loadUserByUsername(body.getEmail());
             if (accountDetails.getPassword().equals(body.getPassword())) {
-                return new BaseResponse(BaseResponseStatus.SUCCESS_READ, getAuthorizationDTO(accountDetails));
+                return new BaseResponse(SuccessCode.SUCCESS_READ, getAuthorizationDTO(accountDetails));
             } else {
-                return new BaseResponse(BaseResponseStatus.ERROR_INVALID_PASSWORD);
+                return new BaseResponse(ExceptionCode.ERROR_INVALID_PASSWORD);
             }
 
         } catch (UsernameNotFoundException e) {
-            return new BaseResponse(BaseResponseStatus.ERROR_NOT_FOUND_USER);
+            return new BaseResponse(ExceptionCode.ERROR_NOT_FOUND_USER);
         }
     }
 
@@ -59,7 +60,7 @@ public class AuthController {
     public BaseResponse signup(@RequestBody SignupPostRequestDTO body) {
         // null 확인
         if (body.getEmail() == null || body.getNickname() == null || body.getPassword() == null)
-            return new BaseResponse(BaseResponseStatus.ERROR_INVALID_REQUEST);
+            return new BaseResponse(ExceptionCode.ERROR_INVALID_REQUEST);
 
         // email 중복 확인
         BaseResponse emailCheck = emailDuplicationCheck(body.getEmail());
@@ -67,16 +68,16 @@ public class AuthController {
             return emailCheck;
 
         int userId = userService.signup(body);
-        return new BaseResponse(BaseResponseStatus.SUCCESS_WRITE);
+        return new BaseResponse(SuccessCode.SUCCESS_WRITE);
     }
 
     private BaseResponse emailDuplicationCheck(String email) {
         try {
             if (email != null)
                 accountDetailService.loadUserByUsername(email);
-            return new BaseResponse(BaseResponseStatus.ERROR_DUPLICATED_EMAIL);
+            return new BaseResponse(ExceptionCode.ERROR_DUPLICATED_EMAIL);
         } catch (UsernameNotFoundException e) {
-            return new BaseResponse(BaseResponseStatus.EMAIL_AVAILABLE);
+            return new BaseResponse(SuccessCode.EMAIL_AVAILABLE);
         }
     }
 

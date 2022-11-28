@@ -2,7 +2,7 @@ package com.capstone.notechigima.controller;
 
 import com.capstone.notechigima.config.BaseException;
 import com.capstone.notechigima.config.BaseResponse;
-import com.capstone.notechigima.config.BaseResponseStatus;
+import com.capstone.notechigima.config.SuccessCode;
 import com.capstone.notechigima.dto.invite.GroupInviteGetResponseDTO;
 import com.capstone.notechigima.dto.study_group.StudyGroupGetResponseDTO;
 import com.capstone.notechigima.service.GroupInviteService;
@@ -27,13 +27,13 @@ public class UserController {
     @GetMapping("/{userId}/groups")
     @Operation(summary = "그룹 조회", description = "사용자가 속한 그룹 목록 조회")
     public BaseResponse<List<StudyGroupGetResponseDTO>> getGroupList(@PathVariable("userId") int userId) throws BaseException {
-        return new BaseResponse(BaseResponseStatus.SUCCESS_READ, groupService.getStudyGroupsByUserId(userId));
+        return new BaseResponse(SuccessCode.SUCCESS_READ, groupService.getStudyGroupsByUserId(userId));
     }
 
     @ResponseBody
     @GetMapping("/{userId}/invites")
     @Operation(summary = "초대된 그룹 목록", description = "나한테 그룹 초대를 요청한 목록 조회")
     public BaseResponse<List<GroupInviteGetResponseDTO>> getGroupInvitedList(@PathVariable("userId") int userId) throws BaseException {
-        return new BaseResponse(BaseResponseStatus.SUCCESS_READ, groupInviteService.getGroupInvited(userId));
+        return new BaseResponse(SuccessCode.SUCCESS_READ, groupInviteService.getGroupInvited(userId));
     }
 }

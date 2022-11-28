@@ -1,7 +1,7 @@
 package com.capstone.notechigima.controller;
 
 import com.capstone.notechigima.config.BaseResponse;
-import com.capstone.notechigima.config.BaseResponseStatus;
+import com.capstone.notechigima.config.SuccessCode;
 import com.capstone.notechigima.dto.subject.SubjectPostRequestDTO;
 import com.capstone.notechigima.dto.topic.TopicGetResponseDTO;
 import com.capstone.notechigima.service.SubjectService;
@@ -26,14 +26,14 @@ public class SubjectController {
     @GetMapping("/{subjectId}/topics")
     @Operation(summary = "과목별 토픽 목록", description = "해당 과목 내의 모든 토픽 목록을 조회")
     public BaseResponse<List<TopicGetResponseDTO>> getTopicList(@PathVariable("subjectId") int subjectId) {
-        return new BaseResponse(BaseResponseStatus.SUCCESS_READ, topicService.getTopicList(subjectId));
+        return new BaseResponse(SuccessCode.SUCCESS_READ, topicService.getTopicList(subjectId));
     }
 
     @PostMapping
     @Operation(summary = "과목 생성", description = "해당 그룹 내에 과목 생성")
     public BaseResponse postSubject(@RequestBody SubjectPostRequestDTO body) {
         subjectService.postSubject(body);
-        return new BaseResponse(BaseResponseStatus.SUCCESS_WRITE);
+        return new BaseResponse(SuccessCode.SUCCESS_WRITE);
     }
 
 }

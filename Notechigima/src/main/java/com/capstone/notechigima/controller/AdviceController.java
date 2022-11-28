@@ -2,7 +2,7 @@ package com.capstone.notechigima.controller;
 
 import com.capstone.notechigima.config.BaseException;
 import com.capstone.notechigima.config.BaseResponse;
-import com.capstone.notechigima.config.BaseResponseStatus;
+import com.capstone.notechigima.config.SuccessCode;
 import com.capstone.notechigima.dto.comment.CommentPostReqeustDTO;
 import com.capstone.notechigima.service.AdviceService;
 import com.capstone.notechigima.service.CommentService;
@@ -25,7 +25,7 @@ public class AdviceController {
     @Operation(summary = "댓글 작성", description = "분석 결과에 댓글 작성")
     public BaseResponse postComment(@PathVariable("adviceId") int adviceId, @RequestBody CommentPostReqeustDTO request) throws BaseException {
         commentService.postComment(adviceId, request);
-        return new BaseResponse(BaseResponseStatus.SUCCESS_WRITE);
+        return new BaseResponse(SuccessCode.SUCCESS_WRITE);
     }
 
 }

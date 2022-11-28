@@ -2,7 +2,7 @@ package com.capstone.notechigima.controller;
 
 import com.capstone.notechigima.config.BaseException;
 import com.capstone.notechigima.config.BaseResponse;
-import com.capstone.notechigima.config.BaseResponseStatus;
+import com.capstone.notechigima.config.SuccessCode;
 import com.capstone.notechigima.dto.invite.GroupInviteAcceptRequestDTO;
 import com.capstone.notechigima.dto.invite.GroupInvitePostRequestDTO;
 import com.capstone.notechigima.service.GroupInviteService;
@@ -30,7 +30,7 @@ public class InviteController {
         } else {
             groupInviteService.declineInvite(body.getGroupInviteId());
         }
-        return new BaseResponse(BaseResponseStatus.SUCCESS_WRITE);
+        return new BaseResponse(SuccessCode.SUCCESS_WRITE);
     }
 
     @ResponseBody
@@ -38,7 +38,7 @@ public class InviteController {
     @Operation(summary = "멤버 초대", description = "그룹에 멤버를 초대")
     public BaseResponse postInvite(@RequestBody GroupInvitePostRequestDTO body) throws BaseException {
         groupInviteService.postGroupInvite(body);
-        return new BaseResponse(BaseResponseStatus.SUCCESS_WRITE);
+        return new BaseResponse(SuccessCode.SUCCESS_WRITE);
     }
 
 }
