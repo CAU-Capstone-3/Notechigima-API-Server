@@ -32,7 +32,7 @@ public class NoteController {
             @PathVariable("noteId") int noteId,
             @RequestHeader(ACCESS_TOKEN_HEADER) String token) throws AccessException {
 
-        authService.validateByNoteId(token, noteId);
+        authService.authorizationByNoteId(token, noteId);
         return new BaseResponse(SuccessCode.SUCCESS_READ, noteService.getNote(noteId));
     }
 

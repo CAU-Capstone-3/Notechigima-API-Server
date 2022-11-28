@@ -3,6 +3,8 @@ package com.capstone.notechigima.service;
 import com.capstone.notechigima.config.ExceptionCode;
 import com.capstone.notechigima.config.jwt.JwtProvider;
 import com.capstone.notechigima.domain.comment.Comment;
+import com.capstone.notechigima.domain.group_invite.GroupInvite;
+import com.capstone.notechigima.domain.group_member.GroupAccessType;
 import com.capstone.notechigima.domain.group_member.GroupMember;
 import com.capstone.notechigima.domain.note.Note;
 import com.capstone.notechigima.domain.sentence.Sentence;
@@ -33,14 +35,15 @@ public class AuthService {
     private final SentenceRepository sentenceRepository;
     private final AdviceRepository adviceRepository;
     private final CommentRepository commentRepository;
+    private final GroupInviteRepository groupInviteRepository;
 
-    public void validateByUserId(String token, int userId) throws AccessException, NotFoundException {
+    public void authorizationByUserId(String token, int userId) throws AccessException, NotFoundException {
         if (getUserId(token) != userId) {
             throw createAccessException();
         }
     }
 
-    public void validateByGroupId(String token, int groupId) throws AccessException, NotFoundException {
+    public void authorizationByGroupId(String token, int groupId) throws AccessException, NotFoundException {
         int userId = getUserId(token);
         List<GroupMember> groupMembers = groupMemberRepository.findAllByUser_UserId(userId);
         for (GroupMember member : groupMembers) {
@@ -49,34 +52,49 @@ public class AuthService {
         throw createAccessException();
     }
 
-    public void validateBySubjectId(String token, int subjectId) throws AccessException, NotFoundException {
+    public void authorizationBySubjectId(String token, int subjectId) throws AccessException, NotFoundException {
         Subject subject = subjectRepository.findById(subjectId).orElseThrow(this::createNotFoundException);
-        validateByGroupId(token, subject.getStudyGroup().getGroupId());
+        authorizationByGroupId(token, subject.getStudyGroup().getGroupId());
     }
 
-    public void validateByTopicId(String token, int topicId) throws AccessException, NotFoundException {
+    public void authorizationByTopicId(String token, int topicId) throws AccessException, NotFoundException {
         Topic topic = topicRepository.findById(topicId).orElseThrow(this::createNotFoundException);
-        validateBySubjectId(token, topic.getSubject().getSubjectId());
+        authorizationBySubjectId(token, topic.getSubject().getSubjectId());
     }
 
-    public void validateByNoteId(String token, int noteId) throws AccessException, NotFoundException {
+    public void authorizationByNoteId(String token, int noteId) throws AccessException, NotFoundException {
         Note note = noteRepository.findById(noteId).orElseThrow(this::createNotFoundException);
-        validateByTopicId(token, note.getTopic().getTopicId());
+        authorizationByTopicId(token, note.getTopic().getTopicId());
     }
 
-    public void validateBySentenceId(String token, int sentenceId) throws AccessException, NotFoundException {
+    public void authorizationBySentenceId(String token, int sentenceId) throws AccessException, NotFoundException {
         Sentence sentence = sentenceRepository.findById(sentenceId).orElseThrow(this::createNotFoundException);
-        validateByNoteId(token, sentence.getNote().getNoteId());
+        authorizationByNoteId(token, sentence.getNote().getNoteId());
     }
 
-    public void validateByAdviceId(String token, int adviceId) throws AccessException, NotFoundException {
+    public void authorizationByAdviceId(String token, int adviceId) throws AccessException, NotFoundException {
         Advice advice = adviceRepository.findById(adviceId).orElseThrow(this::createNotFoundException);
-        validateBySentenceId(token, advice.getSentence1().getSentenceId());
+        authorizationBySentenceId(token, advice.getSentence1().getSentenceId());
     }
 
-    public void validateByCommentId(String token, int commentId) throws AccessException, NotFoundException {
+    public void authorizationByCommentId(String token, int commentId) throws AccessException, NotFoundException {
         Comment comment = commentRepository.findById(commentId).orElseThrow(this::createNotFoundException);
-        validateByAdviceId(token, comment.getAdvice().getAdviceId());
+        authorizationByAdviceId(token, comment.getAdvice().getAdviceId());
+    }
+
+    public void authorizationByGroupOwner(String token, int groupId) throws AccessException, NotFoundException {
+        int userId = getUserId(token);
+        List<GroupMember> members = groupMemberRepository.findAllByStudyGroup_GroupId(groupId);
+        for (GroupMember member : members) {
+            if (member.getUser().getUserId() == userId &&
+                    member.getAccess() == GroupAccessType.OWNER) return;
+        }
+        throw createAccessException();
+    }
+
+    public void authorizationByInviteId(String token, int inviteId) throws AccessException, NotFoundException {
+        GroupInvite invite = groupInviteRepository.findById(inviteId).orElseThrow(this::createNotFoundException);
+        authorizationByGroupId(token, invite.getStudyGroup().getGroupId());
     }
 
     private AccessException createAccessException() {

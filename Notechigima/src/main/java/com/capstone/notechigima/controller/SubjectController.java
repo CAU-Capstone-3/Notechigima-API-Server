@@ -12,7 +12,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.expression.AccessException;
 import org.springframework.web.bind.annotation.*;
-import org.webjars.NotFoundException;
 
 import java.util.List;
 
@@ -35,7 +34,7 @@ public class SubjectController {
             @PathVariable("subjectId") int subjectId,
             @RequestHeader(ACCESS_TOKEN_HEADER) String token) throws AccessException {
 
-        authService.validateBySubjectId(token, subjectId);
+        authService.authorizationBySubjectId(token, subjectId);
         return new BaseResponse(SuccessCode.SUCCESS_READ, topicService.getTopicList(subjectId));
     }
 

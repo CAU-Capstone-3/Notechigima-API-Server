@@ -37,7 +37,7 @@ public class TopicController {
             @PathVariable("topicId") int topicId,
             @RequestHeader(ACCESS_TOKEN_HEADER) String token) throws AccessException {
 
-        authService.validateByTopicId(token, topicId);
+        authService.authorizationByTopicId(token, topicId);
 
         List<NoteListGetResponseDTO> notes = noteService.getNoteList(topicId);
         List<UserNicknameGetResponseDTO> unwrittenUsers = topicService.getUnwrittenUsers(topicId);
@@ -56,7 +56,7 @@ public class TopicController {
             @PathVariable("topicId") int topicId,
             @RequestHeader(ACCESS_TOKEN_HEADER) String token) throws AccessException {
 
-        authService.validateByTopicId(token, topicId);
+        authService.authorizationByTopicId(token, topicId);
 
         if (topicService.getTopic(topicId).getAnalyzed() != TopicAnalyzedType.READY)
             return new BaseResponse(ExceptionCode.ERROR_INVALID_ANALYZED_STATUS);
@@ -71,7 +71,7 @@ public class TopicController {
             @PathVariable("topicId") int topicId,
             @RequestHeader(ACCESS_TOKEN_HEADER) String token) throws AccessException {
 
-        authService.validateByTopicId(token, topicId);
+        authService.authorizationByTopicId(token, topicId);
 
         return new BaseResponse(SuccessCode.SUCCESS_READ, adviceService.getAdviceList(topicId));
     }

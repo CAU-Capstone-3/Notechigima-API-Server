@@ -42,7 +42,7 @@ public class GroupController {
             @PathVariable("groupId") int groupId,
             @RequestHeader(ACCESS_TOKEN_HEADER) String token) throws AccessException {
 
-        authService.validateByGroupId(token, groupId);
+        authService.authorizationByGroupId(token, groupId);
         return new BaseResponse(SuccessCode.SUCCESS_READ, userService.getMembersByGroupId(groupId));
     }
 
@@ -53,7 +53,7 @@ public class GroupController {
             @PathVariable("groupId") int groupId,
             @RequestHeader(ACCESS_TOKEN_HEADER) String token) throws AccessException {
 
-        authService.validateByGroupId(token ,groupId);
+        authService.authorizationByGroupId(token ,groupId);
         return new BaseResponse(SuccessCode.SUCCESS_READ, subjectService.getSubjectsByGroupId(groupId));
     }
 

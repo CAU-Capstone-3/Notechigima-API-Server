@@ -34,7 +34,7 @@ public class UserController {
             @PathVariable("userId") int userId,
             @RequestHeader(ACCESS_TOKEN_HEADER) String token) throws AccessException {
 
-        authService.validateByUserId(token, userId);
+        authService.authorizationByUserId(token, userId);
         return new BaseResponse(SuccessCode.SUCCESS_READ, groupService.getStudyGroupsByUserId(userId));
     }
 
@@ -45,7 +45,7 @@ public class UserController {
             @PathVariable("userId") int userId,
             @RequestHeader(ACCESS_TOKEN_HEADER) String token) throws AccessException {
 
-        authService.validateByUserId(token, userId);
+        authService.authorizationByUserId(token, userId);
         return new BaseResponse(SuccessCode.SUCCESS_READ, groupInviteService.getGroupInvited(userId));
     }
 }

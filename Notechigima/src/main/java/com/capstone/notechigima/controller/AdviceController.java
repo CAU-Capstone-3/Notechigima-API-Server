@@ -32,7 +32,7 @@ public class AdviceController {
             @RequestHeader(ACCESS_TOKEN_HEADER) String token,
             @RequestBody CommentPostReqeustDTO request) throws AccessException {
 
-        authService.validateByAdviceId(token, adviceId);
+        authService.authorizationByAdviceId(token, adviceId);
 
         commentService.postComment(adviceId, request);
         return new BaseResponse(SuccessCode.SUCCESS_WRITE);
