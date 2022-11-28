@@ -1,5 +1,6 @@
 package com.capstone.notechigima.service;
 
+import com.capstone.notechigima.domain.ActiveStatus;
 import com.capstone.notechigima.domain.users.User;
 import com.capstone.notechigima.domain.users.UserRole;
 import com.capstone.notechigima.dto.auth.SignupPostRequestDTO;
@@ -8,6 +9,7 @@ import com.capstone.notechigima.mapper.UserMapper;
 import com.capstone.notechigima.repository.GroupMemberRepository;
 import com.capstone.notechigima.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +21,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final GroupMemberRepository groupMemberRepository;
+    private final PasswordEncoder bCryptPasswordEncoder;
 
     public List<UserGetResponseDTO> getMembersByGroupId(int groupId) {
         return groupMemberRepository.findAllByStudyGroup_GroupId(groupId)
@@ -38,8 +41,10 @@ public class UserService {
                 .nickname(body.getNickname())
                 .password(body.getPassword())
                 .role(UserRole.USER)
+                .status(ActiveStatus.ACTIVE)
                 .build();
 
+        user.hashPassword(bCryptPasswordEncoder);
         userRepository.save(user);
         return user.getUserId();
     }

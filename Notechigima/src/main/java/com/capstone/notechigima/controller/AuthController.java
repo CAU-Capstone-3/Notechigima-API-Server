@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -29,6 +30,7 @@ public class AuthController {
     private final AccountDetailService accountDetailService;
     private final JwtProvider jwtProvider;
     private final UserService userService;
+    private final PasswordEncoder bCryptPasswordEncoder;
 
     @ResponseBody
     @PostMapping("/login")
@@ -36,7 +38,7 @@ public class AuthController {
     public BaseResponse<LoginPostResponseDTO> login(@RequestBody LoginPostRequestDTO body) throws UsernameNotFoundException {
 
         AccountDetails accountDetails = (AccountDetails) accountDetailService.loadUserByUsername(body.getEmail());
-        if (accountDetails.getPassword().equals(body.getPassword())) {
+        if (accountDetails.getUser().checkPassword(body.getPassword(), bCryptPasswordEncoder)) {
             return new BaseResponse(SuccessCode.SUCCESS_READ, getAuthorizationDTO(accountDetails));
         } else {
             return new BaseResponse(ExceptionCode.ERROR_INVALID_PASSWORD);
