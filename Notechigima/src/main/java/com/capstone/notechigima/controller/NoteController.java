@@ -13,6 +13,7 @@ import org.springframework.expression.AccessException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 import static com.capstone.notechigima.config.jwt.JwtUtils.ACCESS_TOKEN_HEADER;
 
@@ -30,9 +31,9 @@ public class NoteController {
     @Operation(summary = "노트 상세조회", description = "노트 ID로 노트의 상세 내용을 조회")
     public BaseResponse<List<SentenceListGetResponseDTO>> getNote(
             @PathVariable("noteId") int noteId,
-            @RequestHeader(ACCESS_TOKEN_HEADER) String token) throws AccessException {
+            @RequestHeader Map<String, String> headers) throws AccessException {
 
-        authService.authorizationByNoteId(token, noteId);
+        authService.authorizationByNoteId(headers.get(ACCESS_TOKEN_HEADER), noteId);
         return new BaseResponse(SuccessCode.SUCCESS_READ, noteService.getNote(noteId));
     }
 

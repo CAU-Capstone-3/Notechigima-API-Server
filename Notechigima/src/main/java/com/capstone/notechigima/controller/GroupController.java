@@ -13,6 +13,7 @@ import org.springframework.expression.AccessException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 import static com.capstone.notechigima.config.jwt.JwtUtils.ACCESS_TOKEN_HEADER;
 
@@ -40,9 +41,9 @@ public class GroupController {
     @Operation(summary = "멤버 조회", description = "그룹에 속한 멤버 목록 조회")
     public BaseResponse<List<UserGetResponseDTO>> getMembersByGroup(
             @PathVariable("groupId") int groupId,
-            @RequestHeader(ACCESS_TOKEN_HEADER) String token) throws AccessException {
+            @RequestHeader Map<String, String> headers) throws AccessException {
 
-        authService.authorizationByGroupId(token, groupId);
+        authService.authorizationByGroupId(headers.get(ACCESS_TOKEN_HEADER), groupId);
         return new BaseResponse(SuccessCode.SUCCESS_READ, userService.getMembersByGroupId(groupId));
     }
 
@@ -51,9 +52,9 @@ public class GroupController {
     @Operation(summary = "과목 목록 조회", description = "그룹에 속한 전체 과목 목록을 조회")
     public BaseResponse<List<SubjectGetResponseDTO>> getSubjectsByGroup(
             @PathVariable("groupId") int groupId,
-            @RequestHeader(ACCESS_TOKEN_HEADER) String token) throws AccessException {
+            @RequestHeader Map<String, String> headers) throws AccessException {
 
-        authService.authorizationByGroupId(token ,groupId);
+        authService.authorizationByGroupId(headers.get(ACCESS_TOKEN_HEADER) ,groupId);
         return new BaseResponse(SuccessCode.SUCCESS_READ, subjectService.getSubjectsByGroupId(groupId));
     }
 
