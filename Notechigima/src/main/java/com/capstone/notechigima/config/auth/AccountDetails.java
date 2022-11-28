@@ -22,6 +22,9 @@ public class AccountDetails implements UserDetails {
     public int getUserId() {
         return this.user.getUserId();
     }
+    public String getNickname() {
+        return this.user.getNickname();
+    }
 
     @Override
     public String getPassword() {

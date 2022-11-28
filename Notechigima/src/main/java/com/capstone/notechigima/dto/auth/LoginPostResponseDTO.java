@@ -8,11 +8,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LoginPostResponseDTO {
     private int userId;
+    private String nickname;
     private String accessToken;
 
     @Builder
-    public LoginPostResponseDTO(int userId, String accessToken) {
+    public LoginPostResponseDTO(int userId, String nickname, String accessToken) {
         this.userId = userId;
+        this.nickname = nickname;
         this.accessToken = accessToken;
     }
 }

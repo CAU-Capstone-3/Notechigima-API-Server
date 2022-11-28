@@ -89,6 +89,7 @@ public class AuthController {
         return LoginPostResponseDTO.builder()
                 .accessToken(accessToken)
                 .userId(accountDetails.getUserId())
+                .nickname(accountDetails.getNickname())
                 .build();
     }
 
