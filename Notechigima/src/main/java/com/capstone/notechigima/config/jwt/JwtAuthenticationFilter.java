@@ -19,18 +19,17 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    public static final String ACCESS_TOKEN_HEADER = "access_token";
+    public static final String ACCESS_TOKEN_HEADER = "Authorization";
+    public static final String BEARER_PREFIX = "Bearer ";
+
     private final JwtProvider jwtProvider;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         Authentication authenticate;
 
-        String accessToken = request.getHeader(ACCESS_TOKEN_HEADER);
         try {
-            if (accessToken == null) {
-                throw new SecurityException(ExceptionCode.WRONG_TOKEN.getMessage());
-            }
+            String accessToken = getToken(request);
             jwtProvider.validateToken(accessToken);
 
             String emailFromToken = jwtProvider.getEmailFromToken(accessToken);
@@ -53,4 +52,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
     }
+
+    private String getToken(HttpServletRequest request) throws SecurityException {
+        String token = request.getHeader(ACCESS_TOKEN_HEADER);
+        if (token == null) {
+            throw new SecurityException(ExceptionCode.WRONG_TOKEN.getMessage());
+        }
+
+        if (token.startsWith(BEARER_PREFIX)) {
+            return token.substring(BEARER_PREFIX.length());
+        }
+        return token;
+    }
+
 }
