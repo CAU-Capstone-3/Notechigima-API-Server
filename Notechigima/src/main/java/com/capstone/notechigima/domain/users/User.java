@@ -47,11 +47,13 @@ public class User extends BaseTimeEntity {
     private List<GroupMember> memberGroups = new ArrayList<>();
 
     @Builder
-    public User(int userId, String email, String nickname, ActiveStatus status, UserRole role) {
+    public User(int userId, String email, String password, String nickname, ActiveStatus status, UserRole role, List<GroupMember> memberGroups) {
         this.userId = userId;
         this.email = email;
+        this.password = password;
         this.nickname = nickname;
         this.status = status;
         this.role = role;
+        this.memberGroups = memberGroups;
     }
 }
