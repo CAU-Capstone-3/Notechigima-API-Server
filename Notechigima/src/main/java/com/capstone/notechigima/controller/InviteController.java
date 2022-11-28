@@ -1,6 +1,5 @@
 package com.capstone.notechigima.controller;
 
-import com.capstone.notechigima.config.BaseException;
 import com.capstone.notechigima.config.BaseResponse;
 import com.capstone.notechigima.config.SuccessCode;
 import com.capstone.notechigima.dto.invite.GroupInviteAcceptRequestDTO;
@@ -23,7 +22,7 @@ public class InviteController {
 
     @PostMapping("/accepts")
     @Operation(summary = "그룹 초대 승인 또는 거절", description = "사용자에게 온 그룹 초대를 승인하거나 거절 (승인 -> true, 거절 -> false)")
-    public BaseResponse postInviteAccept(@RequestBody GroupInviteAcceptRequestDTO body) throws BaseException {
+    public BaseResponse postInviteAccept(@RequestBody GroupInviteAcceptRequestDTO body) {
         if (body.isAccept()) {
             groupInviteService.acceptInvite(body.getGroupInviteId());
             groupMemberService.joinMember(body.getGroupInviteId());
@@ -36,7 +35,7 @@ public class InviteController {
     @ResponseBody
     @PostMapping()
     @Operation(summary = "멤버 초대", description = "그룹에 멤버를 초대")
-    public BaseResponse postInvite(@RequestBody GroupInvitePostRequestDTO body) throws BaseException {
+    public BaseResponse postInvite(@RequestBody GroupInvitePostRequestDTO body) {
         groupInviteService.postGroupInvite(body);
         return new BaseResponse(SuccessCode.SUCCESS_WRITE);
     }

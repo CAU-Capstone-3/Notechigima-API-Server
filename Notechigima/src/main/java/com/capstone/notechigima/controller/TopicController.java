@@ -1,6 +1,5 @@
 package com.capstone.notechigima.controller;
 
-import com.capstone.notechigima.config.BaseException;
 import com.capstone.notechigima.config.ExceptionCode;
 import com.capstone.notechigima.config.SuccessCode;
 import com.capstone.notechigima.config.BaseResponse;
@@ -31,7 +30,7 @@ public class TopicController {
     @ResponseBody
     @GetMapping("/{topicId}/notes")
     @Operation(summary = "토픽별 노트 목록", description = "해당 토픽 내에서 작성된 노트의 목록")
-    public BaseResponse<TopicNoteListGetResponseDTO> getNoteList(@PathVariable("topicId") int topicId) throws BaseException {
+    public BaseResponse<TopicNoteListGetResponseDTO> getNoteList(@PathVariable("topicId") int topicId) {
         List<NoteListGetResponseDTO> notes = noteService.getNoteList(topicId);
         List<UserNicknameGetResponseDTO> unwrittenUsers = topicService.getUnwrittenUsers(topicId);
 

@@ -1,6 +1,5 @@
 package com.capstone.notechigima.service;
 
-import com.capstone.notechigima.config.BaseException;
 import com.capstone.notechigima.domain.VisibilityStatus;
 import com.capstone.notechigima.domain.comment.Comment;
 import com.capstone.notechigima.domain.sentence_advice.Advice;
@@ -12,6 +11,8 @@ import com.capstone.notechigima.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
+
 @Service
 @RequiredArgsConstructor
 public class CommentService {
@@ -20,7 +21,7 @@ public class CommentService {
     private final AdviceRepository adviceRepository;
     private final CommentRepository commentRepository;
 
-    public void postComment(int adviceId, CommentPostReqeustDTO body) throws BaseException {
+    public void postComment(int adviceId, CommentPostReqeustDTO body) throws IllegalArgumentException, NoSuchElementException {
         Advice advice = adviceRepository.findById(adviceId).orElseThrow();
         User user = userRepository.findById(body.getUserId()).orElseThrow();
 

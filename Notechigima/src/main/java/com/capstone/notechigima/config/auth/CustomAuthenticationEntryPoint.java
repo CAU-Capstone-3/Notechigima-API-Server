@@ -2,6 +2,7 @@ package com.capstone.notechigima.config.auth;
 
 import com.capstone.notechigima.config.ExceptionCode;
 import org.json.JSONObject;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -17,19 +18,19 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
 
-        Integer code = (Integer) request.getAttribute("exception");
+        HttpStatus code = (HttpStatus) request.getAttribute("exception");
 
         if (code == null) {
             setResponse(response, ExceptionCode.ERROR_UNKNOWN);
         }
-        else if (code == ExceptionCode.WRONG_TYPE_TOKEN.getCode()) {
+        else if (code == ExceptionCode.WRONG_TYPE_TOKEN.getHttpStatus()) {
             setResponse(response, ExceptionCode.WRONG_TYPE_TOKEN);
         }
-        else if (code == ExceptionCode.EXPIRED_TOKEN.getCode()) {
+        else if (code == ExceptionCode.EXPIRED_TOKEN.getHttpStatus()) {
             setResponse(response, ExceptionCode.EXPIRED_TOKEN);
         }
         else {
-            setResponse(response, ExceptionCode.ERROR_AUTH_DENIED);
+            setResponse(response, ExceptionCode.PERMISSION_DENIED);
         }
 
     }
@@ -40,7 +41,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 
         JSONObject responseJson = new JSONObject();
         responseJson.put("status", false);
-        responseJson.put("code", exceptionCode.getResponseCode());
+        responseJson.put("code", exceptionCode.getHttpStatus().value());
         responseJson.put("message", exceptionCode.getMessage());
 
         response.getWriter().print(responseJson);
