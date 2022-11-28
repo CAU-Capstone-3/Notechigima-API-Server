@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.expression.AccessException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 import static com.capstone.notechigima.config.jwt.JwtUtils.ACCESS_TOKEN_HEADER;
 
 @Tag(name = "invite", description = "그룹 초대 관련 API")
@@ -28,10 +30,10 @@ public class InviteController {
     @PostMapping("/accepts")
     @Operation(summary = "그룹 초대 승인 또는 거절", description = "사용자에게 온 그룹 초대를 승인하거나 거절 (승인 -> true, 거절 -> false)")
     public BaseResponse postInviteAccept(
-            @RequestHeader(ACCESS_TOKEN_HEADER) String token,
+            @RequestHeader Map<String, String> headers,
             @RequestBody GroupInviteAcceptRequestDTO body) throws AccessException {
 
-        authService.authorizationByInviteId(token, body.getGroupInviteId());
+        authService.authorizationByInviteId(headers.get(ACCESS_TOKEN_HEADER), body.getGroupInviteId());
 
         if (body.isAccept()) {
             groupInviteService.acceptInvite(body.getGroupInviteId());
@@ -46,10 +48,10 @@ public class InviteController {
     @PostMapping()
     @Operation(summary = "멤버 초대", description = "그룹에 멤버를 초대")
     public BaseResponse postInvite(
-            @RequestHeader(ACCESS_TOKEN_HEADER) String token,
+            @RequestHeader Map<String, String> headers,
             @RequestBody GroupInvitePostRequestDTO body) throws AccessException {
 
-        authService.authorizationByGroupOwner(token, body.getGroupId());
+        authService.authorizationByGroupOwner(headers.get(ACCESS_TOKEN_HEADER), body.getGroupId());
 
         groupInviteService.postGroupInvite(body);
         return new BaseResponse(SuccessCode.SUCCESS_WRITE);

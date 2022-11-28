@@ -7,6 +7,7 @@ import com.capstone.notechigima.dto.topic.TopicGetResponseDTO;
 import com.capstone.notechigima.service.AuthService;
 import com.capstone.notechigima.service.SubjectService;
 import com.capstone.notechigima.service.TopicService;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.expression.AccessException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 import static com.capstone.notechigima.config.jwt.JwtUtils.ACCESS_TOKEN_HEADER;
 
@@ -32,9 +34,9 @@ public class SubjectController {
     @Operation(summary = "과목별 토픽 목록", description = "해당 과목 내의 모든 토픽 목록을 조회")
     public BaseResponse<List<TopicGetResponseDTO>> getTopicList(
             @PathVariable("subjectId") int subjectId,
-            @RequestHeader(ACCESS_TOKEN_HEADER) String token) throws AccessException {
+            @RequestHeader Map<String, String> headers) throws AccessException {
 
-        authService.authorizationBySubjectId(token, subjectId);
+        authService.authorizationBySubjectId(headers.get(ACCESS_TOKEN_HEADER), subjectId);
         return new BaseResponse(SuccessCode.SUCCESS_READ, topicService.getTopicList(subjectId));
     }
 

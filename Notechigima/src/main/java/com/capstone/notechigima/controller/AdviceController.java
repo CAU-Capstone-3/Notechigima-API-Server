@@ -12,6 +12,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.expression.AccessException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
+import java.util.Map;
+
 import static com.capstone.notechigima.config.jwt.JwtUtils.ACCESS_TOKEN_HEADER;
 
 @Tag(name = "advice", description = "분석 결과 API")
@@ -29,10 +33,10 @@ public class AdviceController {
     @Operation(summary = "댓글 작성", description = "분석 결과에 댓글 작성")
     public BaseResponse postComment(
             @PathVariable("adviceId") int adviceId,
-            @RequestHeader(ACCESS_TOKEN_HEADER) String token,
-            @RequestBody CommentPostReqeustDTO request) throws AccessException {
+            @RequestBody CommentPostReqeustDTO request,
+            @RequestHeader Map<String, String> headers) throws AccessException {
 
-        authService.authorizationByAdviceId(token, adviceId);
+        authService.authorizationByAdviceId(headers.get(ACCESS_TOKEN_HEADER), adviceId);
 
         commentService.postComment(adviceId, request);
         return new BaseResponse(SuccessCode.SUCCESS_WRITE);
