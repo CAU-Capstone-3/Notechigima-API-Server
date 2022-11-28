@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -24,7 +25,7 @@ public class GroupInviteService {
     private final GroupRepository groupRepository;
     private final GroupInviteRepository groupInviteRepository;
 
-    public int postGroupInvite(GroupInvitePostRequestDTO body) {
+    public int postGroupInvite(GroupInvitePostRequestDTO body) throws IllegalArgumentException, NoSuchElementException {
         User user = userRepository.findById(body.getUserId()).orElseThrow();
         StudyGroup group = groupRepository.findById(body.getGroupId()).orElseThrow();
 
@@ -43,13 +44,13 @@ public class GroupInviteService {
                 .collect(Collectors.toList());
     }
 
-    public void acceptInvite(int groupInviteId) {
+    public void acceptInvite(int groupInviteId) throws IllegalArgumentException, NoSuchElementException{
         GroupInvite groupInvite = groupInviteRepository.findById(groupInviteId).orElseThrow();
         groupInvite.updateAccepted(AcceptType.ACCEPTED);
         groupInviteRepository.save(groupInvite);
     }
 
-    public void declineInvite(int groupInviteId) {
+    public void declineInvite(int groupInviteId) throws IllegalArgumentException, NoSuchElementException{
         GroupInvite groupInvite = groupInviteRepository.findById(groupInviteId).orElseThrow();
         groupInvite.updateAccepted(AcceptType.DECLINED);
         groupInviteRepository.save(groupInvite);

@@ -1,8 +1,6 @@
 package com.capstone.notechigima.service;
 
-import com.capstone.notechigima.config.BaseException;
 import com.capstone.notechigima.domain.VisibilityStatus;
-import com.capstone.notechigima.domain.group_member.GroupMember;
 import com.capstone.notechigima.domain.note.Note;
 import com.capstone.notechigima.domain.sentence.Sentence;
 import com.capstone.notechigima.domain.sentence.SentenceType;
@@ -30,13 +28,13 @@ public class NoteService {
     private final UserRepository userRepository;
     private final TopicRepository topicRepository;
 
-    public List<NoteListGetResponseDTO> getNoteList(int topicId) throws BaseException {
+    public List<NoteListGetResponseDTO> getNoteList(int topicId) {
         return noteRepository.findAllByTopic_TopicId(topicId).stream()
                 .map(NoteMapper.INSTANCE::toNoteListGetResponseDTO
                 ).toList();
     }
 
-    public NoteGetResponseDTO getNote(int noteId) throws BaseException {
+    public NoteGetResponseDTO getNote(int noteId) throws IllegalArgumentException, NoSuchElementException {
         List<Sentence> sentenceList = sentenceRepository.findAllByNote_NoteId(noteId);
         List<SentenceListGetResponseDTO> sentenceResult =
                 sentenceList.stream()
@@ -48,7 +46,7 @@ public class NoteService {
         return result;
     }
 
-    public void postNote(NotePostRequestDTO body) throws BaseException {
+    public void postNote(NotePostRequestDTO body) throws IllegalArgumentException, NoSuchElementException {
         User owner = userRepository.findById(body.getUserId()).orElseThrow();
         Topic topic = topicRepository.findById(body.getTopicId()).orElseThrow();
 

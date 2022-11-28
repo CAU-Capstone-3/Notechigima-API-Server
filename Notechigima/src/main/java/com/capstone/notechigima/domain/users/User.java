@@ -7,8 +7,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,8 +24,12 @@ public class User extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 100, unique = true)
     private String email;
+
+    @Column(nullable = false)
+    @Size(min = 6, max = 100)
+    private String password;
 
     @Column(nullable = false)
     private String nickname;
@@ -40,12 +47,23 @@ public class User extends BaseTimeEntity {
     @OneToMany(mappedBy = "user")
     private List<GroupMember> memberGroups = new ArrayList<>();
 
+    public User hashPassword(PasswordEncoder passwordEncoder) {
+        this.password = passwordEncoder.encode(this.password);
+        return this;
+    }
+
+    public boolean checkPassword(String plainPassword, PasswordEncoder passwordEncoder) {
+        return passwordEncoder.matches(plainPassword, this.password);
+    }
+
     @Builder
-    public User(int userId, String email, String nickname, ActiveStatus status, UserRole role) {
+    public User(int userId, String email, String password, String nickname, ActiveStatus status, UserRole role, List<GroupMember> memberGroups) {
         this.userId = userId;
         this.email = email;
+        this.password = password;
         this.nickname = nickname;
         this.status = status;
         this.role = role;
+        this.memberGroups = memberGroups;
     }
 }

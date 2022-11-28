@@ -17,15 +17,21 @@ public class BaseResponse<T> {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private T result;
 
-    public BaseResponse(BaseResponseStatus status) {
+    public BaseResponse(SuccessCode status) {
+        this.success = true;
         this.status = status.getStatus();
-        this.success = status.isSuccess();
         this.message = status.getMessage();
     }
 
-    public BaseResponse(BaseResponseStatus responseStatus, T result) {
+    public BaseResponse(ExceptionCode status) {
+        this.success = false;
+        this.status = status.getHttpStatus().value();
+        this.message = status.getMessage();
+    }
+
+    public BaseResponse(SuccessCode responseStatus, T result) {
+        this.success = true;
         this.status = responseStatus.getStatus();
-        this.success = responseStatus.isSuccess();
         this.message = responseStatus.getMessage();
         this.result = result;
     }
