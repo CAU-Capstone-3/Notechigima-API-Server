@@ -16,19 +16,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {NoSuchElementException.class})
     protected ResponseEntity<ErrorResponse> handleNoSuchElementException() {
-        log.error("handleNoSuchElementException throw Exception : {}", ExceptionCode.ERROR_NOT_FOUND_RESOURCE);
+        log.info("handleNoSuchElementException throw Exception : {}", ExceptionCode.ERROR_NOT_FOUND_RESOURCE);
         return ErrorResponse.toResponseEntity(ExceptionCode.ERROR_NOT_FOUND_RESOURCE);
     }
 
     @ExceptionHandler(value = {NotFoundException.class})
     protected ResponseEntity<ErrorResponse> handleNotFoundException() {
-        log.error("handleNotFoundException throw Exception : {}", ExceptionCode.ERROR_NOT_FOUND_RESOURCE);
+        log.info("handleNotFoundException throw Exception : {}", ExceptionCode.ERROR_NOT_FOUND_RESOURCE);
         return ErrorResponse.toResponseEntity(ExceptionCode.ERROR_NOT_FOUND_RESOURCE);
     }
 
     @ExceptionHandler(value = {AccessException.class})
     protected ResponseEntity<ErrorResponse> handleAccessException() {
-        log.error("handleAccessException throw Exception : {}", ExceptionCode.PERMISSION_DENIED);
+        log.info("handleAccessException throw Exception : {}", ExceptionCode.PERMISSION_DENIED);
         return ErrorResponse.toResponseEntity(ExceptionCode.PERMISSION_DENIED);
     }
 
