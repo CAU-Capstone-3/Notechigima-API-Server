@@ -1,5 +1,6 @@
 package com.capstone.notechigima.service;
 
+import com.capstone.notechigima.config.ExceptionCode;
 import com.capstone.notechigima.domain.group_invite.AcceptType;
 import com.capstone.notechigima.domain.group_invite.GroupInvite;
 import com.capstone.notechigima.domain.study_group.StudyGroup;
@@ -26,9 +27,11 @@ public class GroupInviteService {
     private final GroupRepository groupRepository;
     private final GroupInviteRepository groupInviteRepository;
 
-    public int postGroupInvite(GroupInvitePostRequestDTO body) throws IllegalArgumentException, NoSuchElementException {
+    public int postGroupInvite(GroupInvitePostRequestDTO body) throws IllegalStateException, IllegalArgumentException, NoSuchElementException {
         User user = userRepository.findById(body.getUserId()).orElseThrow();
         StudyGroup group = groupRepository.findById(body.getGroupId()).orElseThrow();
+
+        validateDuplicationInvite(group.getGroupId(), user.getUserId());
 
         return groupInviteRepository.save(
                 GroupInvite.builder()
@@ -37,6 +40,16 @@ public class GroupInviteService {
                         .accepted(AcceptType.UNCHECKED)
                         .build()
         ).getGroupInviteId();
+    }
+
+    private void validateDuplicationInvite(int groupId, int userId) throws IllegalStateException {
+        groupInviteRepository.findAllByStudyGroup_GroupIdAndUser_UserId(groupId, userId)
+                .forEach(invite -> {
+                    if (invite.getAccepted() == AcceptType.ACCEPTED ||
+                            invite.getAccepted() == AcceptType.UNCHECKED) {
+                        throw new IllegalStateException(ExceptionCode.ERROR_DUPLICATED_INVITE.getMessage());
+                    }
+                });
     }
 
     public List<GroupInviteReceivedGetResponseDTO> getGroupInvitedByUserId(int userId) {

@@ -34,9 +34,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(value = {UsernameNotFoundException.class})
-    protected ResponseEntity<ErrorResponse> handleUsernamenotFoundException() {
+    protected ResponseEntity<ErrorResponse> handleUsernameNotFoundException() {
         log.info("handleUsernameNotFoundException throw Exception : {}", ExceptionCode.ERROR_NOT_FOUND_USER);
         return ErrorResponse.toResponseEntity(ExceptionCode.ERROR_NOT_FOUND_USER);
+    }
+
+    @ExceptionHandler(value = {IllegalStateException.class})
+    protected ResponseEntity<ErrorResponse> handleIllegalStateException() {
+        log.info("handleIllegalStateException throw Exception : {}", ExceptionCode.ERROR_NOT_FOUND_USER);
+        return ErrorResponse.toResponseEntity(ExceptionCode.ERROR_DUPLICATED_INVITE);
     }
 
 }

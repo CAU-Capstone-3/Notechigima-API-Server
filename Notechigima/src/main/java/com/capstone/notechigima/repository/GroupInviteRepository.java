@@ -14,4 +14,7 @@ public interface GroupInviteRepository extends JpaRepository<GroupInvite, Intege
 
     @EntityGraph(attributePaths = {"user", "studyGroup"})
     List<GroupInvite> findAllByStudyGroup_GroupIdAndAccepted(int groupId, AcceptType acceptType);
+
+    @EntityGraph(attributePaths = {"user", "studyGroup"})
+    List<GroupInvite> findAllByStudyGroup_GroupIdAndUser_UserId(int groupId, int userId);
 }
