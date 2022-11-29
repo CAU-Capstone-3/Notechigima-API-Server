@@ -6,7 +6,7 @@ import com.capstone.notechigima.config.BaseResponse;
 import com.capstone.notechigima.domain.topic.TopicAnalyzedType;
 import com.capstone.notechigima.dto.advice.AdviceGetResponseDTO;
 import com.capstone.notechigima.dto.note.NoteListGetResponseDTO;
-import com.capstone.notechigima.dto.topic.TopicNoteListGetResponseDTO;
+import com.capstone.notechigima.dto.topic.TopicWithNoteListGetResponseDTO;
 import com.capstone.notechigima.dto.users.UserNicknameGetResponseDTO;
 import com.capstone.notechigima.service.*;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Map;
 
 import static com.capstone.notechigima.config.jwt.JwtUtils.ACCESS_TOKEN_HEADER;
 
@@ -35,7 +34,7 @@ public class TopicController {
     @ResponseBody
     @GetMapping("/{topicId}/notes")
     @Operation(summary = "토픽별 노트 목록", description = "해당 토픽 내에서 작성된 노트의 목록")
-    public BaseResponse<TopicNoteListGetResponseDTO> getNoteList(
+    public BaseResponse<TopicWithNoteListGetResponseDTO> getNoteList(
             HttpServletRequest request,
             @PathVariable("topicId") int topicId
     ) throws AccessException {
@@ -44,8 +43,11 @@ public class TopicController {
 
         List<NoteListGetResponseDTO> notes = noteService.getNoteList(topicId);
         List<UserNicknameGetResponseDTO> unwrittenUsers = topicService.getUnwrittenUsers(topicId);
+        String topicName = topicService.getTopic(topicId).getTitle();
 
-        TopicNoteListGetResponseDTO response = TopicNoteListGetResponseDTO.builder()
+        TopicWithNoteListGetResponseDTO response = TopicWithNoteListGetResponseDTO.builder()
+                .topicId(topicId)
+                .topicName(topicName)
                 .notes(notes)
                 .unwrittenUsers(unwrittenUsers)
                 .build();
