@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.expression.AccessException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -35,10 +36,11 @@ public class TopicController {
     @GetMapping("/{topicId}/notes")
     @Operation(summary = "토픽별 노트 목록", description = "해당 토픽 내에서 작성된 노트의 목록")
     public BaseResponse<TopicNoteListGetResponseDTO> getNoteList(
-            @PathVariable("topicId") int topicId,
-            @RequestHeader Map<String, String> headers) throws AccessException {
+            HttpServletRequest request,
+            @PathVariable("topicId") int topicId
+    ) throws AccessException {
 
-        authService.authorizationByTopicId(headers.get(ACCESS_TOKEN_HEADER), topicId);
+        authService.authorizationByTopicId(request.getHeader(ACCESS_TOKEN_HEADER), topicId);
 
         List<NoteListGetResponseDTO> notes = noteService.getNoteList(topicId);
         List<UserNicknameGetResponseDTO> unwrittenUsers = topicService.getUnwrittenUsers(topicId);
@@ -54,10 +56,11 @@ public class TopicController {
     @PostMapping("/{topicId}/advices")
     @Operation(summary = "분석 요청", description = "해당 토픽에 대한 분석 시작을 요청")
     public BaseResponse requestAnalysis(
-            @PathVariable("topicId") int topicId,
-            @RequestHeader Map<String, String> headers) throws AccessException {
+            HttpServletRequest request,
+            @PathVariable("topicId") int topicId
+            ) throws AccessException {
 
-        authService.authorizationByTopicId(headers.get(ACCESS_TOKEN_HEADER), topicId);
+        authService.authorizationByTopicId(request.getHeader(ACCESS_TOKEN_HEADER), topicId);
 
         if (topicService.getTopic(topicId).getAnalyzed() != TopicAnalyzedType.READY)
             return new BaseResponse(ExceptionCode.ERROR_INVALID_ANALYZED_STATUS);
@@ -69,10 +72,11 @@ public class TopicController {
     @GetMapping("/{topicId}/advices")
     @Operation(summary = "토픽별 분석결과 API", description = "토픽별 분석결과 목록을 조회하는 API 입니다.")
     public BaseResponse<List<AdviceGetResponseDTO>> getAdviceList(
-            @PathVariable("topicId") int topicId,
-            @RequestHeader Map<String, String> headers) throws AccessException {
+            HttpServletRequest request,
+            @PathVariable("topicId") int topicId
+    ) throws AccessException {
 
-        authService.authorizationByTopicId(headers.get(ACCESS_TOKEN_HEADER), topicId);
+        authService.authorizationByTopicId(request.getHeader(ACCESS_TOKEN_HEADER), topicId);
 
         return new BaseResponse(SuccessCode.SUCCESS_READ, adviceService.getAdviceList(topicId));
     }

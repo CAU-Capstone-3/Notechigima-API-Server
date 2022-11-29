@@ -32,13 +32,14 @@ public class AdviceController {
     @PostMapping("/{adviceId}/comments")
     @Operation(summary = "댓글 작성", description = "분석 결과에 댓글 작성")
     public BaseResponse postComment(
+            HttpServletRequest request,
             @PathVariable("adviceId") int adviceId,
-            @RequestBody CommentPostReqeustDTO request,
-            @RequestHeader Map<String, String> headers) throws AccessException {
+            @RequestBody CommentPostReqeustDTO body
+            ) throws AccessException {
 
-        authService.authorizationByAdviceId(headers.get(ACCESS_TOKEN_HEADER), adviceId);
+        authService.authorizationByAdviceId(request.getHeader(ACCESS_TOKEN_HEADER), adviceId);
 
-        commentService.postComment(adviceId, request);
+        commentService.postComment(adviceId, body);
         return new BaseResponse(SuccessCode.SUCCESS_WRITE);
     }
 
