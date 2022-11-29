@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class GroupInviteGetResponseDTO {
+public class GroupInviteReceivedGetResponseDTO {
     @Schema(description = "그룹 초대 ID", defaultValue = "14")
     private int groupInviteId;
     @Schema(description = "그룹 ID", defaultValue = "1")
@@ -20,7 +20,7 @@ public class GroupInviteGetResponseDTO {
     private String groupOwnerName;
 
     @Builder
-    public GroupInviteGetResponseDTO(int groupInviteId, int groupId, String groupName, int groupOwnerId, String groupOwnerName) {
+    public GroupInviteReceivedGetResponseDTO(int groupInviteId, int groupId, String groupName, int groupOwnerId, String groupOwnerName) {
         this.groupInviteId = groupInviteId;
         this.groupId = groupId;
         this.groupName = groupName;

@@ -1,7 +1,8 @@
 package com.capstone.notechigima.mapper;
 
 import com.capstone.notechigima.domain.group_invite.GroupInvite;
-import com.capstone.notechigima.dto.invite.GroupInviteGetResponseDTO;
+import com.capstone.notechigima.dto.invite.GroupInviteReceivedGetResponseDTO;
+import com.capstone.notechigima.dto.invite.GroupInviteSentGetResponseDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -9,5 +10,6 @@ import org.mapstruct.factory.Mappers;
 public interface GroupInviteMapper {
     GroupInviteMapper INSTANCE = Mappers.getMapper(GroupInviteMapper.class);
 
-    GroupInviteGetResponseDTO toDto(GroupInvite entity);
+    GroupInviteReceivedGetResponseDTO toReceivedDTO(GroupInvite entity);
+    GroupInviteSentGetResponseDTO toSentDTO(GroupInvite entity);
 }

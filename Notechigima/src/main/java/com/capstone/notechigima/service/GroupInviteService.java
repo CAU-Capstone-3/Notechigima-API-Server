@@ -4,8 +4,9 @@ import com.capstone.notechigima.domain.group_invite.AcceptType;
 import com.capstone.notechigima.domain.group_invite.GroupInvite;
 import com.capstone.notechigima.domain.study_group.StudyGroup;
 import com.capstone.notechigima.domain.users.User;
-import com.capstone.notechigima.dto.invite.GroupInviteGetResponseDTO;
+import com.capstone.notechigima.dto.invite.GroupInviteReceivedGetResponseDTO;
 import com.capstone.notechigima.dto.invite.GroupInvitePostRequestDTO;
+import com.capstone.notechigima.dto.invite.GroupInviteSentGetResponseDTO;
 import com.capstone.notechigima.mapper.GroupInviteMapper;
 import com.capstone.notechigima.repository.GroupInviteRepository;
 import com.capstone.notechigima.repository.GroupRepository;
@@ -38,9 +39,15 @@ public class GroupInviteService {
         ).getGroupInviteId();
     }
 
-    public List<GroupInviteGetResponseDTO> getGroupInvited(int userId) {
+    public List<GroupInviteReceivedGetResponseDTO> getGroupInvitedByUserId(int userId) {
         return groupInviteRepository.findAllByUser_UserIdAndAccepted(userId, AcceptType.UNCHECKED).stream()
-                .map(GroupInviteMapper.INSTANCE::toDto)
+                .map(GroupInviteMapper.INSTANCE::toReceivedDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<GroupInviteSentGetResponseDTO> getUncheckedGroupInvitedByGroupId(int groupId) {
+        return groupInviteRepository.findAllByStudyGroup_GroupIdAndAccepted(groupId, AcceptType.UNCHECKED).stream()
+                .map(GroupInviteMapper.INSTANCE::toSentDTO)
                 .collect(Collectors.toList());
     }
 

@@ -2,6 +2,7 @@ package com.capstone.notechigima.controller;
 
 import com.capstone.notechigima.config.BaseResponse;
 import com.capstone.notechigima.config.SuccessCode;
+import com.capstone.notechigima.dto.invite.GroupInviteSentGetResponseDTO;
 import com.capstone.notechigima.dto.study_group.StudyGroupPostRequestDTO;
 import com.capstone.notechigima.dto.study_group.StudyGroupWithSubjectsGetResponseDTO;
 import com.capstone.notechigima.dto.subject.SubjectGetResponseDTO;
@@ -60,6 +61,18 @@ public class GroupController {
         authService.authorizationByGroupId(request.getHeader(ACCESS_TOKEN_HEADER) ,groupId);
 
         return new BaseResponse(SuccessCode.SUCCESS_READ, subjectService.getSubjectsByGroupIdWithGroup(groupId));
+    }
+
+    @ResponseBody
+    @GetMapping("/{groupId}/invites")
+    @Operation(summary = "그룹 초대 대기 목록", description = "초대 후 대기 중인 인원 목록")
+    public BaseResponse<GroupInviteSentGetResponseDTO> getUncheckedInvitesByGruopId(
+        HttpServletRequest reqest,
+        @PathVariable("groupId") int groupId
+    ) throws AccessException {
+        authService.authorizationByGroupId(reqest.getHeader(ACCESS_TOKEN_HEADER), groupId);
+
+        return new BaseResponse(SuccessCode.SUCCESS_READ, groupInviteService.getUncheckedGroupInvitedByGroupId(groupId));
     }
 
 }

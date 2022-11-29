@@ -2,7 +2,7 @@ package com.capstone.notechigima.controller;
 
 import com.capstone.notechigima.config.BaseResponse;
 import com.capstone.notechigima.config.SuccessCode;
-import com.capstone.notechigima.dto.invite.GroupInviteGetResponseDTO;
+import com.capstone.notechigima.dto.invite.GroupInviteReceivedGetResponseDTO;
 import com.capstone.notechigima.dto.study_group.StudyGroupGetResponseDTO;
 import com.capstone.notechigima.service.AuthService;
 import com.capstone.notechigima.service.GroupInviteService;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Map;
 
 import static com.capstone.notechigima.config.jwt.JwtUtils.ACCESS_TOKEN_HEADER;
 
@@ -44,12 +43,12 @@ public class UserController {
     @ResponseBody
     @GetMapping("/{userId}/invites")
     @Operation(summary = "초대된 그룹 목록", description = "나한테 그룹 초대를 요청한 목록 조회")
-    public BaseResponse<List<GroupInviteGetResponseDTO>> getGroupInvitedList(
+    public BaseResponse<List<GroupInviteReceivedGetResponseDTO>> getGroupInvitedList(
             HttpServletRequest request,
             @PathVariable("userId") int userId
     ) throws AccessException {
 
         authService.authorizationByUserId(request.getHeader(ACCESS_TOKEN_HEADER), userId);
-        return new BaseResponse(SuccessCode.SUCCESS_READ, groupInviteService.getGroupInvited(userId));
+        return new BaseResponse(SuccessCode.SUCCESS_READ, groupInviteService.getGroupInvitedByUserId(userId));
     }
 }
