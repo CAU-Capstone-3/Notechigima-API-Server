@@ -28,7 +28,7 @@ public class SwaggerConfig {
         return new OpenAPI()
                 .info(new Info().title("Notechigima API")
                         .description("Notechigima API 명세서입니다.")
-                        .version("v1.1.2"));
+                        .version("v1.2.0"));
     }
 
     public OpenApiCustomiser buildSecurityOpenApi() {
