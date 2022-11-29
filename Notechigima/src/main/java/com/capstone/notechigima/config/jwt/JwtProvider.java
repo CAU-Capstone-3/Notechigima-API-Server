@@ -26,7 +26,8 @@ public class JwtProvider implements AuthenticationProvider {
 
     private final AccountDetailService accountDetailService;
 
-    private static final long TOKEN_VALIDATION_SECOND = 1000L * 60 * 120;
+//    private static final long TOKEN_VALIDATION_SECOND = 1000L * 60 * 120;
+private static final long TOKEN_VALIDATION_SECOND = 1000L * 60 * 60 * 24 * 7;
     private static final long REFRESH_TOKEN_VALIDATION_TIME = 1000L * 60 * 60 * 48;
 
     @Value("${spring.jwt.secret}")
