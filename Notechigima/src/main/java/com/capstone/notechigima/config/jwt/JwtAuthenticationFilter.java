@@ -54,7 +54,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             request.setAttribute(ATTRIBUTE_EXCEPTION, ExceptionCode.ERROR_UNKNOWN.getHttpStatus());
         }
 
-        response.addHeader("Access-Control-Allow-Origin", "*");
         filterChain.doFilter(request, response);
     }
 
