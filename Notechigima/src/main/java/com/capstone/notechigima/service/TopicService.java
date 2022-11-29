@@ -1,22 +1,22 @@
 package com.capstone.notechigima.service;
 
+import com.capstone.notechigima.config.ExceptionCode;
 import com.capstone.notechigima.domain.group_member.GroupMember;
 import com.capstone.notechigima.domain.note.Note;
 import com.capstone.notechigima.domain.sentence.Sentence;
 import com.capstone.notechigima.domain.sentence_advice.Advice;
 import com.capstone.notechigima.domain.sentence_advice.AdviceType;
+import com.capstone.notechigima.domain.subject.Subject;
 import com.capstone.notechigima.domain.topic.Topic;
 import com.capstone.notechigima.domain.topic.TopicAnalyzedType;
 import com.capstone.notechigima.domain.users.User;
 import com.capstone.notechigima.dto.advice.AdviceInferenceRequestVO;
+import com.capstone.notechigima.dto.subject.SubjectWithTopicsGetResponseDTO;
 import com.capstone.notechigima.dto.topic.TopicGetResponseDTO;
 import com.capstone.notechigima.dto.users.UserNicknameGetResponseDTO;
 import com.capstone.notechigima.mapper.TopicMapper;
 import com.capstone.notechigima.mapper.UserMapper;
-import com.capstone.notechigima.repository.AdviceRepository;
-import com.capstone.notechigima.repository.GroupRepository;
-import com.capstone.notechigima.repository.SentenceRepository;
-import com.capstone.notechigima.repository.TopicRepository;
+import com.capstone.notechigima.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 public class TopicService {
     private static final String NLI_ULI = "http://18.189.150.89:5000/nli";
 
-    private final GroupRepository groupRepository;
+    private final SubjectRepository subjectRepository;
     private final TopicRepository topicRepository;
     private final AdviceRepository adviceRepository;
     private final SentenceRepository sentenceRepository;
@@ -44,10 +44,18 @@ public class TopicService {
         return TopicMapper.INSTANCE.toTopicGetResponseDTO(topicRepository.findById(topicId).orElseThrow());
     }
 
-    public List<TopicGetResponseDTO> getTopicList(int subjectId) {
-        return topicRepository.findAllBySubject_SubjectId(subjectId).stream()
-                .map(entity -> TopicMapper.INSTANCE.toTopicGetResponseDTO(entity)
-                ).collect(Collectors.toList());
+    public SubjectWithTopicsGetResponseDTO getTopicListWithSubject(int subjectId) {
+        List<TopicGetResponseDTO> topics = topicRepository.findAllBySubject_SubjectId(subjectId).stream()
+                .map(TopicMapper.INSTANCE::toTopicGetResponseDTO
+                ).toList();
+        Subject subject = subjectRepository.findById(subjectId)
+                .orElseThrow(() -> new NoSuchElementException(ExceptionCode.ERROR_NOT_FOUND_RESOURCE.getMessage()));
+
+        return SubjectWithTopicsGetResponseDTO.builder()
+                .subjectId(subjectId)
+                .subjectName(subject.getName())
+                .topics(topics)
+                .build();
     }
 
     public List<UserNicknameGetResponseDTO> getUnwrittenUsers(int topicId) {
