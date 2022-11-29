@@ -23,10 +23,17 @@ public interface NoteMapper {
                 .build();
     }
 
-    // TODO : subject 완료 후 구현 예정
     default NoteGetResponseDTO toNoteGetResponseDTO(Note note, List<SentenceListGetResponseDTO> sentenceList) {
         return NoteGetResponseDTO.builder()
-                .sentenceList(sentenceList)
+                .subjectId(note.getTopic().getSubject().getSubjectId())
+                .subjectName(note.getTopic().getSubject().getName())
+                .topicId(note.getTopic().getTopicId())
+                .topicName(note.getTopic().getTitle())
+                .noteId(note.getNoteId())
+                .lastUpdate(note.getUpdatedAt())
+                .writerId(note.getOwner().getUserId())
+                .writerName(note.getOwner().getNickname())
+                .sentences(sentenceList)
                 .build();
     }
 }

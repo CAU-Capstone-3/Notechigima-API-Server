@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -27,12 +28,12 @@ public class NoteGetResponseDTO {
     @Schema(description = "노트 작성자명", defaultValue = "장훈석")
     private String writerName;
     @Schema(description = "노트 내 문장 목록")
-    private List<SentenceListGetResponseDTO> sentenceList;
+    private List<SentenceListGetResponseDTO> sentences;
     @Schema(description = "노트 최종 업데이트 시간")
-    private Date lastUpdate;
+    private LocalDateTime lastUpdate;
 
     @Builder
-    public NoteGetResponseDTO(int subjectId, String subjectName, int topicId, String topicName, int noteId, int writerId, String writerName, List<SentenceListGetResponseDTO> sentenceList, Date lastUpdate) {
+    public NoteGetResponseDTO(int subjectId, String subjectName, int topicId, String topicName, int noteId, int writerId, String writerName, List<SentenceListGetResponseDTO> sentences, LocalDateTime lastUpdate) {
         this.subjectId = subjectId;
         this.subjectName = subjectName;
         this.topicId = topicId;
@@ -40,7 +41,7 @@ public class NoteGetResponseDTO {
         this.noteId = noteId;
         this.writerId = writerId;
         this.writerName = writerName;
-        this.sentenceList = sentenceList;
+        this.sentences = sentences;
         this.lastUpdate = lastUpdate;
     }
 }

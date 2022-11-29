@@ -6,6 +6,7 @@ import com.capstone.notechigima.config.BaseResponse;
 import com.capstone.notechigima.domain.topic.TopicAnalyzedType;
 import com.capstone.notechigima.dto.advice.AdviceGetResponseDTO;
 import com.capstone.notechigima.dto.note.NoteListGetResponseDTO;
+import com.capstone.notechigima.dto.topic.TopicWithAdviceGetResponseDTO;
 import com.capstone.notechigima.dto.topic.TopicWithNoteListGetResponseDTO;
 import com.capstone.notechigima.dto.users.UserNicknameGetResponseDTO;
 import com.capstone.notechigima.service.*;
@@ -73,13 +74,22 @@ public class TopicController {
     @ResponseBody
     @GetMapping("/{topicId}/advices")
     @Operation(summary = "토픽별 분석결과 API", description = "토픽별 분석결과 목록을 조회하는 API 입니다.")
-    public BaseResponse<List<AdviceGetResponseDTO>> getAdviceList(
+    public BaseResponse<TopicWithAdviceGetResponseDTO> getAdviceList(
             HttpServletRequest request,
             @PathVariable("topicId") int topicId
     ) throws AccessException {
 
         authService.authorizationByTopicId(request.getHeader(ACCESS_TOKEN_HEADER), topicId);
 
-        return new BaseResponse(SuccessCode.SUCCESS_READ, adviceService.getAdviceList(topicId));
+        List<AdviceGetResponseDTO> advices = adviceService.getAdviceList(topicId);
+        String topicName = topicService.getTopic(topicId).getTitle();
+
+        TopicWithAdviceGetResponseDTO response = TopicWithAdviceGetResponseDTO.builder()
+                .topicId(topicId)
+                .title(topicName)
+                .advices(advices)
+                .build();
+        
+        return new BaseResponse(SuccessCode.SUCCESS_READ, response);
     }
 }
