@@ -128,7 +128,9 @@ public class AuthService {
     }
 
     private void authorizationByInvite(String token, GroupInvite invite) throws AccessException, NotFoundException {
-        authorizationByGroup(token, invite.getStudyGroup());
+        if (invite.getUser().getUserId() != getUserId(token)) {
+            throw createAccessException();
+        }
     }
 
     public void authorizationByInviteId(String token, int inviteId) throws AccessException, NotFoundException {
