@@ -1,6 +1,7 @@
 package com.capstone.notechigima.controller;
 
 import com.capstone.notechigima.config.BaseResponse;
+import com.capstone.notechigima.config.RestApiException;
 import com.capstone.notechigima.config.SuccessCode;
 import com.capstone.notechigima.dto.comment.CommentPostReqeustDTO;
 import com.capstone.notechigima.service.AdviceService;
@@ -35,7 +36,7 @@ public class AdviceController {
             HttpServletRequest request,
             @PathVariable("adviceId") int adviceId,
             @RequestBody CommentPostReqeustDTO body
-            ) throws AccessException {
+            ) throws RestApiException {
 
         authService.authorizationByAdviceId(request.getHeader(ACCESS_TOKEN_HEADER), adviceId);
 
