@@ -23,6 +23,7 @@ import com.capstone.notechigima.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -36,7 +37,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Service
 public class TopicService {
-    private static final String NLI_ULI = "http://18.189.150.89:5000/nli";
+
+    @Value("${nli.inference.uri}")
+    private String NLI_ULI;
 
     private final SubjectRepository subjectRepository;
     private final TopicRepository topicRepository;
