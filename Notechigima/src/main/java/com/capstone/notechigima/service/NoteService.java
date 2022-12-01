@@ -1,6 +1,7 @@
 package com.capstone.notechigima.service;
 
 import com.capstone.notechigima.config.ExceptionCode;
+import com.capstone.notechigima.config.RestApiException;
 import com.capstone.notechigima.domain.VisibilityStatus;
 import com.capstone.notechigima.domain.note.Note;
 import com.capstone.notechigima.domain.sentence.Sentence;
@@ -35,21 +36,28 @@ public class NoteService {
                 ).toList();
     }
 
-    public NoteGetResponseDTO getNote(int noteId) throws IllegalArgumentException, NoSuchElementException {
+    public NoteGetResponseDTO getNote(int noteId) throws RestApiException {
         List<Sentence> sentenceList = sentenceRepository.findAllByNote_NoteId(noteId);
         List<SentenceListGetResponseDTO> sentenceResult =
                 sentenceList.stream()
-                        .map(entity -> SentenceMapper.INSTANCE.toSentenceListGetResponseDTO(entity))
+                        .map(SentenceMapper.INSTANCE::toSentenceListGetResponseDTO)
                         .collect(Collectors.toList());
 
-        Note note = noteRepository.findById(noteId).orElseThrow();
+        Note note = noteRepository.findById(noteId).orElseThrow(() -> {
+            throw new RestApiException(ExceptionCode.ERROR_NOT_FOUND_RESOURCE);
+        });
+
         NoteGetResponseDTO result = NoteMapper.INSTANCE.toNoteGetResponseDTO(note, sentenceResult);
         return result;
     }
 
-    public void postNote(NotePostRequestDTO body) throws IllegalArgumentException, IllegalStateException, NoSuchElementException {
-        User owner = userRepository.findById(body.getUserId()).orElseThrow();
-        Topic topic = topicRepository.findById(body.getTopicId()).orElseThrow();
+    public void postNote(NotePostRequestDTO body) throws RestApiException {
+        User owner = userRepository.findById(body.getUserId()).orElseThrow(() -> {
+            throw new RestApiException(ExceptionCode.ERROR_NOT_FOUND_USER);
+        });
+        Topic topic = topicRepository.findById(body.getTopicId()).orElseThrow(() -> {
+            throw new RestApiException(ExceptionCode.ERROR_NOT_FOUND_RESOURCE);
+        });
 
         validationDuplicate(body.getUserId(), body.getTopicId());
 
@@ -79,9 +87,9 @@ public class NoteService {
         sentenceRepository.saveAll(sentenceEntities);
     }
 
-    private void validationDuplicate(int userId, int topicId) throws IllegalStateException {
+    private void validationDuplicate(int userId, int topicId) throws RestApiException {
         List<Note> shouldEmpty = noteRepository.findByOwner_UserIdAndTopic_TopicId(userId, topicId);
         if (!shouldEmpty.isEmpty())
-            throw new IllegalStateException(ExceptionCode.ERROR_DUPLICATED_NOTE.getMessage());
+            throw new RestApiException(ExceptionCode.ERROR_DUPLICATED_NOTE);
     }
 }
