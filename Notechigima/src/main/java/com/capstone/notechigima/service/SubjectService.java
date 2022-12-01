@@ -1,6 +1,7 @@
 package com.capstone.notechigima.service;
 
 import com.capstone.notechigima.config.ExceptionCode;
+import com.capstone.notechigima.config.RestApiException;
 import com.capstone.notechigima.domain.study_group.StudyGroup;
 import com.capstone.notechigima.dto.study_group.StudyGroupWithSubjectsGetResponseDTO;
 import com.capstone.notechigima.dto.subject.SubjectGetResponseDTO;
@@ -37,8 +38,10 @@ public class SubjectService {
                 .build();
     }
 
-    public void postSubject(SubjectPostRequestDTO body) {
-        StudyGroup studyGroup = groupRepository.findById(body.getGroupId()).orElseThrow();
+    public void postSubject(SubjectPostRequestDTO body) throws RestApiException {
+        StudyGroup studyGroup = groupRepository.findById(body.getGroupId()).orElseThrow(() -> {
+            throw new RestApiException(ExceptionCode.ERROR_NOT_FOUND_RESOURCE);
+        });
         subjectRepository.save(SubjectMapper.INSTANCE.toEntity(body, studyGroup));
     }
 
