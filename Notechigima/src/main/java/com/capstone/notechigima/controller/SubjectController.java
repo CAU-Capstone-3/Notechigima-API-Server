@@ -1,6 +1,7 @@
 package com.capstone.notechigima.controller;
 
 import com.capstone.notechigima.config.BaseResponse;
+import com.capstone.notechigima.config.RestApiException;
 import com.capstone.notechigima.config.SuccessCode;
 import com.capstone.notechigima.dto.subject.SubjectPostRequestDTO;
 import com.capstone.notechigima.dto.subject.SubjectWithTopicsGetResponseDTO;
@@ -35,7 +36,7 @@ public class SubjectController {
     public BaseResponse<SubjectWithTopicsGetResponseDTO> getTopicList(
             HttpServletRequest request,
             @PathVariable("subjectId") int subjectId
-    ) throws AccessException {
+    ) {
 
         authService.authorizationBySubjectId(request.getHeader(ACCESS_TOKEN_HEADER), subjectId);
         return new BaseResponse(SuccessCode.SUCCESS_READ, topicService.getTopicListWithSubject(subjectId));
@@ -46,7 +47,7 @@ public class SubjectController {
     public BaseResponse postSubject(
             HttpServletRequest request,
             @RequestBody SubjectPostRequestDTO body
-    ) throws AccessException {
+    ) {
 
         authService.authorizationByGroupId(request.getHeader(ACCESS_TOKEN_HEADER), body.getGroupId());
 

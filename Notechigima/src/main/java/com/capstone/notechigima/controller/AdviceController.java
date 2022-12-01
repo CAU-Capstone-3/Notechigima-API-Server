@@ -1,21 +1,16 @@
 package com.capstone.notechigima.controller;
 
 import com.capstone.notechigima.config.BaseResponse;
-import com.capstone.notechigima.config.RestApiException;
 import com.capstone.notechigima.config.SuccessCode;
 import com.capstone.notechigima.dto.comment.CommentPostReqeustDTO;
-import com.capstone.notechigima.service.AdviceService;
 import com.capstone.notechigima.service.AuthService;
 import com.capstone.notechigima.service.CommentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.expression.AccessException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-
-import java.util.Map;
 
 import static com.capstone.notechigima.config.jwt.JwtUtils.ACCESS_TOKEN_HEADER;
 
@@ -25,7 +20,6 @@ import static com.capstone.notechigima.config.jwt.JwtUtils.ACCESS_TOKEN_HEADER;
 @RequiredArgsConstructor
 public class AdviceController {
 
-    private final AdviceService adviceService;
     private final CommentService commentService;
     private final AuthService authService;
 
@@ -36,7 +30,7 @@ public class AdviceController {
             HttpServletRequest request,
             @PathVariable("adviceId") int adviceId,
             @RequestBody CommentPostReqeustDTO body
-            ) throws RestApiException {
+            ) {
 
         authService.authorizationByAdviceId(request.getHeader(ACCESS_TOKEN_HEADER), adviceId);
 

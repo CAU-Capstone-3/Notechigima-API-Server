@@ -1,6 +1,7 @@
 package com.capstone.notechigima.controller;
 
 import com.capstone.notechigima.config.BaseResponse;
+import com.capstone.notechigima.config.RestApiException;
 import com.capstone.notechigima.config.SuccessCode;
 import com.capstone.notechigima.dto.invite.GroupInviteReceivedGetResponseDTO;
 import com.capstone.notechigima.dto.study_group.StudyGroupGetResponseDTO;
@@ -34,7 +35,7 @@ public class UserController {
     public BaseResponse<List<StudyGroupGetResponseDTO>> getGroupList(
             HttpServletRequest request,
             @PathVariable("userId") int userId
-    ) throws AccessException {
+    ) throws RestApiException {
 
         authService.authorizationByUserId(request.getHeader(ACCESS_TOKEN_HEADER), userId);
         return new BaseResponse(SuccessCode.SUCCESS_READ, groupService.getStudyGroupsByUserId(userId));
@@ -46,7 +47,7 @@ public class UserController {
     public BaseResponse<List<GroupInviteReceivedGetResponseDTO>> getGroupInvitedList(
             HttpServletRequest request,
             @PathVariable("userId") int userId
-    ) throws AccessException {
+    ) throws RestApiException {
 
         authService.authorizationByUserId(request.getHeader(ACCESS_TOKEN_HEADER), userId);
         return new BaseResponse(SuccessCode.SUCCESS_READ, groupInviteService.getGroupInvitedByUserId(userId));

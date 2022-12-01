@@ -33,7 +33,7 @@ public class NoteController {
     public BaseResponse<List<SentenceListGetResponseDTO>> getNote(
             HttpServletRequest request,
             @PathVariable("noteId") int noteId
-            ) throws AccessException {
+            ) {
 
         authService.authorizationByNoteId(request.getHeader(ACCESS_TOKEN_HEADER), noteId);
         return new BaseResponse(SuccessCode.SUCCESS_READ, noteService.getNote(noteId));
@@ -43,7 +43,7 @@ public class NoteController {
     @Operation(summary = "노트 작성", description = "해당 토픽에 노트 작성")
     public BaseResponse postNote(
             HttpServletRequest request,
-            @RequestBody NotePostRequestDTO body) throws AccessException {
+            @RequestBody NotePostRequestDTO body) {
 
         authService.authorizationByTopicId(request.getHeader(ACCESS_TOKEN_HEADER), body.getTopicId());
 
