@@ -6,6 +6,7 @@ import com.capstone.notechigima.config.BaseResponse;
 import com.capstone.notechigima.domain.topic.TopicAnalyzedType;
 import com.capstone.notechigima.dto.advice.AdviceGetResponseDTO;
 import com.capstone.notechigima.dto.note.NoteListGetResponseDTO;
+import com.capstone.notechigima.dto.topic.TopicPostRequestDTO;
 import com.capstone.notechigima.dto.topic.TopicWithAdviceGetResponseDTO;
 import com.capstone.notechigima.dto.topic.TopicWithNoteListGetResponseDTO;
 import com.capstone.notechigima.dto.users.UserNicknameGetResponseDTO;
@@ -53,6 +54,20 @@ public class TopicController {
                 .unwrittenUsers(unwrittenUsers)
                 .build();
         return new BaseResponse(SuccessCode.SUCCESS_READ, response);
+    }
+
+    @ResponseBody
+    @PostMapping
+    @Operation(summary = "토픽 작성", description = "과목 내에 새로운 토픽을 생성합니다")
+    public BaseResponse postTopic(
+            HttpServletRequest request,
+            @RequestBody TopicPostRequestDTO body
+            ) throws AccessException {
+
+        authService.authorizationBySubjectId(request.getHeader(ACCESS_TOKEN_HEADER), body.getSubjectId());
+        
+        topicService.createTopic(body);
+        return new BaseResponse(SuccessCode.SUCCESS_WRITE);
     }
 
     @ResponseBody

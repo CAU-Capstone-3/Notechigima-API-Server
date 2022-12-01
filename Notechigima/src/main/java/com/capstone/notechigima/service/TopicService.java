@@ -1,6 +1,7 @@
 package com.capstone.notechigima.service;
 
 import com.capstone.notechigima.config.ExceptionCode;
+import com.capstone.notechigima.domain.VisibilityStatus;
 import com.capstone.notechigima.domain.group_member.GroupMember;
 import com.capstone.notechigima.domain.note.Note;
 import com.capstone.notechigima.domain.sentence.Sentence;
@@ -13,6 +14,7 @@ import com.capstone.notechigima.domain.users.User;
 import com.capstone.notechigima.dto.advice.AdviceInferenceRequestVO;
 import com.capstone.notechigima.dto.subject.SubjectWithTopicsGetResponseDTO;
 import com.capstone.notechigima.dto.topic.TopicGetResponseDTO;
+import com.capstone.notechigima.dto.topic.TopicPostRequestDTO;
 import com.capstone.notechigima.dto.users.UserNicknameGetResponseDTO;
 import com.capstone.notechigima.mapper.TopicMapper;
 import com.capstone.notechigima.mapper.UserMapper;
@@ -44,6 +46,20 @@ public class TopicService {
         return TopicMapper.INSTANCE.toTopicGetResponseDTO(topicRepository.findById(topicId).orElseThrow());
     }
 
+    public int createTopic(TopicPostRequestDTO body) throws NoSuchElementException {
+        Subject subject = subjectRepository.findById(body.getSubjectId()).orElseThrow();
+
+        Topic newTopic = Topic.builder()
+                .subject(subject)
+                .title(body.getTitle())
+                .status(VisibilityStatus.VISIBLE)
+                .analyzed(TopicAnalyzedType.UNREADY)
+                .build();
+
+        topicRepository.save(newTopic);
+        return newTopic.getTopicId();
+    }
+
     public SubjectWithTopicsGetResponseDTO getTopicListWithSubject(int subjectId) {
         List<TopicGetResponseDTO> topics = topicRepository.findAllBySubject_SubjectId(subjectId).stream()
                 .map(TopicMapper.INSTANCE::toTopicGetResponseDTO
@@ -58,7 +74,7 @@ public class TopicService {
                 .build();
     }
 
-    public List<UserNicknameGetResponseDTO> getUnwrittenUsers(int topicId) {
+    public List<UserNicknameGetResponseDTO> getUnwrittenUsers(int topicId) throws NoSuchElementException {
         Topic topic = topicRepository.findById(topicId).orElseThrow();
         List<User> groupUsers = topic.getSubject().getStudyGroup().getMembers()
                 .stream()
@@ -79,7 +95,7 @@ public class TopicService {
 
     @Transactional
     @Async("threadPoolTaskExecutor")
-    public void requestAnalysis(int topicId) {
+    public void requestAnalysis(int topicId) throws NoSuchElementException {
         Topic topicToUpdate = topicRepository.findById(topicId).orElseThrow();
         topicToUpdate.updateAnalyzed(TopicAnalyzedType.RUNNING);
         topicRepository.save(topicToUpdate);
@@ -141,12 +157,6 @@ public class TopicService {
             e.printStackTrace();
         }
         return false;
-    }
-
-    private static Map toMap(Object obj) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("list", obj);
-        return map;
     }
 
 }
