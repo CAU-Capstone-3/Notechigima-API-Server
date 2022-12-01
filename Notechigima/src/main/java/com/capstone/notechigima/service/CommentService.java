@@ -1,5 +1,7 @@
 package com.capstone.notechigima.service;
 
+import com.capstone.notechigima.config.ExceptionCode;
+import com.capstone.notechigima.config.RestApiException;
 import com.capstone.notechigima.domain.VisibilityStatus;
 import com.capstone.notechigima.domain.comment.Comment;
 import com.capstone.notechigima.domain.sentence_advice.Advice;
@@ -21,9 +23,13 @@ public class CommentService {
     private final AdviceRepository adviceRepository;
     private final CommentRepository commentRepository;
 
-    public void postComment(int adviceId, CommentPostReqeustDTO body) throws IllegalArgumentException, NoSuchElementException {
-        Advice advice = adviceRepository.findById(adviceId).orElseThrow();
-        User user = userRepository.findById(body.getUserId()).orElseThrow();
+    public void postComment(int adviceId, CommentPostReqeustDTO body) throws RestApiException {
+        Advice advice = adviceRepository.findById(adviceId).orElseThrow(() -> {
+            throw new RestApiException(ExceptionCode.ERROR_NOT_FOUND_RESOURCE);
+        });
+        User user = userRepository.findById(body.getUserId()).orElseThrow(() -> {
+            throw new RestApiException(ExceptionCode.ERROR_NOT_FOUND_RESOURCE);
+        });
 
         Comment comment = Comment.builder()
                 .advice(advice)
