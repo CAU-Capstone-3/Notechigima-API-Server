@@ -1,11 +1,12 @@
 package com.capstone.notechigima.config.auth;
 
+import com.capstone.notechigima.config.ExceptionCode;
+import com.capstone.notechigima.config.RestApiException;
 import com.capstone.notechigima.domain.users.User;
 import com.capstone.notechigima.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,9 +16,10 @@ public class AccountDetailService implements UserDetailsService {
     private final UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.getUserByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("해당 이메일과 일치하는 계정이 없습니다."));
+    public UserDetails loadUserByUsername(String email) throws RestApiException {
+        User user = userRepository.getUserByEmail(email).orElseThrow(() -> {
+            throw new RestApiException(ExceptionCode.ERROR_NOT_FOUND_USER);
+        });
 
         return new AccountDetails(user);
     }

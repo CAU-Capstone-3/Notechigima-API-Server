@@ -1,9 +1,9 @@
 package com.capstone.notechigima.service;
 
 import com.capstone.notechigima.config.ExceptionCode;
+import com.capstone.notechigima.config.RestApiException;
 import com.capstone.notechigima.domain.group_invite.AcceptType;
 import com.capstone.notechigima.domain.group_invite.GroupInvite;
-import com.capstone.notechigima.domain.group_member.GroupMember;
 import com.capstone.notechigima.domain.study_group.StudyGroup;
 import com.capstone.notechigima.domain.users.User;
 import com.capstone.notechigima.dto.invite.GroupInviteReceivedGetResponseDTO;
@@ -30,9 +30,16 @@ public class GroupInviteService {
     private final GroupMemberRepository groupMemberRepository;
     private final GroupInviteRepository groupInviteRepository;
 
-    public int postGroupInvite(GroupInvitePostRequestDTO body) throws IllegalStateException, IllegalArgumentException, NoSuchElementException {
-        User user = userRepository.findById(body.getUserId()).orElseThrow();
-        StudyGroup group = groupRepository.findById(body.getGroupId()).orElseThrow();
+    public int postGroupInvite(GroupInvitePostRequestDTO body) throws RestApiException {
+        User user;
+        StudyGroup group;
+
+        try {
+            user = userRepository.findById(body.getUserId()).orElseThrow();
+            group = groupRepository.findById(body.getGroupId()).orElseThrow();
+        } catch (NoSuchElementException e) {
+            throw new RestApiException(ExceptionCode.ERROR_NOT_FOUND_RESOURCE);
+        }
 
         validateDuplicationMember(group.getGroupId(), user.getUserId());
         validateDuplicationInvite(group.getGroupId(), user.getUserId());
@@ -49,11 +56,11 @@ public class GroupInviteService {
     /*
     기존 그룹멤버 중복 초대 방지
      */
-    private void validateDuplicationMember(int groupId, int userId) throws IllegalStateException {
+    private void validateDuplicationMember(int groupId, int userId) throws RestApiException {
         groupMemberRepository.findAllByStudyGroup_GroupIdAndUser_UserId(groupId, userId)
                 .forEach(member -> {
                     if (member.getUser().getUserId() == userId) {
-                        throw new IllegalStateException(ExceptionCode.ERROR_DUPLICATED_MEMBER.getMessage());
+                        throw new RestApiException(ExceptionCode.ERROR_DUPLICATED_MEMBER);
                     }
                 });
     }
@@ -61,12 +68,12 @@ public class GroupInviteService {
     /*
     초대 요청 멤버 중복 초대 방지
      */
-    private void validateDuplicationInvite(int groupId, int userId) throws IllegalStateException {
+    private void validateDuplicationInvite(int groupId, int userId) throws RestApiException {
         groupInviteRepository.findAllByStudyGroup_GroupIdAndUser_UserId(groupId, userId)
                 .forEach(invite -> {
                     if (invite.getAccepted() == AcceptType.ACCEPTED ||
                             invite.getAccepted() == AcceptType.UNCHECKED) {
-                        throw new IllegalStateException(ExceptionCode.ERROR_DUPLICATED_INVITE.getMessage());
+                        throw new RestApiException(ExceptionCode.ERROR_DUPLICATED_INVITE);
                     }
                 });
     }
@@ -83,14 +90,18 @@ public class GroupInviteService {
                 .collect(Collectors.toList());
     }
 
-    public void acceptInvite(int groupInviteId) throws IllegalArgumentException, NoSuchElementException{
-        GroupInvite groupInvite = groupInviteRepository.findById(groupInviteId).orElseThrow();
+    public void acceptInvite(int groupInviteId) throws RestApiException {
+        GroupInvite groupInvite = groupInviteRepository.findById(groupInviteId).orElseThrow(() -> {
+            throw new RestApiException(ExceptionCode.ERROR_NOT_FOUND_RESOURCE);
+        });
         groupInvite.updateAccepted(AcceptType.ACCEPTED);
         groupInviteRepository.save(groupInvite);
     }
 
-    public void declineInvite(int groupInviteId) throws IllegalArgumentException, NoSuchElementException{
-        GroupInvite groupInvite = groupInviteRepository.findById(groupInviteId).orElseThrow();
+    public void declineInvite(int groupInviteId) throws RestApiException {
+        GroupInvite groupInvite = groupInviteRepository.findById(groupInviteId).orElseThrow(() -> {
+            throw new RestApiException(ExceptionCode.ERROR_NOT_FOUND_RESOURCE);
+        });
         groupInvite.updateAccepted(AcceptType.DECLINED);
         groupInviteRepository.save(groupInvite);
     }

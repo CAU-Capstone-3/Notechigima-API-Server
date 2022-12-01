@@ -44,7 +44,7 @@ public class GroupController {
     public BaseResponse<List<UserGetResponseDTO>> getMembersByGroup(
             HttpServletRequest request,
             @PathVariable("groupId") int groupId
-            ) throws AccessException {
+            ) {
 
         authService.authorizationByGroupId(request.getHeader(ACCESS_TOKEN_HEADER), groupId);
         return new BaseResponse(SuccessCode.SUCCESS_READ, userService.getMembersByGroupId(groupId));
@@ -56,7 +56,7 @@ public class GroupController {
     public BaseResponse<StudyGroupWithSubjectsGetResponseDTO> getSubjectsByGroup(
             HttpServletRequest request,
             @PathVariable("groupId") int groupId
-            ) throws AccessException {
+            ) {
 
         authService.authorizationByGroupId(request.getHeader(ACCESS_TOKEN_HEADER) ,groupId);
 
@@ -69,7 +69,7 @@ public class GroupController {
     public BaseResponse<GroupInviteSentGetResponseDTO> getUncheckedInvitesByGruopId(
         HttpServletRequest reqest,
         @PathVariable("groupId") int groupId
-    ) throws AccessException {
+    ) {
         authService.authorizationByGroupId(reqest.getHeader(ACCESS_TOKEN_HEADER), groupId);
 
         return new BaseResponse(SuccessCode.SUCCESS_READ, groupInviteService.getUncheckedGroupInvitedByGroupId(groupId));

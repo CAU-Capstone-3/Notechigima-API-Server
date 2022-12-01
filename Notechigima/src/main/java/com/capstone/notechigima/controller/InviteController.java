@@ -32,7 +32,7 @@ public class InviteController {
     @Operation(summary = "그룹 초대 승인 또는 거절", description = "사용자에게 온 그룹 초대를 승인하거나 거절 (승인 -> true, 거절 -> false)")
     public BaseResponse postInviteAccept(
             HttpServletRequest request,
-            @RequestBody GroupInviteAcceptRequestDTO body) throws AccessException {
+            @RequestBody GroupInviteAcceptRequestDTO body) {
 
         authService.authorizationByInviteId(request.getHeader(ACCESS_TOKEN_HEADER), body.getGroupInviteId());
 
@@ -50,7 +50,7 @@ public class InviteController {
     @Operation(summary = "멤버 초대", description = "그룹에 멤버를 초대")
     public BaseResponse postInvite(
             HttpServletRequest request,
-            @RequestBody GroupInvitePostRequestDTO body) throws AccessException {
+            @RequestBody GroupInvitePostRequestDTO body) {
 
         authService.authorizationByGroupOwner(request.getHeader(ACCESS_TOKEN_HEADER), body.getGroupId());
 

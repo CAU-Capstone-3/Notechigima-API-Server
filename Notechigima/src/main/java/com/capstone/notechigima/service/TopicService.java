@@ -1,6 +1,7 @@
 package com.capstone.notechigima.service;
 
 import com.capstone.notechigima.config.ExceptionCode;
+import com.capstone.notechigima.config.RestApiException;
 import com.capstone.notechigima.domain.VisibilityStatus;
 import com.capstone.notechigima.domain.group_member.GroupMember;
 import com.capstone.notechigima.domain.note.Note;
@@ -22,6 +23,7 @@ import com.capstone.notechigima.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -35,19 +37,26 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Service
 public class TopicService {
-    private static final String NLI_ULI = "http://18.189.150.89:5000/nli";
+
+    @Value("${nli.inference.uri}")
+    private String NLI_ULI;
 
     private final SubjectRepository subjectRepository;
     private final TopicRepository topicRepository;
     private final AdviceRepository adviceRepository;
     private final SentenceRepository sentenceRepository;
 
-    public TopicGetResponseDTO getTopic(int topicId) throws NoSuchElementException {
-        return TopicMapper.INSTANCE.toTopicGetResponseDTO(topicRepository.findById(topicId).orElseThrow());
+    public TopicGetResponseDTO getTopic(int topicId) throws RestApiException {
+        Topic topic = topicRepository.findById(topicId).orElseThrow(() -> {
+            throw new RestApiException(ExceptionCode.ERROR_NOT_FOUND_RESOURCE);
+        });
+        return TopicMapper.INSTANCE.toTopicGetResponseDTO(topic);
     }
 
-    public int createTopic(TopicPostRequestDTO body) throws NoSuchElementException {
-        Subject subject = subjectRepository.findById(body.getSubjectId()).orElseThrow();
+    public int createTopic(TopicPostRequestDTO body) throws RestApiException {
+        Subject subject = subjectRepository.findById(body.getSubjectId()).orElseThrow(() -> {
+            throw new RestApiException(ExceptionCode.ERROR_NOT_FOUND_RESOURCE);
+        });
 
         Topic newTopic = Topic.builder()
                 .subject(subject)
@@ -60,12 +69,13 @@ public class TopicService {
         return newTopic.getTopicId();
     }
 
-    public SubjectWithTopicsGetResponseDTO getTopicListWithSubject(int subjectId) {
+    public SubjectWithTopicsGetResponseDTO getTopicListWithSubject(int subjectId) throws RestApiException {
+        Subject subject = subjectRepository.findById(subjectId).orElseThrow(() -> {
+            throw new RestApiException(ExceptionCode.ERROR_NOT_FOUND_RESOURCE);
+        });
         List<TopicGetResponseDTO> topics = topicRepository.findAllBySubject_SubjectId(subjectId).stream()
                 .map(TopicMapper.INSTANCE::toTopicGetResponseDTO
                 ).toList();
-        Subject subject = subjectRepository.findById(subjectId)
-                .orElseThrow(() -> new NoSuchElementException(ExceptionCode.ERROR_NOT_FOUND_RESOURCE.getMessage()));
 
         return SubjectWithTopicsGetResponseDTO.builder()
                 .subjectId(subjectId)
@@ -74,8 +84,10 @@ public class TopicService {
                 .build();
     }
 
-    public List<UserNicknameGetResponseDTO> getUnwrittenUsers(int topicId) throws NoSuchElementException {
-        Topic topic = topicRepository.findById(topicId).orElseThrow();
+    public List<UserNicknameGetResponseDTO> getUnwrittenUsers(int topicId) throws RestApiException {
+        Topic topic = topicRepository.findById(topicId).orElseThrow(() -> {
+            throw new RestApiException(ExceptionCode.ERROR_NOT_FOUND_RESOURCE);
+        });
         List<User> groupUsers = topic.getSubject().getStudyGroup().getMembers()
                 .stream()
                 .map(GroupMember::getUser).toList();
@@ -89,14 +101,16 @@ public class TopicService {
                 .toList();
 
         return unwrittenUsers.stream()
-                .map(user -> UserMapper.INSTANCE.toUserNicknameGetResponseDTO(user))
+                .map(UserMapper.INSTANCE::toUserNicknameGetResponseDTO)
                 .toList();
     }
 
     @Transactional
     @Async("threadPoolTaskExecutor")
-    public void requestAnalysis(int topicId) throws NoSuchElementException {
-        Topic topicToUpdate = topicRepository.findById(topicId).orElseThrow();
+    public void requestAnalysis(int topicId) throws RestApiException {
+        Topic topicToUpdate = topicRepository.findById(topicId).orElseThrow(() -> {
+            throw new RestApiException(ExceptionCode.ERROR_NOT_FOUND_RESOURCE);
+        });
         topicToUpdate.updateAnalyzed(TopicAnalyzedType.RUNNING);
         topicRepository.save(topicToUpdate);
 

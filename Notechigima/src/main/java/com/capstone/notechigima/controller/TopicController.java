@@ -14,7 +14,6 @@ import com.capstone.notechigima.service.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.expression.AccessException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -39,7 +38,7 @@ public class TopicController {
     public BaseResponse<TopicWithNoteListGetResponseDTO> getNoteList(
             HttpServletRequest request,
             @PathVariable("topicId") int topicId
-    ) throws AccessException {
+    ) {
 
         authService.authorizationByTopicId(request.getHeader(ACCESS_TOKEN_HEADER), topicId);
 
@@ -62,7 +61,7 @@ public class TopicController {
     public BaseResponse postTopic(
             HttpServletRequest request,
             @RequestBody TopicPostRequestDTO body
-            ) throws AccessException {
+            ) {
 
         authService.authorizationBySubjectId(request.getHeader(ACCESS_TOKEN_HEADER), body.getSubjectId());
         
@@ -76,7 +75,7 @@ public class TopicController {
     public BaseResponse requestAnalysis(
             HttpServletRequest request,
             @PathVariable("topicId") int topicId
-            ) throws AccessException {
+            ) {
 
         authService.authorizationByTopicId(request.getHeader(ACCESS_TOKEN_HEADER), topicId);
 
@@ -92,7 +91,7 @@ public class TopicController {
     public BaseResponse<TopicWithAdviceGetResponseDTO> getAdviceList(
             HttpServletRequest request,
             @PathVariable("topicId") int topicId
-    ) throws AccessException {
+    ) {
 
         authService.authorizationByTopicId(request.getHeader(ACCESS_TOKEN_HEADER), topicId);
 

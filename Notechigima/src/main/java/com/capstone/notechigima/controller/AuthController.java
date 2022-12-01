@@ -2,6 +2,7 @@ package com.capstone.notechigima.controller;
 
 import com.capstone.notechigima.config.BaseResponse;
 import com.capstone.notechigima.config.ExceptionCode;
+import com.capstone.notechigima.config.RestApiException;
 import com.capstone.notechigima.config.SuccessCode;
 import com.capstone.notechigima.config.auth.AccountDetailService;
 import com.capstone.notechigima.config.auth.AccountDetails;
@@ -35,9 +36,9 @@ public class AuthController {
     @ResponseBody
     @PostMapping("/login")
     @Operation(summary = "로그인", description = "사용자 이메일(ID)과 비밀번호로 로그인")
-    public BaseResponse<LoginPostResponseDTO> login(@RequestBody LoginPostRequestDTO body) throws UsernameNotFoundException {
-
+    public BaseResponse<LoginPostResponseDTO> login(@RequestBody LoginPostRequestDTO body) {
         AccountDetails accountDetails = (AccountDetails) accountDetailService.loadUserByUsername(body.getEmail());
+
         if (accountDetails.getUser().checkPassword(body.getPassword(), bCryptPasswordEncoder)) {
             return new BaseResponse(SuccessCode.SUCCESS_READ, getAuthorizationDTO(accountDetails));
         } else {
