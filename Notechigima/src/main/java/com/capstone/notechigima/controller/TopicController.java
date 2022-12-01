@@ -1,6 +1,7 @@
 package com.capstone.notechigima.controller;
 
 import com.capstone.notechigima.config.ExceptionCode;
+import com.capstone.notechigima.config.RestApiException;
 import com.capstone.notechigima.config.SuccessCode;
 import com.capstone.notechigima.config.BaseResponse;
 import com.capstone.notechigima.domain.topic.TopicAnalyzedType;
@@ -92,7 +93,7 @@ public class TopicController {
     public BaseResponse<TopicWithAdviceGetResponseDTO> getAdviceList(
             HttpServletRequest request,
             @PathVariable("topicId") int topicId
-    ) throws AccessException {
+    ) throws RestApiException {
 
         authService.authorizationByTopicId(request.getHeader(ACCESS_TOKEN_HEADER), topicId);
 
