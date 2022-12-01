@@ -15,6 +15,12 @@ import java.util.NoSuchElementException;
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
+    @ExceptionHandler(value = {RestApiException.class})
+    protected ResponseEntity<ErrorResponse> handleRestApiException(RestApiException e) {
+        log.info("handleRestApiException throw Exception : {}", e.getExceptionCode().getMessage());
+        return ErrorResponse.toResponseEntity(e.getExceptionCode());
+    }
+
     @ExceptionHandler(value = {NoSuchElementException.class})
     protected ResponseEntity<ErrorResponse> handleNoSuchElementException() {
         log.info("handleNoSuchElementException throw Exception : {}", ExceptionCode.ERROR_NOT_FOUND_RESOURCE);
