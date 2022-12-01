@@ -24,7 +24,9 @@ public enum ExceptionCode {
     ERROR_NOT_FOUND_USER( NOT_FOUND, "해당하는 사용자 ID가 없습니다"),
 
     ERROR_DUPLICATED_EMAIL( CONFLICT, "이미 사용 중인 이메일입니다."),
-    ERROR_DUPLICATED_INVITE(CONFLICT, "이미 초대 요청을 보냈습니다.");
+    ERROR_DUPLICATED_INVITE(CONFLICT, "이미 초대 요청을 보냈습니다."),
+    ERROR_DUPLICATED_MEMBER(CONFLICT, "이미 그룹 멤버입니다."),
+    ERROR_DUPLICATED_NOTE(CONFLICT, "이미 노트를 작성한 토픽입니다.");
 
     private final HttpStatus httpStatus;
     private final String message;

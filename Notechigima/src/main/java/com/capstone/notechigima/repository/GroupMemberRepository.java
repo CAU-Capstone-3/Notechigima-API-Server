@@ -15,4 +15,7 @@ public interface GroupMemberRepository extends JpaRepository<GroupMember, GroupM
     @EntityGraph(attributePaths = {"user", "studyGroup"})
     List<GroupMember> findAllByUser_UserId(int userId);
 
+    @EntityGraph(attributePaths = {"user", "studyGroup"})
+    List<GroupMember> findAllByStudyGroup_GroupIdAndUser_UserId(int groupId, int userId);
+
 }

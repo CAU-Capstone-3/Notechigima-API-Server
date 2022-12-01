@@ -10,4 +10,8 @@ public interface NoteRepository extends JpaRepository<Note, Integer> {
 
     @EntityGraph(attributePaths = {"topic", "owner"})
     List<Note> findAllByTopic_TopicId(int topicId);
+
+    @EntityGraph(attributePaths = {"topic", "owner"})
+    List<Note> findByOwner_UserIdAndTopic_TopicId(int userId, int topicId);
+
 }
