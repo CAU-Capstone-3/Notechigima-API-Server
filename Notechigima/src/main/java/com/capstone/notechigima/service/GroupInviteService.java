@@ -3,6 +3,7 @@ package com.capstone.notechigima.service;
 import com.capstone.notechigima.config.ExceptionCode;
 import com.capstone.notechigima.domain.group_invite.AcceptType;
 import com.capstone.notechigima.domain.group_invite.GroupInvite;
+import com.capstone.notechigima.domain.group_member.GroupMember;
 import com.capstone.notechigima.domain.study_group.StudyGroup;
 import com.capstone.notechigima.domain.users.User;
 import com.capstone.notechigima.dto.invite.GroupInviteReceivedGetResponseDTO;
@@ -10,6 +11,7 @@ import com.capstone.notechigima.dto.invite.GroupInvitePostRequestDTO;
 import com.capstone.notechigima.dto.invite.GroupInviteSentGetResponseDTO;
 import com.capstone.notechigima.mapper.GroupInviteMapper;
 import com.capstone.notechigima.repository.GroupInviteRepository;
+import com.capstone.notechigima.repository.GroupMemberRepository;
 import com.capstone.notechigima.repository.GroupRepository;
 import com.capstone.notechigima.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,12 +27,14 @@ public class GroupInviteService {
 
     private final UserRepository userRepository;
     private final GroupRepository groupRepository;
+    private final GroupMemberRepository groupMemberRepository;
     private final GroupInviteRepository groupInviteRepository;
 
     public int postGroupInvite(GroupInvitePostRequestDTO body) throws IllegalStateException, IllegalArgumentException, NoSuchElementException {
         User user = userRepository.findById(body.getUserId()).orElseThrow();
         StudyGroup group = groupRepository.findById(body.getGroupId()).orElseThrow();
 
+        validateDuplicationMember(group.getGroupId(), user.getUserId());
         validateDuplicationInvite(group.getGroupId(), user.getUserId());
 
         return groupInviteRepository.save(
@@ -42,6 +46,21 @@ public class GroupInviteService {
         ).getGroupInviteId();
     }
 
+    /*
+    기존 그룹멤버 중복 초대 방지
+     */
+    private void validateDuplicationMember(int groupId, int userId) throws IllegalStateException {
+        groupMemberRepository.findAllByStudyGroup_GroupIdAndUser_UserId(groupId, userId)
+                .forEach(member -> {
+                    if (member.getUser().getUserId() == userId) {
+                        throw new IllegalStateException(ExceptionCode.ERROR_DUPLICATED_MEMBER.getMessage());
+                    }
+                });
+    }
+
+    /*
+    초대 요청 멤버 중복 초대 방지
+     */
     private void validateDuplicationInvite(int groupId, int userId) throws IllegalStateException {
         groupInviteRepository.findAllByStudyGroup_GroupIdAndUser_UserId(groupId, userId)
                 .forEach(invite -> {
