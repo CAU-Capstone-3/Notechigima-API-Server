@@ -1,5 +1,7 @@
 package com.capstone.notechigima.service;
 
+import com.capstone.notechigima.config.ExceptionCode;
+import com.capstone.notechigima.config.RestApiException;
 import com.capstone.notechigima.domain.ActiveStatus;
 import com.capstone.notechigima.domain.group_member.GroupAccessType;
 import com.capstone.notechigima.domain.group_member.GroupMember;
@@ -27,18 +29,21 @@ public class GroupService {
 
     public List<StudyGroupGetResponseDTO> getStudyGroupsByUserId(int userId) {
         return groupMemberRepository.findAllByUser_UserId(userId).stream()
-                .map(entity -> StudyGroupMapper.INSTANCE.toStudyGroupGetResponseDTO(entity))
+                .map(StudyGroupMapper.INSTANCE::toStudyGroupGetResponseDTO)
                 .collect(Collectors.toList());
     }
 
-    public int postStudyGroup(StudyGroupPostRequestDTO body) {
+    public int postStudyGroup(StudyGroupPostRequestDTO body) throws RestApiException {
+        User user = userRepository.findById(body.getUserId()).orElseThrow(() -> {
+            throw new RestApiException(ExceptionCode.ERROR_NOT_FOUND_USER);
+        });
+
         StudyGroup createStudyGroup = StudyGroup.builder()
                 .name(body.getGroupName())
                 .status(ActiveStatus.ACTIVE)
                 .build();
 
         groupRepository.save(createStudyGroup);
-        User user = userRepository.getReferenceById(body.getUserId());
 
         groupMemberRepository.save(
                 GroupMember.builder()
