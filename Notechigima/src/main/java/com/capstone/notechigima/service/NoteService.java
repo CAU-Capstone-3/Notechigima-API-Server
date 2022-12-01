@@ -1,5 +1,6 @@
 package com.capstone.notechigima.service;
 
+import com.capstone.notechigima.config.ExceptionCode;
 import com.capstone.notechigima.domain.VisibilityStatus;
 import com.capstone.notechigima.domain.note.Note;
 import com.capstone.notechigima.domain.sentence.Sentence;
@@ -46,9 +47,11 @@ public class NoteService {
         return result;
     }
 
-    public void postNote(NotePostRequestDTO body) throws IllegalArgumentException, NoSuchElementException {
+    public void postNote(NotePostRequestDTO body) throws IllegalArgumentException, IllegalStateException, NoSuchElementException {
         User owner = userRepository.findById(body.getUserId()).orElseThrow();
         Topic topic = topicRepository.findById(body.getTopicId()).orElseThrow();
+
+        validationDuplicate(body.getUserId(), body.getTopicId());
 
         Note entity = Note.builder()
                 .owner(owner)
@@ -74,5 +77,11 @@ public class NoteService {
         }
 
         sentenceRepository.saveAll(sentenceEntities);
+    }
+
+    private void validationDuplicate(int userId, int topicId) throws IllegalStateException {
+        List<Note> shouldEmpty = noteRepository.findByOwner_UserIdAndTopic_TopicId(userId, topicId);
+        if (!shouldEmpty.isEmpty())
+            throw new IllegalStateException(ExceptionCode.ERROR_DUPLICATED_NOTE.getMessage());
     }
 }
