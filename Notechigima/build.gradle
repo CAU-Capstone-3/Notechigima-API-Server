@@ -16,6 +16,7 @@ configurations {
 
 repositories {
     mavenCentral()
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
@@ -64,6 +65,9 @@ dependencies {
 
     // swagger
     implementation 'org.springdoc:springdoc-openapi-ui:1.6.6'
+
+    // komoran
+    implementation 'com.github.shin285:KOMORAN:3.3.4'
 }
 
 tasks.named('test') {
