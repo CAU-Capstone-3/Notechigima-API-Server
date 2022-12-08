@@ -2,7 +2,6 @@ package com.capstone.notechigima.controller;
 
 import com.capstone.notechigima.config.BaseResponse;
 import com.capstone.notechigima.config.ExceptionCode;
-import com.capstone.notechigima.config.RestApiException;
 import com.capstone.notechigima.config.SuccessCode;
 import com.capstone.notechigima.config.auth.AccountDetailService;
 import com.capstone.notechigima.config.auth.AccountDetails;
@@ -71,11 +70,9 @@ public class AuthController {
     }
 
     private BaseResponse emailDuplicationCheck(String email) {
-        try {
-            if (email != null)
-                accountDetailService.loadUserByUsername(email);
+        if (userService.hasUserEmail(email)) {
             return new BaseResponse(ExceptionCode.ERROR_DUPLICATED_EMAIL);
-        } catch (UsernameNotFoundException e) {
+        } else {
             return new BaseResponse(SuccessCode.EMAIL_AVAILABLE);
         }
     }

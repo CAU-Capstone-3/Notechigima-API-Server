@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,6 +48,10 @@ public class UserService {
         user.hashPassword(bCryptPasswordEncoder);
         userRepository.save(user);
         return user.getUserId();
+    }
+
+    public boolean hasUserEmail(String email) {
+        return userRepository.getUserByEmail(email).isPresent();
     }
 
 }
