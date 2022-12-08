@@ -39,18 +39,11 @@ public class NoteService {
     }
 
     public NoteGetResponseDTO getNote(int noteId) throws RestApiException {
-        List<Sentence> sentenceList = sentenceRepository.findAllByNote_NoteId(noteId);
-        List<SentenceListGetResponseDTO> sentenceResult =
-                sentenceList.stream()
-                        .map(SentenceMapper.INSTANCE::toSentenceListGetResponseDTO)
-                        .collect(Collectors.toList());
-
         Note note = noteRepository.findById(noteId).orElseThrow(() -> {
             throw new RestApiException(ExceptionCode.ERROR_NOT_FOUND_RESOURCE);
         });
 
-        NoteGetResponseDTO result = NoteMapper.INSTANCE.toNoteGetResponseDTO(note, sentenceResult);
-        return result;
+        return NoteMapper.INSTANCE.toNoteGetResponseDTO(note);
     }
 
     public void postNote(NotePostRequestDTO body) throws RestApiException {

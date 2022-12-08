@@ -23,7 +23,7 @@ public interface NoteMapper {
                 .build();
     }
 
-    default NoteGetResponseDTO toNoteGetResponseDTO(Note note, List<SentenceListGetResponseDTO> sentenceList) {
+    default NoteGetResponseDTO toNoteGetResponseDTO(Note note) {
         return NoteGetResponseDTO.builder()
                 .subjectId(note.getTopic().getSubject().getSubjectId())
                 .subjectName(note.getTopic().getSubject().getName())
@@ -33,7 +33,7 @@ public interface NoteMapper {
                 .lastUpdate(note.getUpdatedAt())
                 .writerId(note.getOwner().getUserId())
                 .writerName(note.getOwner().getNickname())
-                .sentences(sentenceList)
+                .content(note.getContent())
                 .build();
     }
 }

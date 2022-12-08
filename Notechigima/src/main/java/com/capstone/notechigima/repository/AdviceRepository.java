@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface AdviceRepository extends JpaRepository<Advice, Integer> {
 
-    @EntityGraph(attributePaths = {"sentence1"})
-    List<Advice> findAllBySentence1_Note_Topic_TopicId(int topicId);
+    @EntityGraph(attributePaths = {"topic"})
+    List<Advice> findAllByTopic_TopicId(int topicId);
 }

@@ -27,13 +27,13 @@ public class NoteGetResponseDTO {
     private int writerId;
     @Schema(description = "노트 작성자명", defaultValue = "장훈석")
     private String writerName;
-    @Schema(description = "노트 내 문장 목록")
-    private List<SentenceListGetResponseDTO> sentences;
+    @Schema(description = "노트 내용")
+    private String content;
     @Schema(description = "노트 최종 업데이트 시간")
     private LocalDateTime lastUpdate;
 
     @Builder
-    public NoteGetResponseDTO(int subjectId, String subjectName, int topicId, String topicName, int noteId, int writerId, String writerName, List<SentenceListGetResponseDTO> sentences, LocalDateTime lastUpdate) {
+    public NoteGetResponseDTO(int subjectId, String subjectName, int topicId, String topicName, int noteId, int writerId, String writerName, String content, LocalDateTime lastUpdate) {
         this.subjectId = subjectId;
         this.subjectName = subjectName;
         this.topicId = topicId;
@@ -41,7 +41,7 @@ public class NoteGetResponseDTO {
         this.noteId = noteId;
         this.writerId = writerId;
         this.writerName = writerName;
-        this.sentences = sentences;
+        this.content = content;
         this.lastUpdate = lastUpdate;
     }
 }

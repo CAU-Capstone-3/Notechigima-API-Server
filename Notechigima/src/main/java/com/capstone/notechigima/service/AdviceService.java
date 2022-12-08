@@ -21,7 +21,7 @@ public class AdviceService {
     private final CommentRepository commentRepository;
 
     public List<AdviceGetResponseDTO> getAdviceList(int topicId) {
-        List<Advice> advices = adviceRepository.findAllBySentence1_Note_Topic_TopicId(topicId);
+        List<Advice> advices = adviceRepository.findAllByTopic_TopicId(topicId);
         HashMap<Advice, List<Comment>> commentMap = new HashMap<>();
 
         // get comments
