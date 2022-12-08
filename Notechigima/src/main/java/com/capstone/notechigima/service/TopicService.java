@@ -4,6 +4,7 @@ import com.capstone.notechigima.config.ExceptionCode;
 import com.capstone.notechigima.config.RestApiException;
 import com.capstone.notechigima.domain.VisibilityStatus;
 import com.capstone.notechigima.domain.advice.Advice;
+import com.capstone.notechigima.domain.advice_sentence.AdviceSentence;
 import com.capstone.notechigima.domain.analysis.*;
 import com.capstone.notechigima.domain.group_member.GroupAccessType;
 import com.capstone.notechigima.domain.group_member.GroupMember;
@@ -51,6 +52,7 @@ public class TopicService {
     private final AdviceRepository adviceRepository;
     private final GroupMemberRepository groupMemberRepository;
     private final NoteRepository noteRepository;
+    private final AdviceSentenceRepository adviceSentenceRepository;
 
     public TopicGetResponseDTO getTopic(int topicId) throws RestApiException {
         Topic topic = topicRepository.findById(topicId).orElseThrow(() -> {
@@ -143,6 +145,7 @@ public class TopicService {
 
     private void saveMergedParagraph(Topic topic, MergedParagraph paragraph) {
         String content;
+
         if (paragraph.isContradiction()) {
             content = "from 모두, 상반된 문장이 있어요.";
         } else {
@@ -172,6 +175,17 @@ public class TopicService {
                 .topic(topic)
                 .content(content)
                 .build();
+
+        paragraph.getRepresent().forEach(
+                p -> {
+                    AdviceSentence adviceSentence = AdviceSentence.builder()
+                            .advice(advice)
+                            .content(p.toString())
+                            .build();
+                    adviceSentenceRepository.save(adviceSentence);
+                }
+        );
+
         adviceRepository.save(advice);
     }
 
