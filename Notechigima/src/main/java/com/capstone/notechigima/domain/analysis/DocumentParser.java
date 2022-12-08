@@ -19,21 +19,21 @@ public class DocumentParser {
     private List<Paragraph> getParagraphs(String document) {
         List<String> parsed = List.of(document.split("\n"));
 
-        Stack<Paragraph> clusters = new Stack<>();
-        clusters.add(new Paragraph());
+        Stack<Paragraph> paragraphs = new Stack<>();
+        paragraphs.add(new Paragraph());
 
         for (String line : parsed) {
             if (line.isEmpty()) {
-                if (!clusters.peek().isEmpty()) {
-                    clusters.add(new Paragraph());
+                if (!paragraphs.peek().isEmpty()) {
+                    paragraphs.add(new Paragraph());
                 }
                 continue;
             }
 
-            clusters.peek().add(line);
+            paragraphs.peek().add(line);
         }
 
-        return clusters;
+        return paragraphs;
     }
 
 }

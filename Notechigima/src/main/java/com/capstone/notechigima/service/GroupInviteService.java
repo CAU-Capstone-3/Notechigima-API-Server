@@ -35,7 +35,7 @@ public class GroupInviteService {
         StudyGroup group;
 
         try {
-            user = userRepository.findById(body.getUserId()).orElseThrow();
+            user = userRepository.getUserByEmail(body.getEmail()).orElseThrow(() -> new RestApiException(ExceptionCode.ERROR_NOT_FOUND_USER));
             group = groupRepository.findById(body.getGroupId()).orElseThrow();
         } catch (NoSuchElementException e) {
             throw new RestApiException(ExceptionCode.ERROR_NOT_FOUND_RESOURCE);
