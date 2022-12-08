@@ -176,16 +176,20 @@ public class TopicService {
                 .content(content)
                 .build();
 
-        paragraph.getRepresent().forEach(
-                p -> {
-                    AdviceSentence adviceSentence = AdviceSentence.builder()
-                            .advice(advice)
-                            .content(p.toString())
-                            .build();
-                    adviceSentenceRepository.save(adviceSentence);
-                }
-        );
+        for (int i = 0; i < paragraph.getRepresent().size(); i++) {
+            boolean represent = false;
+            if (i == 0) represent = true;
+            if (paragraph.isContradiction()) represent = true;
+            Paragraph p = paragraph.getRepresent().get(i);
 
+            AdviceSentence adviceSentence = AdviceSentence.builder()
+                    .advice(advice)
+                    .content(p.toString())
+                    .represent(represent)
+                    .build();
+            adviceSentenceRepository.save(adviceSentence);
+
+        }
         adviceRepository.save(advice);
     }
 

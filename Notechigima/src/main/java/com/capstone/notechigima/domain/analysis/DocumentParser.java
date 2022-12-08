@@ -22,13 +22,14 @@ public class DocumentParser {
         paragraphs.add(new Paragraph(noteId));
 
         for (String line : parsed) {
-            if (line.isEmpty()) {
-                if (!paragraphs.peek().isEmpty()) {
-                    paragraphs.add(new Paragraph(noteId));
-                }
-                continue;
-            }
-
+//            if (line.isEmpty()) {
+//                if (!paragraphs.peek().isEmpty()) {
+//                    paragraphs.add(new Paragraph(noteId));
+//                }
+//                continue;
+//            }
+            if (!paragraphs.peek().isEmpty())
+                paragraphs.add(new Paragraph(noteId));
             paragraphs.peek().add(line);
         }
 

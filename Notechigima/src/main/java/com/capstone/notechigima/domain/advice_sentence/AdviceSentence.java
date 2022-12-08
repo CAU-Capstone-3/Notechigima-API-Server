@@ -26,10 +26,14 @@ public class AdviceSentence extends BaseTimeEntity {
     @Column
     private String content;
 
+    @Column
+    private boolean represent;
+
     @Builder
-    public AdviceSentence(int adviceSentenceId, Advice advice, String content) {
+    public AdviceSentence(int adviceSentenceId, Advice advice, String content, boolean represent) {
         this.adviceSentenceId = adviceSentenceId;
         this.advice = advice;
         this.content = content;
+        this.represent = represent;
     }
 }
