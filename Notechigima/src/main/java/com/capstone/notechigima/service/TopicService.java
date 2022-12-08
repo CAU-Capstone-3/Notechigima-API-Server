@@ -3,11 +3,10 @@ package com.capstone.notechigima.service;
 import com.capstone.notechigima.config.ExceptionCode;
 import com.capstone.notechigima.config.RestApiException;
 import com.capstone.notechigima.domain.VisibilityStatus;
+import com.capstone.notechigima.domain.analysis.*;
+import com.capstone.notechigima.domain.group_member.GroupAccessType;
 import com.capstone.notechigima.domain.group_member.GroupMember;
 import com.capstone.notechigima.domain.note.Note;
-import com.capstone.notechigima.domain.sentence.Sentence;
-import com.capstone.notechigima.domain.advice.Advice;
-import com.capstone.notechigima.domain.advice.AdviceType;
 import com.capstone.notechigima.domain.subject.Subject;
 import com.capstone.notechigima.domain.topic.Topic;
 import com.capstone.notechigima.domain.topic.TopicAnalyzedType;
@@ -49,7 +48,7 @@ public class TopicService {
     private final SubjectRepository subjectRepository;
     private final TopicRepository topicRepository;
     private final AdviceRepository adviceRepository;
-    private final SentenceRepository sentenceRepository;
+    private final GroupMemberRepository groupMemberRepository;
 
     public TopicGetResponseDTO getTopic(int topicId) throws RestApiException {
         Topic topic = topicRepository.findById(topicId).orElseThrow(() -> {
@@ -118,39 +117,76 @@ public class TopicService {
         topicToUpdate.updateAnalyzed(TopicAnalyzedType.RUNNING);
         topicRepository.save(topicToUpdate);
 
-        ArrayList<Advice> advices = new ArrayList<>();
-        List<Sentence> sentences = sentenceRepository.findAllByNote_Topic_TopicId(topicId);
-        List<Sentence[]> sentComb = getComb(sentences);
+        User owner = groupMemberRepository.findAllByStudyGroup_GroupId(
+                topicToUpdate.getSubject().getStudyGroup().getGroupId())
+                .stream()
+                .filter(member -> member.getAccess() == GroupAccessType.OWNER)
+                .findFirst()
+                .map(GroupMember::getUser)
+                .orElseThrow(() -> {
+                    throw new RestApiException(ExceptionCode.ERROR_NOT_FOUND_USER);
+                });
 
-        for (Sentence[] comb : sentComb) {
-            if (isContradiction(comb[0].getContent(), comb[1].getContent())) {
-                advices.add(
-                        Advice.builder()
-                                .sentence1(comb[0])
-                                .sentence2(comb[1])
-                                .adviceType(AdviceType.CONTRADICTION)
-                                .build());
-            }
-        }
 
-        if (!advices.isEmpty())
-            adviceRepository.saveAll(advices);
+        List<Note> notes = topicToUpdate.getNotes();
+        analysisTopic(notes, owner.getUserId());
 
         topicToUpdate.updateAnalyzed(TopicAnalyzedType.FINISH);
         topicRepository.save(topicToUpdate);
     }
 
-    private List<Sentence[]> getComb(List<Sentence> sentences) {
-        ArrayList<Sentence[]> comb = new ArrayList<>();
-        for (int i = 0; i < sentences.size(); i++) {
-            for (int j = i + 1; j < sentences.size(); j++) {
-                Sentence sent1 = sentences.get(i);
-                Sentence sent2 = sentences.get(j);
-                if (sent1.getNote().getOwner() != sent2.getNote().getOwner())
-                    comb.add(new Sentence[] { sent1, sent2 });
+    private MergedDocument analysisTopic(List<Note> notes, int groupOwnerId) {
+        DocumentParser parser = new DocumentParser();
+
+        // analysis
+        Document centralDocument = null;
+        List<Document> documents = new ArrayList<>();
+
+        for (Note note : notes) {
+            Document document = parser.getDocument(note.getNoteId(), note.getContent());
+
+            if (groupOwnerId == note.getOwner().getUserId()) {
+                centralDocument = document;
+            } else {
+                documents.add(document);
             }
         }
-        return comb;
+
+        DocumentAnalyzer analyzer = new DocumentAnalyzer(centralDocument, documents);
+        List<List<Paragraph>> pairParagraphs = analyzer.getPairParagraphs();
+
+        for (int i = 0; i < pairParagraphs.size(); i++) {
+            List<Paragraph> pair = pairParagraphs.get(i);
+
+            if (haveContradiction(pair)) {
+                analyzer.setContradictionAt(i);
+            }
+
+            StringBuilder mergePair = new StringBuilder();
+            pair.stream()
+                    .forEach(paragraph -> {
+                        mergePair.append(paragraph.toString());
+                    });
+
+            List<String> keywords = getKeywords(mergePair.toString());
+            analyzer.setKeywordAt(i, keywords);
+        }
+
+        return analyzer.getMergedDocument();
+    }
+
+    private boolean haveContradiction(List<Paragraph> pair) {
+        for (int i = 0; i < pair.size(); i++) {
+            for (int j = i + 1; j < pair.size(); j++) {
+                String sent1 = pair.get(i).toString();
+                String sent2 = pair.get(j).toString();
+
+                if (isContradiction(sent1, sent2)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @Async("threadPoolTaskExecutor")

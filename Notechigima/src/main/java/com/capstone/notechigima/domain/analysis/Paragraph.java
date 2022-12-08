@@ -44,6 +44,15 @@ public class Paragraph {
         return result;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (String sentence : sentences) {
+            sb.append(sentence).append(" ");
+        }
+        return sb.toString();
+    }
+
     private List<String> getParsedSentence(String input) {
         addNouns(input);
         Sentence taggedSentence = getTagger().tagSentence(input);

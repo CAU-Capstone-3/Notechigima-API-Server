@@ -1,9 +1,6 @@
 package com.capstone.notechigima.domain.analysis;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DocumentAnalyzer {
 
@@ -12,6 +9,7 @@ public class DocumentAnalyzer {
 
     private Document mergedDocument;
 
+    private final List<List<Paragraph>> pairParagraphs = new ArrayList<>();
     // userId : point -> contribution
     private final Map<Integer, Integer> points = new HashMap<>();
     private int totalCount = 0;
@@ -28,8 +26,6 @@ public class DocumentAnalyzer {
     }
 
     private void analysis() {
-        List<List<Paragraph>> pairParagraphs = new ArrayList<>();
-
         for (Paragraph paragraph : centralDocument.getParagraphs()) {
             List<Paragraph> pair = new ArrayList<>();
             pair.add(paragraph);
@@ -42,12 +38,18 @@ public class DocumentAnalyzer {
             pairParagraphs.add(pair);
         }
 
-        for (List<Paragraph> paragraphs : pairParagraphs) {
-            for (Paragraph par : paragraphs) {
-                System.out.println(par.getSentences());
-            }
-            System.out.println();
-        }
+    }
+
+    public List<List<Paragraph>> getPairParagraphs() {
+        return Collections.unmodifiableList(pairParagraphs);
+    }
+
+    public void setContradictionAt(int paragraphIdx) {
+
+    }
+
+    public void setKeywordAt(int paragraphIdx, List<String> keywords) {
+
     }
 
     private Paragraph findSameParagraph(Paragraph paragraph, Document inDocument) {
