@@ -67,13 +67,13 @@ public class NoteService {
                 .owner(owner)
                 .topic(topic)
                 .status(VisibilityStatus.VISIBLE)
+                .content(body.getContent())
                 .build();
 
         noteRepository.save(entity);
 
-        DocumentParser parser = new DocumentParser();
-        Document document = parser.getDocument(body.getUserId(), body.getContent());
-        List<Sentence> sentenceEntities = new ArrayList<>();
+
+
 //
 //        document.getParagraphs()
 //                .stream()
@@ -95,8 +95,6 @@ public class NoteService {
 //                    .build();
 //            sentenceEntities.add(createSentence);
 //        }
-
-        sentenceRepository.saveAll(sentenceEntities);
     }
 
     private void validationDuplicate(int userId, int topicId) throws RestApiException {
