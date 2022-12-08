@@ -77,8 +77,6 @@ dependencies {
     implementation "kr.bydelta:koalanlp-core:2.1.4"
     // komoran
     implementation "kr.bydelta:koalanlp-kmr:2.1.4"
-    // eunjeon
-    implementation "kr.bydelta:koalanlp-eunjeon:2.1.4"
 
 }
 
