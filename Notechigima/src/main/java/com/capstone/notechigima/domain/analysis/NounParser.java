@@ -10,21 +10,27 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Component
 public class NounParser {
     public static final String POS_NOUN = "NNP";
 
-    private final Komoran komoran = new Komoran(DEFAULT_MODEL.FULL);
+    private static Komoran komoran;
 
     public Set<String> getNouns(String document) {
 
-        KomoranResult analyzeResult = komoran.analyze(document);
+        KomoranResult analyzeResult = getKomoran().analyze(document);
         List<String> nouns = analyzeResult.getTokenList()
                 .stream()
                 .filter(token -> token.getPos().equals(POS_NOUN))
                 .map(Token::getMorph).toList();
 
         return new HashSet<>(nouns);
+    }
+
+    private Komoran getKomoran() {
+        if (komoran == null) {
+            komoran = new Komoran(DEFAULT_MODEL.FULL);
+        }
+        return komoran;
     }
 
 }

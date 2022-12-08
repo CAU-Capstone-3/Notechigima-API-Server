@@ -5,6 +5,7 @@ import kr.bydelta.koala.kmr.Tagger;
 import kr.bydelta.koala.proc.SentenceSplitter;
 import kr.co.shineware.nlp.komoran.constant.DEFAULT_MODEL;
 import kr.co.shineware.nlp.komoran.core.Komoran;
+import org.springframework.security.core.parameters.P;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -31,6 +32,16 @@ public class Paragraph {
 
     public List<String> getNouns() {
         return List.copyOf(nouns);
+    }
+
+    public int countSameNouns(List<String> nouns) {
+        int result = 0;
+        for (String noun : nouns) {
+            if (this.nouns.contains(noun)) {
+                result++;
+            }
+        }
+        return result;
     }
 
     private List<String> getParsedSentence(String input) {
