@@ -2,7 +2,7 @@ package com.capstone.notechigima.domain.comment;
 
 import com.capstone.notechigima.domain.BaseTimeEntity;
 import com.capstone.notechigima.domain.VisibilityStatus;
-import com.capstone.notechigima.domain.sentence_advice.Advice;
+import com.capstone.notechigima.domain.advice.Advice;
 import com.capstone.notechigima.domain.users.User;
 import lombok.Builder;
 import lombok.Getter;

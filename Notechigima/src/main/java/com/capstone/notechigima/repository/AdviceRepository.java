@@ -1,6 +1,6 @@
 package com.capstone.notechigima.repository;
 
-import com.capstone.notechigima.domain.sentence_advice.Advice;
+import com.capstone.notechigima.domain.advice.Advice;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 

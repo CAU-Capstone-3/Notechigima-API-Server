@@ -4,7 +4,7 @@ import com.capstone.notechigima.config.ExceptionCode;
 import com.capstone.notechigima.config.RestApiException;
 import com.capstone.notechigima.domain.VisibilityStatus;
 import com.capstone.notechigima.domain.comment.Comment;
-import com.capstone.notechigima.domain.sentence_advice.Advice;
+import com.capstone.notechigima.domain.advice.Advice;
 import com.capstone.notechigima.domain.users.User;
 import com.capstone.notechigima.dto.comment.CommentPostReqeustDTO;
 import com.capstone.notechigima.repository.AdviceRepository;
@@ -12,8 +12,6 @@ import com.capstone.notechigima.repository.CommentRepository;
 import com.capstone.notechigima.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor

@@ -9,7 +9,7 @@ import com.capstone.notechigima.domain.group_member.GroupAccessType;
 import com.capstone.notechigima.domain.group_member.GroupMember;
 import com.capstone.notechigima.domain.note.Note;
 import com.capstone.notechigima.domain.sentence.Sentence;
-import com.capstone.notechigima.domain.sentence_advice.Advice;
+import com.capstone.notechigima.domain.advice.Advice;
 import com.capstone.notechigima.domain.study_group.StudyGroup;
 import com.capstone.notechigima.domain.subject.Subject;
 import com.capstone.notechigima.domain.topic.Topic;

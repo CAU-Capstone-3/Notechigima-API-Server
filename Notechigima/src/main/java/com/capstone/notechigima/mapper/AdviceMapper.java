@@ -1,8 +1,8 @@
 package com.capstone.notechigima.mapper;
 
 import com.capstone.notechigima.domain.comment.Comment;
-import com.capstone.notechigima.domain.sentence_advice.Advice;
-import com.capstone.notechigima.domain.sentence_advice.AdviceType;
+import com.capstone.notechigima.domain.advice.Advice;
+import com.capstone.notechigima.domain.advice.AdviceType;
 import com.capstone.notechigima.dto.advice.AdviceGetResponseDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;

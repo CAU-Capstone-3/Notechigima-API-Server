@@ -1,7 +1,7 @@
 package com.capstone.notechigima.service;
 
 import com.capstone.notechigima.domain.comment.Comment;
-import com.capstone.notechigima.domain.sentence_advice.Advice;
+import com.capstone.notechigima.domain.advice.Advice;
 import com.capstone.notechigima.dto.advice.AdviceGetResponseDTO;
 import com.capstone.notechigima.mapper.AdviceMapper;
 import com.capstone.notechigima.repository.AdviceRepository;

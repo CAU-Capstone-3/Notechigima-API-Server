@@ -32,11 +32,15 @@ public class Note extends BaseTimeEntity {
     @JoinColumn(name = "TOPIC_ID")
     private Topic topic;
 
+    @Column
+    private String content;
+
     @Builder
-    public Note(int noteId, VisibilityStatus status, User owner, Topic topic) {
+    public Note(int noteId, VisibilityStatus status, User owner, Topic topic, String content) {
         this.noteId = noteId;
         this.status = status;
         this.owner = owner;
         this.topic = topic;
+        this.content = content;
     }
 }
