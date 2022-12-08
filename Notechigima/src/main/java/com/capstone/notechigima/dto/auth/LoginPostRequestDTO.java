@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public class LoginPostRequestDTO {
-    @Schema(description = "로그인할 아이디", defaultValue = "khk211113@naver.com")
+    @Schema(description = "로그인할 아이디", defaultValue = "testuser@naver.com")
     private String email;
     @Schema(description = "비밀번호", defaultValue = "123456")
     private String password;

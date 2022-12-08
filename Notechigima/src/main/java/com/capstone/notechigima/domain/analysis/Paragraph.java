@@ -5,16 +5,18 @@ import kr.bydelta.koala.kmr.Tagger;
 import kr.bydelta.koala.proc.SentenceSplitter;
 import kr.co.shineware.nlp.komoran.constant.DEFAULT_MODEL;
 import kr.co.shineware.nlp.komoran.core.Komoran;
-import org.springframework.security.core.parameters.P;
+import lombok.RequiredArgsConstructor;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 public class Paragraph {
 
     private static Tagger tagger;
     private static Komoran komoran;
 
+    private final int noteId;
     private final List<String> sentences = new ArrayList<>();
     private final Set<String> nouns = new HashSet<>();
 
@@ -51,6 +53,10 @@ public class Paragraph {
             sb.append(sentence).append(" ");
         }
         return sb.toString();
+    }
+
+    public int getNoteId() {
+        return this.noteId;
     }
 
     private List<String> getParsedSentence(String input) {

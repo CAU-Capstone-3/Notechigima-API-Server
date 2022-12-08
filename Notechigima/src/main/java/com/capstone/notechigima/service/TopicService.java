@@ -3,6 +3,7 @@ package com.capstone.notechigima.service;
 import com.capstone.notechigima.config.ExceptionCode;
 import com.capstone.notechigima.config.RestApiException;
 import com.capstone.notechigima.domain.VisibilityStatus;
+import com.capstone.notechigima.domain.advice.Advice;
 import com.capstone.notechigima.domain.analysis.*;
 import com.capstone.notechigima.domain.group_member.GroupAccessType;
 import com.capstone.notechigima.domain.group_member.GroupMember;
@@ -49,6 +50,7 @@ public class TopicService {
     private final TopicRepository topicRepository;
     private final AdviceRepository adviceRepository;
     private final GroupMemberRepository groupMemberRepository;
+    private final NoteRepository noteRepository;
 
     public TopicGetResponseDTO getTopic(int topicId) throws RestApiException {
         Topic topic = topicRepository.findById(topicId).orElseThrow(() -> {
@@ -129,10 +131,48 @@ public class TopicService {
 
 
         List<Note> notes = topicToUpdate.getNotes();
-        analysisTopic(notes, owner.getUserId());
+        MergedDocument mergedDocument = analysisTopic(notes, owner.getUserId());
+        mergedDocument.getParagraphs()
+                        .forEach(paragraph -> {
+                            saveMergedParagraph(topicToUpdate, paragraph);
+                        });
 
         topicToUpdate.updateAnalyzed(TopicAnalyzedType.FINISH);
         topicRepository.save(topicToUpdate);
+    }
+
+    private void saveMergedParagraph(Topic topic, MergedParagraph paragraph) {
+        String content;
+        if (paragraph.isContradiction()) {
+            content = "from 모두, 상반된 문장이 있어요.";
+        } else {
+            StringBuilder sb = new StringBuilder();
+
+            for (MergedParagraph.Omission omission : paragraph.getOmissions()) {
+                User writer = noteRepository.findById(omission.getNoteId())
+                        .orElseThrow(() -> {
+                            throw new RestApiException(ExceptionCode.ERROR_NOT_FOUND_USER);
+                        })
+                        .getOwner();
+
+                sb.append("from ")
+                        .append(writer.getNickname())
+                        .append(", ");
+                for (int i = 0; i < omission.getKeywords().size(); i++) {
+                    if (i != 0)
+                        sb.append(", ");
+                    sb.append(omission.getKeywords().get(i));
+                }
+                sb.append(" 에 대한 내용이 빠져있어요.\n");
+            }
+            content = sb.toString();
+        }
+
+        Advice advice = Advice.builder()
+                .topic(topic)
+                .content(content)
+                .build();
+        adviceRepository.save(advice);
     }
 
     private MergedDocument analysisTopic(List<Note> notes, int groupOwnerId) {
@@ -143,7 +183,7 @@ public class TopicService {
         List<Document> documents = new ArrayList<>();
 
         for (Note note : notes) {
-            Document document = parser.getDocument(note.getNoteId(), note.getContent());
+            Document document = parser.parse(note.getNoteId(), note.getContent());
 
             if (groupOwnerId == note.getOwner().getUserId()) {
                 centralDocument = document;
@@ -153,26 +193,18 @@ public class TopicService {
         }
 
         DocumentAnalyzer analyzer = new DocumentAnalyzer(centralDocument, documents);
-        List<List<Paragraph>> pairParagraphs = analyzer.getPairParagraphs();
+        List<PairParagraph> pairParagraphs = analyzer.getPairParagraphs();
 
-        for (int i = 0; i < pairParagraphs.size(); i++) {
-            List<Paragraph> pair = pairParagraphs.get(i);
-
-            if (haveContradiction(pair)) {
-                analyzer.setContradictionAt(i);
+        for (PairParagraph pair : pairParagraphs) {
+            if (haveContradiction(pair.getParagraphs())) {
+                pair.setContradiction();
             }
 
-            StringBuilder mergePair = new StringBuilder();
-            pair.stream()
-                    .forEach(paragraph -> {
-                        mergePair.append(paragraph.toString());
-                    });
-
-            List<String> keywords = getKeywords(mergePair.toString());
-            analyzer.setKeywordAt(i, keywords);
+            List<String> keywords = getKeywords(pair.getMergedString());
+            pair.addAllKeywords(keywords);
         }
 
-        return analyzer.getMergedDocument();
+        return analyzer.mergeDocument();
     }
 
     private boolean haveContradiction(List<Paragraph> pair) {

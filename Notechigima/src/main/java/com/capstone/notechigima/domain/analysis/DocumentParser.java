@@ -1,31 +1,30 @@
 package com.capstone.notechigima.domain.analysis;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Stack;
 
-@RequiredArgsConstructor
 @Component
 public class DocumentParser {
 
-    public Document getDocument(int userId, String document) {
-        List<Paragraph> paragraphs = getParagraphs(document);
-        Document result = new Document(userId, paragraphs);
+
+    public Document parse(int noteId, String document) {
+        List<Paragraph> paragraphs = getParagraphs(document, noteId);
+        Document result = new Document(noteId, paragraphs);
         return result;
     }
 
-    private List<Paragraph> getParagraphs(String document) {
+    private List<Paragraph> getParagraphs(String document, int noteId) {
         List<String> parsed = List.of(document.split("\n"));
 
         Stack<Paragraph> paragraphs = new Stack<>();
-        paragraphs.add(new Paragraph());
+        paragraphs.add(new Paragraph(noteId));
 
         for (String line : parsed) {
             if (line.isEmpty()) {
                 if (!paragraphs.peek().isEmpty()) {
-                    paragraphs.add(new Paragraph());
+                    paragraphs.add(new Paragraph(noteId));
                 }
                 continue;
             }

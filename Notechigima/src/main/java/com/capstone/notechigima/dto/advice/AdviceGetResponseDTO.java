@@ -16,19 +16,16 @@ public class AdviceGetResponseDTO {
     private int adviceId;
     @Schema(description = "분석 결과", defaultValue = "상반되는 문장이 있어요.")
     private String advice;
-    @Schema(description = "문장 1")
-    private SentenceGetResponseDTO sentence1;
-    @Schema(description = "문장 2")
-    private SentenceGetResponseDTO sentence2;
+    @Schema(description = "분석 결과")
+    private String content;
     @Schema(description = "댓글 목록")
     private List<CommentListGetResponseDTO> comments;
 
     @Builder
-    public AdviceGetResponseDTO(int adviceId, String advice, SentenceGetResponseDTO sentence1, SentenceGetResponseDTO sentence2, List<CommentListGetResponseDTO> comments) {
+    public AdviceGetResponseDTO(int adviceId, String advice, String content, List<CommentListGetResponseDTO> comments) {
         this.adviceId = adviceId;
         this.advice = advice;
-        this.sentence1 = sentence1;
-        this.sentence2 = sentence2;
+        this.content = content;
         this.comments = comments;
     }
 }

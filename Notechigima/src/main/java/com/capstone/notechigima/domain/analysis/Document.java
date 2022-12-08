@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 public class Document {
 
-    private final int userId;
+    private final int noteId;
     private final List<Paragraph> paragraphs;
 
     @Override

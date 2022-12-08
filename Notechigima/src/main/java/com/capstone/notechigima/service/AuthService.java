@@ -89,17 +89,8 @@ public class AuthService {
         authorizationByNote(token, note);
     }
 
-    private void authorizationBySentence(String token, Sentence sentence) throws RestApiException {
-        authorizationByNote(token, sentence.getNote());
-    }
-
-    public void authorizationBySentenceId(String token, int sentenceId) throws RestApiException {
-        Sentence sentence = sentenceRepository.findById(sentenceId).orElseThrow(this::createNotFoundException);
-        authorizationBySentence(token, sentence);
-    }
-
     private void authorizationByAdvice(String token, Advice advice) throws RestApiException {
-        authorizationBySentence(token, advice.getSentence1());
+        authorizationByTopicId(token, advice.getTopic().getTopicId());
     }
 
     public void authorizationByAdviceId(String token, int adviceId) throws RestApiException {
