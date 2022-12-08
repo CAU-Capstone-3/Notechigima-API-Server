@@ -12,7 +12,8 @@ import com.capstone.notechigima.domain.subject.Subject;
 import com.capstone.notechigima.domain.topic.Topic;
 import com.capstone.notechigima.domain.topic.TopicAnalyzedType;
 import com.capstone.notechigima.domain.users.User;
-import com.capstone.notechigima.dto.advice.AdviceInferenceRequestVO;
+import com.capstone.notechigima.dto.advice.KeywordInferenceRequestVO;
+import com.capstone.notechigima.dto.advice.NliInferenceRequestVO;
 import com.capstone.notechigima.dto.subject.SubjectWithTopicsGetResponseDTO;
 import com.capstone.notechigima.dto.topic.TopicGetResponseDTO;
 import com.capstone.notechigima.dto.topic.TopicPostRequestDTO;
@@ -40,6 +41,10 @@ public class TopicService {
 
     @Value("${nli.inference.uri}")
     private String NLI_ULI;
+    public static final String POSTFIX_URL_NLI = "/nli";
+    public static final String POSTFIX_URL_KEYWORD = "/keyword";
+    public static final int KEYWORD_TOP_N = 5;
+    public static final double KEYWORD_DIVERSITY = 0.7;
 
     private final SubjectRepository subjectRepository;
     private final TopicRepository topicRepository;
@@ -106,7 +111,6 @@ public class TopicService {
     }
 
     @Transactional
-    @Async("threadPoolTaskExecutor")
     public void requestAnalysis(int topicId) throws RestApiException {
         Topic topicToUpdate = topicRepository.findById(topicId).orElseThrow(() -> {
             throw new RestApiException(ExceptionCode.ERROR_NOT_FOUND_RESOURCE);
@@ -149,14 +153,15 @@ public class TopicService {
         return comb;
     }
 
-    private boolean isContradiction(String sent1, String sent2) {
+    @Async("threadPoolTaskExecutor")
+    public boolean isContradiction(String sent1, String sent2) {
         RestTemplate restTemplate = new RestTemplate();
         URI uri = UriComponentsBuilder
-                .fromUriString(NLI_ULI)
+                .fromUriString(NLI_ULI + POSTFIX_URL_NLI)
                 .encode()
                 .build()
                 .toUri();
-        AdviceInferenceRequestVO request = new AdviceInferenceRequestVO(
+        NliInferenceRequestVO request = new NliInferenceRequestVO(
                 sent1, sent2
         );
         String response = restTemplate.postForObject(uri, request, String.class);
@@ -171,6 +176,34 @@ public class TopicService {
             e.printStackTrace();
         }
         return false;
+    }
+
+    @Async("threadPoolTaskExecutor")
+    public List<String> getKeywords(String document) {
+        RestTemplate restTemplate = new RestTemplate();
+        URI uri = UriComponentsBuilder
+                .fromUriString(NLI_ULI + POSTFIX_URL_KEYWORD)
+                .encode()
+                .build()
+                .toUri();
+        KeywordInferenceRequestVO request = KeywordInferenceRequestVO.builder()
+                .document(document)
+                .topN(KEYWORD_TOP_N)
+                .diversity(KEYWORD_DIVERSITY)
+                .build();
+        String response = restTemplate.postForObject(uri, request, String.class);
+
+        List<String> keywords = new ArrayList<>();
+
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            for (Object o : jsonObject.getJSONArray("keywords")) {
+                keywords.add(o.toString());
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return keywords;
     }
 
 }
