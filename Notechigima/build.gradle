@@ -1,3 +1,9 @@
+buildscript {
+    ext {
+        koala_version = '2.1.4'
+    }
+}
+
 plugins {
     id 'org.springframework.boot' version '2.7.5'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
@@ -66,8 +72,15 @@ dependencies {
     // swagger
     implementation 'org.springdoc:springdoc-openapi-ui:1.6.6'
 
+    // koanlnlp
+    implementation "kr.bydelta:koalanlp-core:2.1.4"
     // komoran
-    implementation 'com.github.shin285:KOMORAN:3.3.4'
+    implementation "kr.bydelta:koalanlp-kmr:2.1.4"
+    // eunjeon
+    implementation "kr.bydelta:koalanlp-eunjeon:2.1.4"
+    // kkma
+    implementation "kr.bydelta:koalanlp-kkma:2.1.4:assembly"
+
 }
 
 tasks.named('test') {
