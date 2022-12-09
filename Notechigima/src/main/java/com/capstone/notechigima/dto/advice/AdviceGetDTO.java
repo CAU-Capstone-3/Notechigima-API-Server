@@ -1,5 +1,7 @@
 package com.capstone.notechigima.dto.advice;
 
+import com.capstone.notechigima.dto.comment.CommentListGetResponseDTO;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
 
@@ -13,6 +15,7 @@ public class AdviceGetDTO {
     private boolean isContradiction;
     private List<MergedSentenceDTO> sentences;
     private List<String> advices;
+    private List<CommentListGetResponseDTO> comments;
 
     @Data
     @Builder

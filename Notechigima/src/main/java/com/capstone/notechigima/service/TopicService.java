@@ -4,6 +4,7 @@ import com.capstone.notechigima.config.ExceptionCode;
 import com.capstone.notechigima.config.RestApiException;
 import com.capstone.notechigima.domain.VisibilityStatus;
 import com.capstone.notechigima.domain.advice.Advice;
+import com.capstone.notechigima.domain.advice.AdviceType;
 import com.capstone.notechigima.domain.advice_sentence.AdviceSentence;
 import com.capstone.notechigima.domain.analysis.*;
 import com.capstone.notechigima.domain.group_member.GroupAccessType;
@@ -135,14 +136,18 @@ public class TopicService {
 
     private void saveMergedParagraph(Topic topic, MergedSentence mergedSentence) {
         String content;
+        AdviceType adviceType = null;
 
         if (mergedSentence.isContradiction()) {
             content = "from 모두, 상반된 문장이 있어요.";
+            adviceType = AdviceType.CONTRADICTION;
         }
         else if (mergedSentence.isSuccess()) {
             content = "";
+            adviceType = AdviceType.NONE;
         }
         else {
+            adviceType = AdviceType.OMISSION;
             StringBuilder sb = new StringBuilder();
 
             for (MergedSentence.Omission omission : mergedSentence.getOmissions()) {
@@ -171,6 +176,7 @@ public class TopicService {
         Advice advice = Advice.builder()
                 .topic(topic)
                 .content(content)
+                .adviceType(adviceType)
                 .build();
 
         for (int i = 0; i < mergedSentence.getRepresent().size(); i++) {
@@ -180,10 +186,16 @@ public class TopicService {
 
             MergedSentence.Sentence s = mergedSentence.getRepresent().get(i);
 
+            Note note = noteRepository.findById(s.getNoteId())
+                    .orElseThrow(() -> {
+                        throw new RestApiException(ExceptionCode.ERROR_NOT_FOUND_RESOURCE);
+                    });
+
             AdviceSentence adviceSentence = AdviceSentence.builder()
                     .advice(advice)
                     .content(s.getContent())
                     .represent(represent)
+                    .user(note.getOwner())
                     .build();
             adviceSentenceRepository.save(adviceSentence);
 

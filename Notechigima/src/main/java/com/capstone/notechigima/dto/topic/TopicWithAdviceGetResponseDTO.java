@@ -1,5 +1,6 @@
 package com.capstone.notechigima.dto.topic;
 
+import com.capstone.notechigima.dto.advice.AdviceGetDTO;
 import com.capstone.notechigima.dto.advice.AdviceGetResponseDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -15,10 +16,10 @@ public class TopicWithAdviceGetResponseDTO {
     private int topicId;
     @Schema(description = "토픽명", defaultValue = "2-3. 프레이밍")
     private String title;
-    private List<AdviceGetResponseDTO> advices;
+    private List<AdviceGetDTO> advices;
 
     @Builder
-    public TopicWithAdviceGetResponseDTO(int topicId, String title, List<AdviceGetResponseDTO> advices) {
+    public TopicWithAdviceGetResponseDTO(int topicId, String title, List<AdviceGetDTO> advices) {
         this.topicId = topicId;
         this.title = title;
         this.advices = advices;

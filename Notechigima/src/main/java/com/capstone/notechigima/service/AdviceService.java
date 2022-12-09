@@ -1,10 +1,13 @@
 package com.capstone.notechigima.service;
 
+import com.capstone.notechigima.domain.advice_sentence.AdviceSentence;
 import com.capstone.notechigima.domain.comment.Comment;
 import com.capstone.notechigima.domain.advice.Advice;
+import com.capstone.notechigima.dto.advice.AdviceGetDTO;
 import com.capstone.notechigima.dto.advice.AdviceGetResponseDTO;
 import com.capstone.notechigima.mapper.AdviceMapper;
 import com.capstone.notechigima.repository.AdviceRepository;
+import com.capstone.notechigima.repository.AdviceSentenceRepository;
 import com.capstone.notechigima.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,9 +21,10 @@ import java.util.stream.Collectors;
 public class AdviceService {
 
     private final AdviceRepository adviceRepository;
+    private final AdviceSentenceRepository adviceSentenceRepository;
     private final CommentRepository commentRepository;
 
-    public List<AdviceGetResponseDTO> getAdviceList(int topicId) {
+    public List<AdviceGetDTO> getAdviceList(int topicId) {
         List<Advice> advices = adviceRepository.findAllByTopic_TopicId(topicId);
         HashMap<Advice, List<Comment>> commentMap = new HashMap<>();
 
@@ -31,7 +35,7 @@ public class AdviceService {
         });
 
         return advices.stream().map(entity ->
-                AdviceMapper.INSTANCE.toAdviceGetResponseDTO(entity, commentMap.get(entity)))
+                AdviceMapper.INSTANCE.toAdviceGetDTO(entity, commentMap.get(entity)))
                 .collect(Collectors.toList());
     }
 }

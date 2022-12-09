@@ -1,15 +1,17 @@
 package com.capstone.notechigima.domain.advice;
 
+import lombok.Getter;
+
+@Getter
 public enum AdviceType {
-    CONTRADICTION('C');
+    CONTRADICTION("CONTRADICTION"),
+    NONE("NONE"),
+    OMISSION("OMISSION");
 
-    private char type;
+    private final String key;
 
-    AdviceType(char type) {
-        this.type = type;
+    AdviceType(String key) {
+        this.key = key;
     }
 
-    public char getType() {
-        return this.type;
-    }
 }

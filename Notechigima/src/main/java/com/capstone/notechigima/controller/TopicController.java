@@ -4,6 +4,7 @@ import com.capstone.notechigima.config.ExceptionCode;
 import com.capstone.notechigima.config.SuccessCode;
 import com.capstone.notechigima.config.BaseResponse;
 import com.capstone.notechigima.domain.topic.TopicAnalyzedType;
+import com.capstone.notechigima.dto.advice.AdviceGetDTO;
 import com.capstone.notechigima.dto.advice.AdviceGetResponseDTO;
 import com.capstone.notechigima.dto.note.NoteListGetResponseDTO;
 import com.capstone.notechigima.dto.topic.TopicPostRequestDTO;
@@ -95,7 +96,7 @@ public class TopicController {
 
         authService.authorizationByTopicId(request.getHeader(ACCESS_TOKEN_HEADER), topicId);
 
-        List<AdviceGetResponseDTO> advices = adviceService.getAdviceList(topicId);
+        List<AdviceGetDTO> advices = adviceService.getAdviceList(topicId);
         String topicName = topicService.getTopic(topicId).getTitle();
 
         TopicWithAdviceGetResponseDTO response = TopicWithAdviceGetResponseDTO.builder()
