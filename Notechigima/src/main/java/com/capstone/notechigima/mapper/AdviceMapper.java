@@ -31,7 +31,7 @@ public interface AdviceMapper {
     }
 
     default AdviceGetDTO toAdviceGetDTO(Advice advice, List<Comment> comments) {
-        
+
         List<AdviceGetDTO.MergedSentenceDTO> sentences =
                 advice.getAdviceSentence().stream()
                         .map(sent -> AdviceGetDTO.MergedSentenceDTO.builder()

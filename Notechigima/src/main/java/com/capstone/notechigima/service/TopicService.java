@@ -37,6 +37,8 @@ public class TopicService {
     @Value("${nli.inference.uri}")
     private String NLI_ULI;
 
+    public static final String FORMAT = "'%s'";
+
     private final SubjectRepository subjectRepository;
     private final TopicRepository topicRepository;
     private final AdviceRepository adviceRepository;
@@ -139,7 +141,7 @@ public class TopicService {
         AdviceType adviceType = null;
 
         if (mergedSentence.isContradiction()) {
-            content = "from 모두, 상반된 문장이 있어요.";
+            content = "from 모두: 상반된 문장이 있어요.";
             adviceType = AdviceType.CONTRADICTION;
         }
         else if (mergedSentence.isSuccess()) {
@@ -162,11 +164,11 @@ public class TopicService {
 
                 sb.append("from ")
                         .append(writer.getNickname())
-                        .append(", ");
+                        .append(": ");
                 for (int i = 0; i < omission.getKeywords().size(); i++) {
                     if (i != 0)
                         sb.append(", ");
-                    sb.append(omission.getKeywords().get(i));
+                    sb.append(String.format(FORMAT, omission.getKeywords().get(i)));
                 }
                 sb.append(" 에 대한 내용이 빠져있어요.\n");
             }
