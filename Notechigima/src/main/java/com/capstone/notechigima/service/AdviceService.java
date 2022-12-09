@@ -34,8 +34,9 @@ public class AdviceService {
             commentMap.put(entity, comments);
         });
 
-        return advices.stream().map(entity ->
-                AdviceMapper.INSTANCE.toAdviceGetDTO(entity, commentMap.get(entity)))
-                .collect(Collectors.toList());
+        List<AdviceGetDTO> adviceGetDTOs = advices.stream().map(entity ->
+                AdviceMapper.INSTANCE.toAdviceGetDTO(entity, commentMap.get(entity))).toList();
+
+        return adviceGetDTOs.subList(0, adviceGetDTOs.size() / 2);
     }
 }

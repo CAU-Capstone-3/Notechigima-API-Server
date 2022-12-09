@@ -84,7 +84,7 @@ public class DocumentAnalyzer {
         MergedDocument merged = new MergedDocument();
 
         for (PairParagraph pair : pairParagraphs) {
-            List<String> keywords = getKeywords(pair.getMergedString());
+            List<String> keywords = getKeywords(5, pair.getMergedString());
             // 대표 문단 설정
             Paragraph presentParagraph = isMaxKeywords(pair, keywords);
 
@@ -235,7 +235,7 @@ public class DocumentAnalyzer {
     }
 
     @Async("threadPoolTaskExecutor")
-    public List<String> getKeywords(String sentence) {
+    public List<String> getKeywords(int topN, String sentence) {
         System.out.println("request keywords : " + sentence);
 
         RestTemplate restTemplate = new RestTemplate();
@@ -246,7 +246,7 @@ public class DocumentAnalyzer {
                 .toUri();
         KeywordInferenceRequestVO request = KeywordInferenceRequestVO.builder()
                 .document(sentence)
-                .topN(KEYWORD_TOP_N)
+                .topN(topN)
                 .diversity(KEYWORD_DIVERSITY)
                 .build();
         String response = restTemplate.postForObject(uri, request, String.class);

@@ -13,6 +13,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class Paragraph {
 
+    private static int totalCount = 0;
+    private int id = ++totalCount;
     private static Tagger tagger;
     private static Komoran komoran;
 
@@ -44,6 +46,10 @@ public class Paragraph {
             }
         }
         return result;
+    }
+
+    public int getId() {
+        return this.id;
     }
 
     @Override
