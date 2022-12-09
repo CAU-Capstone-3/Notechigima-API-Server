@@ -22,14 +22,15 @@ public class DocumentParser {
         paragraphs.add(new Paragraph(noteId));
 
         for (String line : parsed) {
-//            if (line.isEmpty()) {
-//                if (!paragraphs.peek().isEmpty()) {
-//                    paragraphs.add(new Paragraph(noteId));
-//                }
-//                continue;
-//            }
-            if (!paragraphs.peek().isEmpty())
-                paragraphs.add(new Paragraph(noteId));
+            // 개행 문자가 또 들어왔을 때
+            if (line.isEmpty()) {
+                // 최근에 만든 문단이 비지 않았으면 새로운 문단 생성
+                if (!paragraphs.peek().isEmpty()) {
+                    paragraphs.add(new Paragraph(noteId));
+                }
+                continue;
+            }
+
             paragraphs.peek().add(line);
         }
 

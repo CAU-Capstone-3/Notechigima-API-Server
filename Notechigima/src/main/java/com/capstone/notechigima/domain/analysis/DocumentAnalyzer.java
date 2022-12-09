@@ -1,9 +1,23 @@
 package com.capstone.notechigima.domain.analysis;
 
+import com.capstone.notechigima.dto.advice.KeywordInferenceRequestVO;
+import com.capstone.notechigima.dto.advice.NliInferenceRequestVO;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.net.URI;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class DocumentAnalyzer {
+
+    private final String nliUri;
+    public static final String POSTFIX_URL_NLI = "/nli";
+    public static final String POSTFIX_URL_KEYWORD = "/keyword";
+    public static final int KEYWORD_TOP_N = 5;
+    public static final double KEYWORD_DIVERSITY = 0.7;
 
     private final Document centralDocument;
     private final List<Document> documents;
@@ -19,13 +33,19 @@ public class DocumentAnalyzer {
      * @param centralDocument 문단 순서 파악의 중심이 되는 문서
      * @param documents 분석할 문서들 (centralDocument 포함 불가)
      */
-    public DocumentAnalyzer(Document centralDocument, List<Document> documents) {
+    public DocumentAnalyzer(String nliUri, Document centralDocument, List<Document> documents) {
+        this.nliUri = nliUri;
         this.centralDocument = centralDocument;
         this.documents = documents;
         init();
     }
 
+    /**
+     * 그룹장의 문단 순서대로
+     * 각 그룹원들의 문단을 함께 묶는다.
+     */
     private void init() {
+        // 그룹장이 가진 문단의 순서대로 진행
         for (Paragraph paragraph : centralDocument.getParagraphs()) {
             PairParagraph pair = new PairParagraph();
             pair.addParagraph(paragraph);
@@ -60,41 +80,89 @@ public class DocumentAnalyzer {
     }
 
 
-    public MergedDocument mergeDocument() {
-        MergedDocument result = new MergedDocument();
+    public MergedDocument merge() {
+        MergedDocument merged = new MergedDocument();
 
         for (PairParagraph pair : pairParagraphs) {
-            List<Paragraph> represent = new ArrayList<>();
-            represent.add(containMaxKeywords(pair));
-            List<MergedParagraph.Omission> omissions = new ArrayList<>();
+            List<String> keywords = getKeywords(pair.getMergedString());
+            // 대표 문단 설정
+            Paragraph presentParagraph = isMaxKeywords(pair, keywords);
 
-            if (!pair.isHaveContradiction()) {
-                for (Paragraph p : pair.getParagraphs()) {
-                    List<String> omissionKeywords = omissionKeywords(p, pair.getKeywords());
+            // 분석 결과로 묶기
+            MergedSentence mergedSentence = mergeSentence(pair, presentParagraph, keywords);
 
-                    MergedParagraph.Omission omission = MergedParagraph.Omission
-                            .builder()
-                            .noteId(p.getNoteId())
-                            .keywords(omissionKeywords)
-                            .build();
+            merged.addSentence(mergedSentence);
+        }
 
-                    omissions.add(omission);
-                }
-            } else {
-                List<Paragraph> others = pair.getParagraphs().stream()
-                        .filter(paragraph -> paragraph.getNoteId() != represent.get(0).getNoteId()).toList();
-                represent.addAll(others);
-            }
+        return merged;
+    }
 
-            MergedParagraph mergedParagraph = MergedParagraph.builder()
-                    .contradiction(pair.isHaveContradiction())
+    private MergedSentence mergeSentence(PairParagraph pair, Paragraph representPar, List<String> keywords) {
+        List<MergedSentence.Sentence> represent = new ArrayList<>();
+        List<MergedSentence.Omission> omissions = new ArrayList<>();
+
+        represent.add(MergedSentence.Sentence.builder()
+                .noteId(representPar.getNoteId())
+                .content(representPar.toString())
+                .build()
+        );
+
+        // 모순된 문장이 있을 때
+        if (haveContradiction(pair)) {
+            // 나머지 모든 문단 추가
+            pair.getParagraphs().stream()
+                    .filter(paragraph -> paragraph.getNoteId() != representPar.getNoteId())
+                    .forEach(paragraph -> {
+                        represent.add(
+                                MergedSentence.Sentence.builder()
+                                        .noteId(paragraph.getNoteId())
+                                        .content(paragraph.toString())
+                                        .build()
+                        );
+                    });
+
+            return MergedSentence.builder()
+                    .isContradiction(true)
+                    .represent(represent)
+                    .build();
+        }
+
+        // 누락된 키워드 파악
+        for (Paragraph paragraph : pair.getParagraphs()) {
+            List<String> omKeywords = omissionKeywords(paragraph, keywords);
+            MergedSentence.Omission omission = MergedSentence.Omission.builder()
+                    .keywords(omKeywords)
+                    .noteId(paragraph.getNoteId())
+                    .build();
+
+            omissions.add(omission);
+        }
+
+        // 누락 없이 모두 잘 쓴 경우
+        if (omissions.isEmpty()) {
+            return MergedSentence.builder()
+                    .success(true)
                     .represent(represent)
                     .omissions(omissions)
                     .build();
-
-            result.addParagraph(mergedParagraph);
         }
+        // 누락 있는 경우
+        return MergedSentence.builder()
+                .omissions(omissions)
+                .represent(represent)
+                .build();
+    }
 
+    private static Paragraph isMaxKeywords(PairParagraph pair, List<String> keywords) {
+        Paragraph result = null;
+        int max = -1;
+        for (Paragraph paragraph : pair.getParagraphs()) {
+            int contains = numOfContainKeywords(paragraph, keywords);
+            if (max < contains) {
+                result = paragraph;
+                max = contains;
+            }
+        }
         return result;
     }
 
@@ -106,19 +174,6 @@ public class DocumentAnalyzer {
             }
         }
         return omissions;
-    }
-
-    private static Paragraph containMaxKeywords(PairParagraph pair) {
-        Paragraph result = null;
-        int max = 0;
-        for (Paragraph paragraph : pair.getParagraphs()) {
-            int containKeywords = numOfContainKeywords(paragraph, pair.getKeywords());
-            if (max < containKeywords) {
-                result = paragraph;
-                max = containKeywords;
-            }
-        }
-        return result;
     }
 
     private static int numOfContainKeywords(Paragraph paragraph, List<String> keywords) {
@@ -133,5 +188,80 @@ public class DocumentAnalyzer {
         return count;
     }
 
+    private boolean haveContradiction(PairParagraph pair) {
+        List<Paragraph> paragraphs = pair.getParagraphs();
+        for (int i = 0; i < paragraphs.size(); i++) {
+            for (int j = i + 1; j < paragraphs.size(); j++) {
+                Paragraph parA = paragraphs.get(i);
+                Paragraph parB = paragraphs.get(j);
+
+                for (String sentA : parA.getSentences()) {
+                    for (String sentB : parB.getSentences()) {
+                        if (isContradiction(sentA, sentB)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    @Async("threadPoolTaskExecutor")
+    public boolean isContradiction(String sent1, String sent2) {
+        System.out.println("request nli " + sent1 + " " + sent2);
+
+        RestTemplate restTemplate = new RestTemplate();
+        URI uri = UriComponentsBuilder
+                .fromUriString(nliUri + POSTFIX_URL_NLI)
+                .encode()
+                .build()
+                .toUri();
+        NliInferenceRequestVO request = new NliInferenceRequestVO(
+                sent1, sent2
+        );
+        String response = restTemplate.postForObject(uri, request, String.class);
+
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            String result = jsonObject.getString("result");
+            if (result.equals("contradiction"))
+                return true;
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Async("threadPoolTaskExecutor")
+    public List<String> getKeywords(String sentence) {
+        System.out.println("request keywords : " + sentence);
+
+        RestTemplate restTemplate = new RestTemplate();
+        URI uri = UriComponentsBuilder
+                .fromUriString(nliUri + POSTFIX_URL_KEYWORD)
+                .encode()
+                .build()
+                .toUri();
+        KeywordInferenceRequestVO request = KeywordInferenceRequestVO.builder()
+                .document(sentence)
+                .topN(KEYWORD_TOP_N)
+                .diversity(KEYWORD_DIVERSITY)
+                .build();
+        String response = restTemplate.postForObject(uri, request, String.class);
+
+        List<String> keywords = new ArrayList<>();
+
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            for (Object o : jsonObject.getJSONArray("keywords")) {
+                keywords.add(o.toString());
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return keywords;
+    }
 
 }

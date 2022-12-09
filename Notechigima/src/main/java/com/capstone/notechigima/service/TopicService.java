@@ -13,8 +13,6 @@ import com.capstone.notechigima.domain.subject.Subject;
 import com.capstone.notechigima.domain.topic.Topic;
 import com.capstone.notechigima.domain.topic.TopicAnalyzedType;
 import com.capstone.notechigima.domain.users.User;
-import com.capstone.notechigima.dto.advice.KeywordInferenceRequestVO;
-import com.capstone.notechigima.dto.advice.NliInferenceRequestVO;
 import com.capstone.notechigima.dto.subject.SubjectWithTopicsGetResponseDTO;
 import com.capstone.notechigima.dto.topic.TopicGetResponseDTO;
 import com.capstone.notechigima.dto.topic.TopicPostRequestDTO;
@@ -23,16 +21,11 @@ import com.capstone.notechigima.mapper.TopicMapper;
 import com.capstone.notechigima.mapper.UserMapper;
 import com.capstone.notechigima.repository.*;
 import lombok.RequiredArgsConstructor;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.transaction.Transactional;
-import java.net.URI;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -42,10 +35,6 @@ public class TopicService {
 
     @Value("${nli.inference.uri}")
     private String NLI_ULI;
-    public static final String POSTFIX_URL_NLI = "/nli";
-    public static final String POSTFIX_URL_KEYWORD = "/keyword";
-    public static final int KEYWORD_TOP_N = 5;
-    public static final double KEYWORD_DIVERSITY = 0.7;
 
     private final SubjectRepository subjectRepository;
     private final TopicRepository topicRepository;
@@ -114,6 +103,7 @@ public class TopicService {
     }
 
     @Transactional
+    @Async("threadPoolTaskExecutor")
     public void requestAnalysis(int topicId) throws RestApiException {
         Topic topicToUpdate = topicRepository.findById(topicId).orElseThrow(() -> {
             throw new RestApiException(ExceptionCode.ERROR_NOT_FOUND_RESOURCE);
@@ -134,7 +124,7 @@ public class TopicService {
 
         List<Note> notes = topicToUpdate.getNotes();
         MergedDocument mergedDocument = analysisTopic(notes, owner.getUserId());
-        mergedDocument.getParagraphs()
+        mergedDocument.getSentences()
                         .forEach(paragraph -> {
                             saveMergedParagraph(topicToUpdate, paragraph);
                         });
@@ -143,15 +133,22 @@ public class TopicService {
         topicRepository.save(topicToUpdate);
     }
 
-    private void saveMergedParagraph(Topic topic, MergedParagraph paragraph) {
+    private void saveMergedParagraph(Topic topic, MergedSentence mergedSentence) {
         String content;
 
-        if (paragraph.isContradiction()) {
+        if (mergedSentence.isContradiction()) {
             content = "from 모두, 상반된 문장이 있어요.";
-        } else {
+        }
+        else if (mergedSentence.isSuccess()) {
+            content = "";
+        }
+        else {
             StringBuilder sb = new StringBuilder();
 
-            for (MergedParagraph.Omission omission : paragraph.getOmissions()) {
+            for (MergedSentence.Omission omission : mergedSentence.getOmissions()) {
+                if (omission.getKeywords().isEmpty())
+                    continue;
+
                 User writer = noteRepository.findById(omission.getNoteId())
                         .orElseThrow(() -> {
                             throw new RestApiException(ExceptionCode.ERROR_NOT_FOUND_USER);
@@ -176,15 +173,16 @@ public class TopicService {
                 .content(content)
                 .build();
 
-        for (int i = 0; i < paragraph.getRepresent().size(); i++) {
+        for (int i = 0; i < mergedSentence.getRepresent().size(); i++) {
             boolean represent = false;
             if (i == 0) represent = true;
-            if (paragraph.isContradiction()) represent = true;
-            Paragraph p = paragraph.getRepresent().get(i);
+            if (mergedSentence.isContradiction()) represent = true;
+
+            MergedSentence.Sentence s = mergedSentence.getRepresent().get(i);
 
             AdviceSentence adviceSentence = AdviceSentence.builder()
                     .advice(advice)
-                    .content(p.toString())
+                    .content(s.getContent())
                     .represent(represent)
                     .build();
             adviceSentenceRepository.save(adviceSentence);
@@ -210,86 +208,9 @@ public class TopicService {
             }
         }
 
-        DocumentAnalyzer analyzer = new DocumentAnalyzer(centralDocument, documents);
-        List<PairParagraph> pairParagraphs = analyzer.getPairParagraphs();
-
-        for (PairParagraph pair : pairParagraphs) {
-            if (haveContradiction(pair.getParagraphs())) {
-                pair.setContradiction();
-            }
-
-            List<String> keywords = getKeywords(pair.getMergedString());
-            pair.addAllKeywords(keywords);
-        }
-
-        return analyzer.mergeDocument();
-    }
-
-    private boolean haveContradiction(List<Paragraph> pair) {
-        for (int i = 0; i < pair.size(); i++) {
-            for (int j = i + 1; j < pair.size(); j++) {
-                String sent1 = pair.get(i).toString();
-                String sent2 = pair.get(j).toString();
-
-                if (isContradiction(sent1, sent2)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    @Async("threadPoolTaskExecutor")
-    public boolean isContradiction(String sent1, String sent2) {
-        RestTemplate restTemplate = new RestTemplate();
-        URI uri = UriComponentsBuilder
-                .fromUriString(NLI_ULI + POSTFIX_URL_NLI)
-                .encode()
-                .build()
-                .toUri();
-        NliInferenceRequestVO request = new NliInferenceRequestVO(
-                sent1, sent2
-        );
-        String response = restTemplate.postForObject(uri, request, String.class);
-
-        try {
-            JSONObject jsonObject = new JSONObject(response);
-            String result = jsonObject.getString("result");
-            if (result.equals("contradiction"))
-                return true;
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    @Async("threadPoolTaskExecutor")
-    public List<String> getKeywords(String document) {
-        RestTemplate restTemplate = new RestTemplate();
-        URI uri = UriComponentsBuilder
-                .fromUriString(NLI_ULI + POSTFIX_URL_KEYWORD)
-                .encode()
-                .build()
-                .toUri();
-        KeywordInferenceRequestVO request = KeywordInferenceRequestVO.builder()
-                .document(document)
-                .topN(KEYWORD_TOP_N)
-                .diversity(KEYWORD_DIVERSITY)
-                .build();
-        String response = restTemplate.postForObject(uri, request, String.class);
-
-        List<String> keywords = new ArrayList<>();
-
-        try {
-            JSONObject jsonObject = new JSONObject(response);
-            for (Object o : jsonObject.getJSONArray("keywords")) {
-                keywords.add(o.toString());
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return keywords;
+        // 여러명의 문단을 묶어서 초기화한다.
+        DocumentAnalyzer analyzer = new DocumentAnalyzer(NLI_ULI, centralDocument, documents);
+        return analyzer.merge();
     }
 
 }

@@ -7,11 +7,11 @@ import java.util.List;
 
 @Getter
 public class MergedDocument {
-    private final List<MergedParagraph> paragraphs = new ArrayList<>();
+    private final List<MergedSentence> sentences = new ArrayList<>();
     private final List<Contribution> contributions = new ArrayList<>();
 
-    public void addParagraph(MergedParagraph paragraph) {
-        this.paragraphs.add(paragraph);
+    public void addSentence(MergedSentence paragraph) {
+        this.sentences.add(paragraph);
     }
 
     public void addContributions(Contribution contribution) {

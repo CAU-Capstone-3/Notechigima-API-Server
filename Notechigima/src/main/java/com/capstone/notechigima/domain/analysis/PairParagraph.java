@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
+/**
+ * 여러 명의 문단을 같이 묶어주는 클래스
+ */
 public class PairParagraph {
 
     private final List<Paragraph> paragraphs = new ArrayList<>();
@@ -15,7 +18,7 @@ public class PairParagraph {
 
     public String getMergedString() {
         StringBuilder sb = new StringBuilder();
-        this.paragraphs.stream()
+        this.paragraphs
                 .forEach(paragraph -> {
                     sb.append(paragraph.toString());
                 });
