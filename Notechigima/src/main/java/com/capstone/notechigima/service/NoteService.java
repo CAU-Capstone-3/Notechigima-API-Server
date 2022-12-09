@@ -3,25 +3,19 @@ package com.capstone.notechigima.service;
 import com.capstone.notechigima.config.ExceptionCode;
 import com.capstone.notechigima.config.RestApiException;
 import com.capstone.notechigima.domain.VisibilityStatus;
-import com.capstone.notechigima.domain.analysis.Document;
-import com.capstone.notechigima.domain.analysis.DocumentParser;
 import com.capstone.notechigima.domain.note.Note;
-import com.capstone.notechigima.domain.sentence.Sentence;
-import com.capstone.notechigima.domain.sentence.SentenceType;
 import com.capstone.notechigima.domain.topic.Topic;
+import com.capstone.notechigima.domain.topic.TopicAnalyzedType;
 import com.capstone.notechigima.domain.users.User;
 import com.capstone.notechigima.dto.note.NoteGetResponseDTO;
 import com.capstone.notechigima.dto.note.NoteListGetResponseDTO;
 import com.capstone.notechigima.dto.note.NotePostRequestDTO;
-import com.capstone.notechigima.dto.sentence.SentenceListGetResponseDTO;
 import com.capstone.notechigima.mapper.NoteMapper;
-import com.capstone.notechigima.mapper.SentenceMapper;
 import com.capstone.notechigima.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -65,29 +59,11 @@ public class NoteService {
 
         noteRepository.save(entity);
 
-
-
-//
-//        document.getParagraphs()
-//                .stream()
-//                .forEach(paragraph -> paragraph.getSentences());
-
-
-//
-//        List<String> sentences = Arrays.stream(body.getContent().split("\n")).toList();
-//        sentences.stream().forEach(str -> str = str.replaceAll("\n", ""));
-//        List<String> sentencesFiltered = sentences.stream().filter(str -> str != null && !str.isEmpty()).toList();
-//
-//        ArrayList<Sentence> sentenceEntities = new ArrayList<>();
-//        for (int i = 0; i < sentencesFiltered.size(); i++) {
-//            Sentence createSentence = Sentence.builder()
-//                    .note(entity)
-//                    .content(sentencesFiltered.get(i))
-//                    .sentenceType(SentenceType.PLAIN)
-//                    .sequenceNum(i + 1)
-//                    .build();
-//            sentenceEntities.add(createSentence);
-//        }
+        int groupMemberSize = topic.getSubject().getStudyGroup().getMembers().size();
+        if (topic.getNotes().size() == groupMemberSize) {
+            topic.updateAnalyzed(TopicAnalyzedType.READY);
+            topicRepository.save(topic);
+        }
     }
 
     private void validationDuplicate(int userId, int topicId) throws RestApiException {
