@@ -34,6 +34,10 @@ public class DocumentParser {
             paragraphs.peek().add(line);
         }
 
+        // 빈 문단 제거
+        if (paragraphs.peek().isEmpty())
+            paragraphs.pop();
+
         return paragraphs;
     }
 
